@@ -1,13 +1,13 @@
-package app.lajusta.ui.slideshow
+package app.lajusta.ui.familia
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SlideshowViewModel : ViewModel() {
+class FamiliaViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+        value = "This is familias Fragment"
     }
     val text: LiveData<String> = _text
 }

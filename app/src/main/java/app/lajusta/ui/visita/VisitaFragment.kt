@@ -1,4 +1,4 @@
-package app.lajusta.ui.gallery
+package app.lajusta.ui.visita
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,14 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import app.lajusta.databinding.FragmentGalleryBinding
+import app.lajusta.databinding.FragmentVisitaBinding
 
-class GalleryFragment : Fragment() {
+class VisitaFragment : Fragment() {
 
-    private var _binding: FragmentGalleryBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding: FragmentVisitaBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -23,9 +20,9 @@ class GalleryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val galleryViewModel =
-            ViewModelProvider(this).get(GalleryViewModel::class.java)
+            ViewModelProvider(this).get(VisitaViewModel::class.java)
 
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        _binding = FragmentVisitaBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textGallery

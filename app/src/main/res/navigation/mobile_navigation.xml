@@ -12,14 +12,20 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="app.lajusta.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_bolson"
+        android:name="app.lajusta.ui.bolson.BolsonFragment"
+        android:label="@string/menu_bolson"
+        tools:layout="@layout/fragment_bolson" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="app.lajusta.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_visitas"
+        android:name="app.lajusta.ui.visita.VisitaFragment"
+        android:label="@string/menu_visitas"
+        tools:layout="@layout/fragment_visita" />
+
+    <fragment
+        android:id="@+id/nav_familias"
+        android:name="app.lajusta.ui.familia.FamiliaFragment"
+        android:label="@string/menu_familias"
+        tools:layout="@layout/fragment_familia" />
 </navigation>
