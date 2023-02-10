@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import app.lajusta.databinding.FragmentBolsonBinding
+import app.lajusta.R
+import app.lajusta.databinding.FragmentBolsonesBinding
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-class BolsonFragment : Fragment() {
+class BolsonesFragment : Fragment() {
 
-    private var _binding: FragmentBolsonBinding? = null
+    private var _binding: FragmentBolsonesBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,15 +23,16 @@ class BolsonFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val bolsonViewModel =
-            ViewModelProvider(this).get(BolsonViewModel::class.java)
+            ViewModelProvider(this).get(BolsonesViewModel::class.java)
 
-        _binding = FragmentBolsonBinding.inflate(inflater, container, false)
+        _binding = FragmentBolsonesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textBolson
+        /* val textView: TextView = binding.textBolson
         bolsonViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
-        }
+        } */
+
         return root
     }
 
@@ -37,4 +41,7 @@ class BolsonFragment : Fragment() {
         _binding = null
     }
 
+    private fun searchByText(query:String) {
+        // A completar
+    }
 }

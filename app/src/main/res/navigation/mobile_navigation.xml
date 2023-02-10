@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_rondas">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="app.lajusta.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_rondas"
+        android:name="app.lajusta.ui.rondas.RondasFragment"
+        android:label="@string/menu_rondas"
+        tools:layout="@layout/fragment_rondas" />
 
     <fragment
         android:id="@+id/nav_bolson"
-        android:name="app.lajusta.ui.bolson.BolsonFragment"
-        android:label="@string/menu_bolson"
-        tools:layout="@layout/fragment_bolson" />
+        android:name="app.lajusta.ui.bolson.BolsonesFragment"
+        android:label="@string/menu_bolsones"
+        tools:layout="@layout/fragment_bolsones" />
 
     <fragment
         android:id="@+id/nav_visitas"
-        android:name="app.lajusta.ui.visita.VisitaFragment"
+        android:name="app.lajusta.ui.visita.VisitasFragment"
         android:label="@string/menu_visitas"
-        tools:layout="@layout/fragment_visita" />
+        tools:layout="@layout/fragment_visitas" />
 
     <fragment
         android:id="@+id/nav_familias"
-        android:name="app.lajusta.ui.familia.FamiliaFragment"
+        android:name="app.lajusta.ui.familia.FamiliasFragment"
         android:label="@string/menu_familias"
-        tools:layout="@layout/fragment_familia" />
+        tools:layout="@layout/fragment_familias" />
 </navigation>

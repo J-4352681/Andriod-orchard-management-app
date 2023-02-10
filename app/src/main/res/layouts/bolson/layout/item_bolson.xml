@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingBottom="5dp"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <TextView
+        android:id="@+id/tvId"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:padding="30dp"
+        android:background="@color/green2"
+        android:textColor="@color/white"
+        tools:text="1" />
+
+
+    <LinearLayout
+        android:id="@+id/llContent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="15dp"
+        android:paddingVertical="18dp" >
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Titular del item" />
+
+        <TextView
+            android:id="@+id/tvFamilia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Descripción del item." />
+
+        <TextView
+            android:id="@+id/tvRonda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="17" />
+
+    </LinearLayout>
+
+</LinearLayout>

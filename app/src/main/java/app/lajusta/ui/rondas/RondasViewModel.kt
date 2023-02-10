@@ -1,13 +1,13 @@
-package app.lajusta.ui.familia
+package app.lajusta.ui.rondas
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class FamiliaViewModel : ViewModel() {
+class RondasViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is familias Fragment"
+        value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
 }

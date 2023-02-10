@@ -1,4 +1,4 @@
-package app.lajusta.ui.familia
+package app.lajusta.ui.visita
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,14 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import app.lajusta.databinding.FragmentFamiliaBinding
+import app.lajusta.databinding.FragmentVisitasBinding
 
-class FamiliaFragment : Fragment() {
+class VisitasFragment : Fragment() {
 
-    private var _binding: FragmentFamiliaBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding: FragmentVisitasBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,14 +19,14 @@ class FamiliaFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(FamiliaViewModel::class.java)
+        val galleryViewModel =
+            ViewModelProvider(this).get(VisitasViewModel::class.java)
 
-        _binding = FragmentFamiliaBinding.inflate(inflater, container, false)
+        _binding = FragmentVisitasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textGallery
+        galleryViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
