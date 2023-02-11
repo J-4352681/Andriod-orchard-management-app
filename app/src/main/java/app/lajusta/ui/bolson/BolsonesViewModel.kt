@@ -3,8 +3,7 @@ package app.lajusta.ui.bolson
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import app.lajusta.ui.bolson.recyclerview.BolsonDataclass
-import app.lajusta.ui.bolson.recyclerview.BolsonesReposiory
+import app.lajusta.ui.bolson.api.BolsonesReposiory
 
 class BolsonesViewModel(
     private val reposiory: BolsonesReposiory
