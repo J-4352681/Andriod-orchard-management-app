@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonesBinding
+import app.lajusta.ui.bolson.recyclerview.BolsonesAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -35,6 +37,16 @@ class BolsonesFragment : Fragment() {
 
         return root
     }
+
+    /* override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        binding.rvBolsones.layoutManager = LinearLayoutManager(parentFragment.context)
+        binding.rvBolsones.adapter = BolsonesAdapter(bolsonesViewModel.bolsones.value)
+    } */
 
     override fun onDestroyView() {
         super.onDestroyView()

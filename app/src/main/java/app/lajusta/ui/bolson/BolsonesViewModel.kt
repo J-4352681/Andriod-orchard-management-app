@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import app.lajusta.ui.bolson.api.BolsonesReposiory
 
 class BolsonesViewModel(
-    private val reposiory: BolsonesReposiory
+    private val repository: BolsonesReposiory
 ) : ViewModel() {
 
     private val _bolsones = MutableLiveData<List<BolsonDataclass>>()
@@ -14,7 +14,7 @@ class BolsonesViewModel(
         get() = _bolsones
 
     suspend fun getBolsones() {
-        val bolsones = reposiory.getBolsones()
+        val bolsones = repository.getBolsones()
         _bolsones.value = bolsones
     }
 }

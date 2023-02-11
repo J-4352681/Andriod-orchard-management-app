@@ -9,7 +9,7 @@ import retrofit2.http.GET
 
 interface BolsonesAPIService {
     @GET("bolson")
-    suspend fun getBolsones(): Response<BolsonDataclass>
+    suspend fun getBolsones(): Response<List<BolsonDataclass>>
 
     companion object {
         operator fun invoke(): BolsonesAPIService {

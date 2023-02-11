@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.lajusta.databinding.ItemBolsonBinding
 import app.lajusta.ui.bolson.BolsonDataclass
 
-class BolsonesViewHolder(view: View): RecyclerView.ViewHolder(View) {
+class BolsonesViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
     val binding = ItemBolsonBinding.bind(view)
 
