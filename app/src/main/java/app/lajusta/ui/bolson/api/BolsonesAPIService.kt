@@ -15,7 +15,7 @@ interface BolsonesAPIService {
         operator fun invoke(): BolsonesAPIService {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(R.string.url_base.toString())
+                .baseUrl("http://0.0.0.0:80/api/")
                 .build()
                 .create(BolsonesAPIService::class.java)
         }
