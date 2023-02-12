@@ -65,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
                 //finish()
                 val i = Intent(applicationContext, MainActivity::class.java)
                 i.putExtra("displayName", loginResult.success.displayName)
+                i.putExtra("userType", loginResult.success.userType)
                 startActivity(i)
             }
             //setResult(Activity.RESULT_OK)

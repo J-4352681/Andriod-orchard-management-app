@@ -1,6 +1,7 @@
 package app.lajusta.data
 
 import app.lajusta.data.model.LoggedInUser
+import app.lajusta.data.model.UserType
 import java.io.IOException
 import java.lang.Exception
 
@@ -17,12 +18,12 @@ class LoginDataSource {
             // Por ahora voy a hacer 2 usuarios, uno admin y otro tecnico
 
             if (username == "administrador" && password == "administrador") {
-                val admin = LoggedInUser(java.util.UUID.randomUUID().toString(), "Admin")
+                val admin = LoggedInUser(java.util.UUID.randomUUID().toString(), "Admin", UserType.ADMIN)
                 return Result.Success(admin)
             }
 
             if (username == "tecnico" && password == "tecnico") {
-                val tec = LoggedInUser(java.util.UUID.randomUUID().toString(), "Tecnico")
+                val tec = LoggedInUser(java.util.UUID.randomUUID().toString(), "Tecnico", UserType.TECNICO)
                 return Result.Success(tec)
             }
 

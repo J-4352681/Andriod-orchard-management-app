@@ -34,8 +34,11 @@ class MainActivity : AppCompatActivity() {
             //startActivity(i)
             //Voy a usar esto para comprobar si mandan los datos correctos del login:
             val displayName = intent.getStringExtra("displayName")
-            Snackbar.make(view, "Replace with your own action $displayName", Snackbar.LENGTH_LONG)
+            val userType = intent.getStringExtra("userType")
+            Snackbar.make(view, "displayName: $displayName userType: $userType", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+            //Snackbar.make(view, "Replace with your own action $displayName", Snackbar.LENGTH_LONG)
+            //    .setAction("Action", null).show()
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
