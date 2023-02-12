@@ -35,6 +35,9 @@ class BolsonesFragment : Fragment() {
             textView.text = it
         } */
 
+        binding.rvBolsones.layoutManager = LinearLayoutManager(parentFragment?.context)
+        binding.rvBolsones.adapter = BolsonesAdapter(bolsonViewModel.bolsones.value.orEmpty())
+
         return root
     }
 
