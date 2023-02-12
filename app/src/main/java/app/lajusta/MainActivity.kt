@@ -10,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import app.lajusta.data.model.UserType
 import app.lajusta.databinding.ActivityMainBinding
 import app.lajusta.ui.login.LoginActivity
 import com.google.android.material.navigation.NavigationView
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val displayName = intent.getStringExtra("displayName")
+        val userType = intent.getStringExtra("userType")
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -33,16 +37,23 @@ class MainActivity : AppCompatActivity() {
             //val i = Intent(applicationContext, LoginActivity::class.java)
             //startActivity(i)
             //Voy a usar esto para comprobar si mandan los datos correctos del login:
-            val displayName = intent.getStringExtra("displayName")
-            val userType = intent.getStringExtra("userType")
-            Snackbar.make(view, "displayName: $displayName userType: $userType", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-            //Snackbar.make(view, "Replace with your own action $displayName", Snackbar.LENGTH_LONG)
-            //    .setAction("Action", null).show()
+            if (userType == UserType.ADMIN.toString()) {
+                Snackbar.make(view, "Tienes permiso de administrador", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            } else {
+                Snackbar.make(view, "displayName: $displayName userType: $userType", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+        //TODO Hacer el ABM de usuarios
+        if (userType == UserType.ADMIN.toString()) {
+            //MOSTRAR EL ABM DE USUARIOS
+        }
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
