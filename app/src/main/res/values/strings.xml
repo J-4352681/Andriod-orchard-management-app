@@ -11,4 +11,6 @@
     <string name="menu_visitas">Visitas</string>
     <string name="menu_familias">Familias</string>
     <string name="menu_bolsones">Bolsones</string>
+
+    <string name="local_ip">192.168.0.120:80</string>
 </resources>

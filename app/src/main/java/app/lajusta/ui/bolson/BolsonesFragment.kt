@@ -1,22 +1,19 @@
 package app.lajusta.ui.bolson
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentBolsonesBinding
-import app.lajusta.ui.bolson.api.BolsonesAPIService
+import app.lajusta.ui.bolson.api.BolsonesApi
 import app.lajusta.ui.bolson.recyclerview.BolsonesAdapter
+import app.lajusta.ui.bolson.api.BolsonesProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class BolsonesFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -25,6 +22,7 @@ class BolsonesFragment : Fragment(), SearchView.OnQueryTextListener {
     // private lateinit var bolsonesViewModel: BolsonesViewModel
     private val data = mutableListOf<Bolson>()
     private lateinit var bolsonesAdapter: BolsonesAdapter
+    private lateinit var bolsonesProvider: BolsonesProvider
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +31,7 @@ class BolsonesFragment : Fragment(), SearchView.OnQueryTextListener {
     ): View {
         // bolsonesViewModel = ViewModelProvider(this).get(BolsonesViewModel::class.java)
         _binding = FragmentBolsonesBinding.inflate(inflater, container, false)
+        bolsonesProvider = BolsonesProvider(BolsonesApi())
 
         binding.svBolsones.setOnQueryTextListener(this)
         initRecyclerView()
@@ -43,7 +42,6 @@ class BolsonesFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun initRecyclerView() {
         bolsonesAdapter = BolsonesAdapter(data)
         binding.rvBolsones.layoutManager = LinearLayoutManager(activity)
-        // binding.rvBolsones.adapter = BolsonesAdapter(bolsonesViewModel.bolsones.value.orEmpty())
         binding.rvBolsones.adapter = bolsonesAdapter
         filter("")
     }
@@ -53,26 +51,13 @@ class BolsonesFragment : Fragment(), SearchView.OnQueryTextListener {
         _binding = null
     }
 
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("http://192.168.0.120:80/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
     private fun filter(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val call = getRetrofit().create(BolsonesAPIService::class.java).getBolsones("bolson")
-            val callBody = call.body()
+            val bolsones = bolsonesProvider.getBolsones()
             activity!!.runOnUiThread {
-                if(call.isSuccessful) {
-                    Toast.makeText(activity, "Error al obtener datos.", Toast.LENGTH_SHORT)
-                    data.clear()
-                    if(callBody != null) data.addAll(callBody)
-                    bolsonesAdapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(activity, "Error al obtener datos.", Toast.LENGTH_SHORT)
-                }
+                data.clear()
+                data.addAll(bolsones)
+                bolsonesAdapter.notifyDataSetChanged()
             }
         }
     }
