@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.lajusta.R
-import app.lajusta.ui.bolson.BolsonDataclass
+import app.lajusta.ui.bolson.Bolson
 
 class BolsonesAdapter(
-    private val bolsonesList: List<BolsonDataclass>
+    private val bolsonesList: List<Bolson>
 ) : RecyclerView.Adapter<BolsonesViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BolsonesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
