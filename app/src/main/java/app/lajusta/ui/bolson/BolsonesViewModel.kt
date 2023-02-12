@@ -9,12 +9,15 @@ import app.lajusta.ui.bolson.api.BolsonesReposiory
 class BolsonesViewModel() : ViewModel() {
 
     private val repository = BolsonesReposiory(BolsonesAPIService())
-    private val _bolsones = MutableLiveData<List<BolsonDataclass>>()
-    val bolsones : LiveData<List<BolsonDataclass>>
+    private val _bolsones = MutableLiveData<List<Bolson>>()
+    val bolsones : LiveData<List<Bolson>>
         get() = _bolsones
 
     suspend fun getBolsones() {
-        val bolsones = repository.getBolsones()
-        _bolsones.value = bolsones
+        _bolsones.value = repository.getBolsones()
+    }
+
+    private fun filter(query:String) {
+        // A completar
     }
 }
