@@ -1,8 +1,9 @@
 package app.lajusta.ui.bolson
 
 data class Bolson(
-    val type: String,
-    val setup: String,
-    val punchline: String,
-    val id: Int,
+    val cantidad: Int,
+    val idFp: Int,
+    val idRonda: Int,
+    val id_bolson: Int,
+    // val verduras: List<Verdura>
 )

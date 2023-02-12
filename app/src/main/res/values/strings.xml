@@ -11,6 +11,4 @@
     <string name="menu_visitas">Visitas</string>
     <string name="menu_familias">Familias</string>
     <string name="menu_bolsones">Bolsones</string>
-
-    <string name="url_base">http://0.0.0.0:80/api/</string>
 </resources>

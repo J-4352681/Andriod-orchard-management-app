@@ -10,9 +10,9 @@ class BolsonesViewHolder(view: View): RecyclerView.ViewHolder(view) {
     val binding = ItemBolsonBinding.bind(view)
 
     fun render(bolsonItem: Bolson) {
-        binding.tvId.text = bolsonItem.setup
-        binding.tvFamilia.text = bolsonItem.type
-        binding.tvRonda.text = bolsonItem.punchline
-        binding.tvTitle.text = bolsonItem.id.toString()
+        binding.tvId.text = bolsonItem.id_bolson.toString()
+        binding.tvFamilia.text = bolsonItem.idFp.toString()
+        binding.tvRonda.text = bolsonItem.idRonda.toString()
+        binding.tvTitle.text = bolsonItem.cantidad.toString()
     }
 }

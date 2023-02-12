@@ -1,6 +1,6 @@
 package app.lajusta.ui.bolson
 
-import androidx.lifecycle.LiveData
+/* import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.lajusta.ui.bolson.api.BolsonesAPIService
@@ -20,4 +20,4 @@ class BolsonesViewModel() : ViewModel() {
     private fun filter(query:String) {
         // A completar
     }
-}
+} */
