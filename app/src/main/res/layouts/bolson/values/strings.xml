@@ -35,4 +35,6 @@
     <string name="et_ch_password_old">Contraseña actual</string>
     <string name="et_ch_password_new">Nueva contraseña</string>
     <string name="et_ch_password_new_repeat">Nueva contraseña</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,10 +1,9 @@
 package app.lajusta.ui.bolson.api
 
 import app.lajusta.api.SafeApiRequest
-import app.lajusta.ui.bolson.api.BolsonesApi
 
-class BolsonesProvider(
-    private val api: BolsonesApi
+class BolsonProvider(
+    private val api: BolsonApi
 ): SafeApiRequest() {
     suspend fun getBolsones() = apiRequest { api.getBolsones() }
 }

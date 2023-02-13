@@ -1,37 +1,37 @@
-package app.lajusta.ui.bolson
+package app.lajusta.ui.bolson.list
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
-import app.lajusta.databinding.FragmentBolsonesBinding
-import app.lajusta.ui.bolson.api.BolsonesApi
-import app.lajusta.ui.bolson.recyclerview.BolsonesAdapter
-import app.lajusta.ui.bolson.api.BolsonesProvider
+import app.lajusta.databinding.FragmentBolsonListBinding
+import app.lajusta.ui.bolson.Bolson
+import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.bolson.api.BolsonProvider
+import app.lajusta.ui.bolson.modify.BolsonModifyFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BolsonesFragment : Fragment(), SearchView.OnQueryTextListener {
+class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
 
-    private var _binding: FragmentBolsonesBinding? = null
+    private var _binding: FragmentBolsonListBinding? = null
     private val binding get() = _binding!!
-    // private lateinit var bolsonesViewModel: BolsonesViewModel
     private val data = mutableListOf<Bolson>()
-    private lateinit var bolsonesAdapter: BolsonesAdapter
-    private lateinit var bolsonesProvider: BolsonesProvider
+    private lateinit var bolsonAdapter: BolsonAdapter
+    private lateinit var bolsonProvider: BolsonProvider
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // bolsonesViewModel = ViewModelProvider(this).get(BolsonesViewModel::class.java)
-        _binding = FragmentBolsonesBinding.inflate(inflater, container, false)
-        bolsonesProvider = BolsonesProvider(BolsonesApi())
+        _binding = FragmentBolsonListBinding.inflate(inflater, container, false)
+        bolsonProvider = BolsonProvider(BolsonApi())
 
         binding.svBolsones.setOnQueryTextListener(this)
         initRecyclerView()
@@ -40,9 +40,16 @@ class BolsonesFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initRecyclerView() {
-        bolsonesAdapter = BolsonesAdapter(data)
+        bolsonAdapter = BolsonAdapter(data) { bolson: Bolson ->
+            Toast.makeText(
+                activity,
+                bolson.id_bolson.toString(),
+                Toast.LENGTH_SHORT
+            ).show()
+            parentFragmentManager.beginTransaction().replace(this.id, BolsonModifyFragment(bolson)).commit()
+        }
         binding.rvBolsones.layoutManager = LinearLayoutManager(activity)
-        binding.rvBolsones.adapter = bolsonesAdapter
+        binding.rvBolsones.adapter = bolsonAdapter
         filter("")
     }
 
@@ -53,11 +60,11 @@ class BolsonesFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun filter(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val bolsones = bolsonesProvider.getBolsones()
+            val bolsones = bolsonProvider.getBolsones()
             activity!!.runOnUiThread {
                 data.clear()
                 data.addAll(bolsones)
-                bolsonesAdapter.notifyDataSetChanged()
+                bolsonAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -68,7 +75,6 @@ class BolsonesFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        // A completar
         return true
     }
 }

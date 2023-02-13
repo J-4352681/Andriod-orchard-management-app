@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/nav_bolson"
-        android:name="app.lajusta.ui.bolson.BolsonesFragment"
+        android:name="app.lajusta.ui.bolson.list.BolsonListFragment"
         android:label="@string/menu_bolsones"
-        tools:layout="@layout/fragment_bolsones" />
+        tools:layout="@layout/fragment_bolson_list" />
 
     <fragment
         android:id="@+id/nav_visitas"
