@@ -34,7 +34,16 @@
     <string name="btn_ch_password">Cambiar contraseña</string>
     <string name="et_ch_password_old">Contraseña actual</string>
     <string name="et_ch_password_new">Nueva contraseña</string>
-    <string name="et_ch_password_new_repeat">Nueva contraseña</string>
+    <string name="et_ch_password_new_repeat">Repetir contraseña</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_title_bolson_modify">Id del bolson</string>
+    <string name="tv_cantidad">Cantidad</string>
+    <string name="et_hint_modify_cantidad">Ingrese cantidad</string>
+    <string name="tv_ronda">Ronda</string>
+    <string name="et_hint_modify_Ronda">Ingrese ronda</string>
+    <string name="tv_familia">Familia</string>
+    <string name="et_hint_modify_familia">Ingrese familia</string>
+    <string name="save">Guardar</string>
+    <string name="erase">Borrar</string>
 </resources>
