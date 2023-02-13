@@ -8,15 +8,25 @@
     android:id="@+id/bolson_modify"
     tools:context=".ui.bolson.modify.BolsonModifyFragment">
 
-    <EditText
-        android:id="@+id/etId"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Ingrese ID"
-        android:layout_marginTop="15dp"
-        android:selectAllOnFocus="true"
+        android:textStyle="bold"
+        android:textSize="8pt"
+        tools:text="Id del bolson" />
+
+
+    <TextView
+        android:id="@+id/tvCantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:textStyle="bold"
+        android:textSize="6pt"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:text="Cantidad" />
 
     <EditText
         android:id="@+id/etCantidad"
@@ -24,8 +34,20 @@
         android:layout_height="wrap_content"
         android:hint="Ingrese cantidad"
         android:selectAllOnFocus="true"
-        app:layout_constraintTop_toBottomOf="@+id/etId"
+        app:layout_constraintTop_toBottomOf="@+id/tvCantidad"
         tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/tvRonda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:textStyle="bold"
+        android:textSize="6pt"
+        app:layout_constraintTop_toBottomOf="@+id/etCantidad"
+        tools:ignore="MissingConstraints"
+        android:text="Ronda" />
 
     <EditText
         android:id="@+id/etRonda"
@@ -33,8 +55,20 @@
         android:layout_height="wrap_content"
         android:hint="Ingrese ronda"
         android:selectAllOnFocus="true"
-        app:layout_constraintTop_toBottomOf="@+id/etCantidad"
+        app:layout_constraintTop_toBottomOf="@+id/tvRonda"
         tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/tvFamilia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:textStyle="bold"
+        android:textSize="6pt"
+        app:layout_constraintTop_toBottomOf="@+id/etRonda"
+        tools:ignore="MissingConstraints"
+        android:text="Familia" />
 
     <EditText
         android:id="@+id/etFamilia"
@@ -42,7 +76,7 @@
         android:layout_height="wrap_content"
         android:hint="Ingrese familia"
         android:selectAllOnFocus="true"
-        app:layout_constraintTop_toBottomOf="@+id/etRonda"
+        app:layout_constraintTop_toBottomOf="@+id/tvFamilia"
         tools:ignore="MissingConstraints" />
 
     <Button

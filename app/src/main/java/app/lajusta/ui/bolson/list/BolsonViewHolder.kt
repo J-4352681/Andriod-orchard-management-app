@@ -12,9 +12,10 @@ class BolsonViewHolder(
     private val binding = ItemBolsonBinding.bind(itemView)
 
     fun bind(bolsonItem: Bolson, clickListener: (Bolson) -> Unit) {
-        binding.tvFamilia.text = bolsonItem.idFp.toString()
-        binding.tvRonda.text = bolsonItem.idRonda.toString()
-        binding.tvTitle.text = bolsonItem.cantidad.toString()
+        binding.tvTitle.text = "Bolsón: " + bolsonItem.id_bolson.toString()
+        binding.tvFamilia.text = "Familia: " + bolsonItem.idFp.toString()
+        binding.tvRonda.text = "Ronda: " + bolsonItem.idRonda.toString()
+        binding.tvCantidad.text = "Cantidad: " + bolsonItem.cantidad.toString()
 
         itemView.setOnClickListener { clickListener(bolsonItem) }
     }

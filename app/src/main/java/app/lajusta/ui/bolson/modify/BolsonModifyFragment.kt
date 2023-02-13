@@ -35,8 +35,8 @@ class BolsonModifyFragment() : Fragment() {
     }
 
     private fun fillItem() {
+        binding.tvTitle.text = "Modificando bolsón " + bolson.id_bolson.toString()
         binding.etCantidad.setText(bolson.cantidad.toString())
-        binding.etId.setText(bolson.id_bolson.toString())
         binding.etFamilia.setText(bolson.idFp.toString())
         binding.etRonda.setText(bolson.idRonda.toString())
     }
