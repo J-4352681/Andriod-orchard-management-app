@@ -7,7 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonListBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
@@ -41,12 +45,8 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun initRecyclerView() {
         bolsonAdapter = BolsonAdapter(data) { bolson: Bolson ->
-            Toast.makeText(
-                activity,
-                bolson.id_bolson.toString(),
-                Toast.LENGTH_SHORT
-            ).show()
-            parentFragmentManager.beginTransaction().replace(this.id, BolsonModifyFragment(bolson)).commit()
+            val bundle = bundleOf("bolson" to bolson)
+            this.findNavController().navigate(R.id.action_nav_bolson_to_bolsonModifyFragment, bundle)
         }
         binding.rvBolsones.layoutManager = LinearLayoutManager(activity)
         binding.rvBolsones.adapter = bolsonAdapter

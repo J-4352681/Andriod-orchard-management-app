@@ -14,7 +14,7 @@ class BolsonViewHolder(
     fun bind(bolsonItem: Bolson, clickListener: (Bolson) -> Unit) {
         binding.tvFamilia.text = bolsonItem.idFp.toString()
         binding.tvRonda.text = bolsonItem.idRonda.toString()
-        binding.tvTitle.text = "Bolsón: " + bolsonItem.cantidad.toString()
+        binding.tvTitle.text = bolsonItem.cantidad.toString()
 
         itemView.setOnClickListener { clickListener(bolsonItem) }
     }

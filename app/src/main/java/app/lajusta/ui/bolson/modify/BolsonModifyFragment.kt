@@ -8,21 +8,30 @@ import android.view.ViewGroup
 import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.Bolson
 
-class BolsonModifyFragment(
-    private val bolson: Bolson
-) : Fragment() {
+class BolsonModifyFragment() : Fragment() {
 
     private var _binding: FragmentBolsonModifyBinding? = null
     private val binding get() = _binding!!
+    private lateinit var bolson: Bolson
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let { bundle ->
+            bolson = bundle.getParcelable("bolson")!!
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentBolsonModifyBinding.inflate(inflater, container, false)
-        fillItem()
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fillItem()
     }
 
     private fun fillItem() {

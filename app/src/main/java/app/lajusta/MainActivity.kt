@@ -1,11 +1,9 @@
 package app.lajusta
 
-import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -18,7 +16,6 @@ import app.lajusta.data.model.UserType
 import app.lajusta.databinding.ActivityMainBinding
 import app.lajusta.ui.login.LoginActivity
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,16 +42,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            //Voy a usar esto para comprobar si mandan los datos correctos del login:
-            if (userType == UserType.ADMIN.toString()) {
-                Snackbar.make(view, "Tienes permiso de administrador. nombre: $userName", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            } else {
-                Snackbar.make(view, "displayName: $userName userType: $userType", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            }
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -64,8 +51,6 @@ class MainActivity : AppCompatActivity() {
             //MOSTRAR EL ABM DE USUARIOS
         }
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_rondas, R.id.nav_visitas, R.id.nav_familias, R.id.nav_bolson
@@ -76,7 +61,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }

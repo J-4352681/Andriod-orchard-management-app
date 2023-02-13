@@ -15,7 +15,11 @@
         android:id="@+id/nav_bolson"
         android:name="app.lajusta.ui.bolson.list.BolsonListFragment"
         android:label="@string/menu_bolsones"
-        tools:layout="@layout/fragment_bolson_list" />
+        tools:layout="@layout/fragment_bolson_list" >
+        <action
+            android:id="@+id/action_nav_bolson_to_bolsonModifyFragment"
+            app:destination="@id/bolsonModifyFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_visitas"
@@ -28,4 +32,14 @@
         android:name="app.lajusta.ui.familia.FamiliasFragment"
         android:label="@string/menu_familias"
         tools:layout="@layout/fragment_familias" />
+
+    <fragment
+        android:id="@+id/bolsonModifyFragment"
+        android:name="app.lajusta.ui.bolson.modify.BolsonModifyFragment"
+        android:label="Modificar bolson"
+        tools:layout="@layout/fragment_bolson_modify" >
+        <argument
+            android:name="bolson"
+            app:argType="app.lajusta.ui.bolson.Bolson" />
+    </fragment>
 </navigation>
