@@ -27,18 +27,18 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val baseUrl: String = "http://192.168.0.15:80/api/"
+        var userId:String = ""
+        var userName:String = ""
+        var userType:String = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Setup
-
-        //if ( (!intent.hasExtra("userType")) || (!intent.hasExtra("displayName"))) {
-        //    goToLogin()
-        //}
-        val displayName = intent.getStringExtra("displayName")
-        val userType = intent.getStringExtra("userType")
+        //CHECKING LOGIN
+        /*if ( userName.isEmpty() || userType.isEmpty() || userId.isEmpty() ) {
+            goToLogin()
+        }*/
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -48,10 +48,10 @@ class MainActivity : AppCompatActivity() {
         binding.appBarMain.fab.setOnClickListener { view ->
             //Voy a usar esto para comprobar si mandan los datos correctos del login:
             if (userType == UserType.ADMIN.toString()) {
-                Snackbar.make(view, "Tienes permiso de administrador", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Tienes permiso de administrador. nombre: $userName", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             } else {
-                Snackbar.make(view, "displayName: $displayName userType: $userType", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "displayName: $userName userType: $userType", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
         }
@@ -86,8 +86,6 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> {
                 Toast.makeText(applicationContext, "click on Profile", Toast.LENGTH_LONG).show()
                 val i = Intent(applicationContext, ProfileActivity::class.java)
-                i.putExtra("displayName", intent.getStringExtra("displayName"))
-                i.putExtra("userType", intent.getStringExtra("userType"))
                 startActivity(i)
                 true
             }

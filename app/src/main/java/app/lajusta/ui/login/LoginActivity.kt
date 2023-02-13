@@ -63,10 +63,13 @@ class LoginActivity : AppCompatActivity() {
                 updateUiWithUser(loginResult.success)
                 setResult(Activity.RESULT_OK)
                 //finish()
+                MainActivity.userName = loginResult.success.displayName
+                MainActivity.userType = loginResult.success.userType.toString()
+                MainActivity.userId = loginResult.success.id
+
                 val i = Intent(applicationContext, MainActivity::class.java)
-                i.putExtra("displayName", loginResult.success.displayName)
-                i.putExtra("userType", loginResult.success.userType.toString())
                 startActivity(i)
+                finish()
             }
             //setResult(Activity.RESULT_OK)
 

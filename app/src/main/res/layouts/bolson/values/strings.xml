@@ -9,9 +9,10 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="action_Profile">Perfil</string>
-    <string name="tag_user">Nombre de usuario</string>
+    <string name="tag_user">Cambiar nombre de usuario:</string>
     <string name="hint_username">nombre de usuario</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="yes">Si</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -28,4 +29,10 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="action_Loggout">Cerrar sesion</string>
+    <string name="btn_change_usermame">Cambiar nombre de usuario</string>
+    <string name="tv_ch_password">Cambiar contraseña:</string>
+    <string name="btn_ch_password">Cambiar contraseña</string>
+    <string name="et_ch_password_old">Contraseña actual</string>
+    <string name="et_ch_password_new">Nueva contraseña</string>
+    <string name="et_ch_password_new_repeat">Nueva contraseña</string>
 </resources>
