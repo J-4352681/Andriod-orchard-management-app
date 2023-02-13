@@ -4,7 +4,9 @@ import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -32,10 +34,9 @@ class MainActivity : AppCompatActivity() {
 
         //Setup
 
-        if ( (!intent.hasExtra("userType")) || (!intent.hasExtra("displayName"))) {
-            val i = Intent(applicationContext, LoginActivity::class.java)
-            startActivity(i)
-        }
+        //if ( (!intent.hasExtra("userType")) || (!intent.hasExtra("displayName"))) {
+        //    goToLogin()
+        //}
         val displayName = intent.getStringExtra("displayName")
         val userType = intent.getStringExtra("userType")
 
@@ -80,16 +81,33 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                Toast.makeText(applicationContext, "click on Profile", Toast.LENGTH_LONG).show()
+                val i = Intent(applicationContext, ProfileActivity::class.java)
+                i.putExtra("displayName", intent.getStringExtra("displayName"))
+                i.putExtra("userType", intent.getStringExtra("userType"))
+                startActivity(i)
+                true
+            }
+            R.id.action_profile ->{
+                Toast.makeText(applicationContext, "click on Logout", Toast.LENGTH_LONG).show()
+                goToLogin()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun goToLogin() {
+    private fun goToLogin() {
         val i = Intent(applicationContext, LoginActivity::class.java)
         startActivity(i)
-    }
-    interface onItemClickListener {
-        fun goToLogin()
+        finish()
     }
 }
