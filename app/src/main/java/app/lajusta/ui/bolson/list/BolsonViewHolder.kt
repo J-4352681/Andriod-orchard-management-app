@@ -1,13 +1,13 @@
 package app.lajusta.ui.bolson.list
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.lajusta.databinding.ItemBolsonBinding
 import app.lajusta.ui.bolson.Bolson
 
 class BolsonViewHolder(
     itemView: View
-): RecyclerView.ViewHolder(itemView) {
+): ViewHolder(itemView) {
 
     private val binding = ItemBolsonBinding.bind(itemView)
 

@@ -10,7 +10,6 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         tools:text="Nombre de verdura" />
 
     <View
@@ -19,6 +18,7 @@
         android:layout_weight="1" />
 
     <Button
+        android:id="@+id/bEliminar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/design_default_color_error"

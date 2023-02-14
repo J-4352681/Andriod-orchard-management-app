@@ -16,11 +16,9 @@ import app.lajusta.databinding.FragmentBolsonListBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.bolson.api.BolsonProvider
-import app.lajusta.ui.bolson.modify.BolsonModifyFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
 

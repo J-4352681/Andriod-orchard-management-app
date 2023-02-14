@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.verdura.Verdura
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -72,8 +73,15 @@ class BolsonModifyFragment() : Fragment() {
     }
 
     private fun initRecyclerView() {
+        verduraBolsonAdapter = VerduraBolsonAdapter(
+            bolson.verduras
+        ) { position: Int ->
+            bolson.verduras = bolson.verduras.filterIndexed { i: Int, _: Verdura -> i != position }
+            verduraBolsonAdapter.notifyDataSetChanged()
+            shortToast(bolson.verduras.toString())
+        }
         binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
-        binding.rvVerduras.adapter = VerduraBolsonAdapter(bolson.verduras)
+        binding.rvVerduras.adapter = verduraBolsonAdapter
     }
 
     private fun shortToast(message: String) {
