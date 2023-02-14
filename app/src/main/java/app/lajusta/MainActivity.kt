@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     companion object {
-        const val baseUrl: String = "http://192.168.0.15:80/api/"
+        const val baseUrl: String = "http://192.168.0.120:80/api/"
         var userId:String = ""
         var userName:String = ""
         var userType:String = ""
@@ -33,9 +32,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         //CHECKING LOGIN
-        /*if ( userName.isEmpty() || userType.isEmpty() || userId.isEmpty() ) {
+        /* if ( userName.isEmpty() || userType.isEmpty() || userId.isEmpty() ) {
             goToLogin()
-        }*/
+        } */
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -68,13 +67,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
-                Toast.makeText(applicationContext, "click on Profile", Toast.LENGTH_LONG).show()
                 val i = Intent(applicationContext, ProfileActivity::class.java)
                 startActivity(i)
                 true
             }
             R.id.action_profile ->{
-                Toast.makeText(applicationContext, "click on Logout", Toast.LENGTH_LONG).show()
                 userId = ""
                 userName = ""
                 userType = ""

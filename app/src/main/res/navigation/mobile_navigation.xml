@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/bolsonModifyFragment"
         android:name="app.lajusta.ui.bolson.modify.BolsonModifyFragment"
-        android:label="Modificar bolson"
+        android:label="Modificar bolsón"
         tools:layout="@layout/fragment_bolson_modify" >
         <argument
             android:name="bolson"
@@ -48,5 +48,5 @@
     <fragment
         android:id="@+id/bolsonCreateFragment"
         android:name="app.lajusta.ui.bolson.create.BolsonCreateFragment"
-        android:label="BolsonCreateFragment" />
+        android:label="Crear bolsón" />
 </navigation>

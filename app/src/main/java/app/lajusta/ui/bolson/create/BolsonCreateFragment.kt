@@ -9,8 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonCreateBinding
-import app.lajusta.ui.bolson.Bolson
-import app.lajusta.ui.bolson.Verdura
+import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.bolson.api.BolsonApi
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser

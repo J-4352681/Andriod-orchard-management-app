@@ -13,8 +13,8 @@ interface BolsonApi {
     @GET("bolson")
     suspend fun getBolsones(): Response<List<Bolson>>
 
-    @GET("bolson/")
-    suspend fun getBolson(id: String): Response<Bolson>
+    @GET("bolson/{id}")
+    suspend fun getBolson(@Path("id") id: Int): Response<Bolson>
 
     @DELETE("bolson/{id}")
     suspend fun deleteBolson(@Path("id") id: Int): Response<Unit>
@@ -22,7 +22,7 @@ interface BolsonApi {
     @POST("bolson")
     suspend fun postBolson(@Body requestBody: RequestBody): Response<RequestBody>
 
-companion object {
+    companion object {
         operator fun invoke() : BolsonApi {
             return Retrofit.Builder()
                 .baseUrl(baseUrl)

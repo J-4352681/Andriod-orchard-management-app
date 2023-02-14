@@ -29,7 +29,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/tv_title_bolson_create" />
+                android:text="@string/tv_title_bolson_create" />
 
 
             <TextView
@@ -142,6 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="@string/cancel"
+        android:backgroundTint="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
