@@ -68,11 +68,18 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun filter(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val bolsones = bolsonProvider.getBolsones()
-            activity!!.runOnUiThread {
-                data.clear()
-                data.addAll(bolsones)
-                bolsonAdapter.notifyDataSetChanged()
+            lateinit var bolsones: List<Bolson>
+            try {
+                bolsones = bolsonProvider.getBolsones()
+                activity!!.runOnUiThread {
+                    data.clear()
+                    data.addAll(bolsones)
+                    bolsonAdapter.notifyDataSetChanged()
+                }
+            } catch(e: Exception) {
+                activity!!.runOnUiThread {
+                    Toast.makeText(activity, "Hubo un error al listar los elementos.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

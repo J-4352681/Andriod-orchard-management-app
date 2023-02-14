@@ -41,15 +41,13 @@ class BolsonModifyFragment() : Fragment() {
         fillItem()
         binding.bBorrar.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    BolsonApi().deleteBolson(bolson.id_bolson)
-                } catch (e: Exception) {
+                try { BolsonApi().deleteBolson(bolson.id_bolson) }
+                catch (e: Exception) {
                     activity!!.runOnUiThread {
                         Toast.makeText(activity, "Hubo un error. El elemento no pudo ser eliminado.", Toast.LENGTH_SHORT).show()
                     }
-                }
+                } finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
             }
-            activity!!.onBackPressed()
         }
     }
 
