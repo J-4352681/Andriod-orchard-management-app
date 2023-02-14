@@ -2,14 +2,14 @@ package app.lajusta.ui.bolson.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import app.lajusta.R
 import app.lajusta.ui.bolson.Bolson
 
 class BolsonAdapter(
     private val bolsonesList: List<Bolson>,
     private val clickListener: (Bolson) -> Unit
-) : RecyclerView.Adapter<BolsonViewHolder>() {
+) : Adapter<BolsonViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BolsonViewHolder {
         val view = LayoutInflater

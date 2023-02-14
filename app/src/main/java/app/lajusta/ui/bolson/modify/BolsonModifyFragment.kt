@@ -6,8 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
@@ -20,6 +19,7 @@ class BolsonModifyFragment() : Fragment() {
     private var _binding: FragmentBolsonModifyBinding? = null
     private val binding get() = _binding!!
     private lateinit var bolson: Bolson
+    private lateinit var verduraBolsonAdapter: VerduraBolsonAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,10 +72,15 @@ class BolsonModifyFragment() : Fragment() {
     }
 
     private fun initRecyclerView() {
-        //TODO
+        binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
+        binding.rvVerduras.adapter = VerduraBolsonAdapter(bolson.verduras)
     }
 
     private fun shortToast(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun longToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 }
