@@ -14,39 +14,40 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:layout_marginHorizontal="15dp"
-        android:paddingVertical="8dp" >
+        android:paddingVertical="18dp" >
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvVerdura"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            tools:text="titulo bolson" />
+            tools:text="@string/tv_verdura" />
 
         <TextView
-            android:id="@+id/tvCantidad"
+            android:id="@+id/tvCantidadSurcos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="cantidad" />
+            tools:text="@string/tv_cantidad_surcos" />
 
-        <TextView
-            android:id="@+id/tvFamilia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="familia." />
+        <CheckBox
+            android:id="@+id/cbCubierto"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:text="@string/tv_cubierto" />
 
-        <TextView
-            android:id="@+id/tvRonda"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="ronda" />
+        <CheckBox
+            android:id="@+id/cbCosecha"
+            android:layout_width="105dp"
+            android:layout_height="18dp"
+            android:text="@string/tv_Cosecha" />
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="2dp"
             android:background="@color/cardview_light_background"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="0dp"/>
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp" />
 
     </LinearLayout>
 

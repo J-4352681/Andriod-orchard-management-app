@@ -10,7 +10,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bGuardar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,15 +27,15 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/tv_title_bolson_modify" />
+                tools:text="@string/tv_title_visita_modify" />
 
 
             <TextView
-                android:id="@+id/tvCantidad"
+                android:id="@+id/tvFecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/tv_cantidad"
+                android:text="@string/tv_fecha"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,83 +43,91 @@
                 tools:ignore="MissingConstraints" />
 
             <EditText
-                android:id="@+id/etCantidad"
+                android:id="@+id/etFecha"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="@string/et_hint_modify_cantidad"
+                android:hint="@string/et_hint_modify_fecha"
                 android:inputType="number"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCantidad"
+                app:layout_constraintTop_toBottomOf="@+id/tvFecha"
                 tools:ignore="MissingConstraints" />
 
 
             <TextView
-                android:id="@+id/tvRonda"
+                android:id="@+id/tvTecnico"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/tv_ronda"
+                android:text="@string/tv_tecnico"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etCantidad"
+                app:layout_constraintTop_toBottomOf="@+id/etFecha"
                 tools:ignore="MissingConstraints" />
 
             <EditText
-                android:id="@+id/etRonda"
+                android:id="@+id/etTecnico"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="@string/et_hint_modify_Ronda"
-                android:selectAllOnFocus="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvRonda"
-                tools:ignore="MissingConstraints" />
-
-
-            <TextView
-                android:id="@+id/tvFamilia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/tv_familia"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etRonda"
-                tools:ignore="MissingConstraints" />
-
-            <EditText
-                android:id="@+id/etFamilia"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:hint="@string/et_hint_modify_familia"
-                android:selectAllOnFocus="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFamilia"
-                tools:ignore="MissingConstraints"
+                android:hint="@string/et_hint_modify_Tecnico"
                 android:inputType="text"
-                android:autofillHints="name"/>
-
-            <Button
-                android:id="@+id/bGuardar"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/save"
+                android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etFamilia" />
+                app:layout_constraintTop_toBottomOf="@+id/tvTecnico"
+                tools:ignore="MissingConstraints" />
 
-            <Button
-                android:id="@+id/bBorrar"
+
+            <TextView
+                android:id="@+id/tvQuinta"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/erase"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/tv_quinta"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etTecnico"
+                tools:ignore="MissingConstraints" />
+
+            <Spinner
+                android:id="@+id/spinnerQuinta"
+                android:layout_width="390dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/sp_Quinta"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvQuinta" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvParcelas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etFamilia" />
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinnerQuinta"
+                tools:listitem="@layout/item_parcela" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/bGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        style="@style/Widget.AppCompat.ButtonBar.AlertDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="@string/erase"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
