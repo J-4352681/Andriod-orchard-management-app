@@ -20,6 +20,7 @@ import app.lajusta.ui.bolson.modify.BolsonModifyFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -54,7 +55,9 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun initRecyclerView() {
         bolsonAdapter = BolsonAdapter(data) { bolson: Bolson ->
             val bundle = bundleOf("bolson" to bolson)
-            this.findNavController().navigate(R.id.action_nav_bolson_to_bolsonModifyFragment, bundle)
+            this.findNavController().navigate(
+                R.id.action_nav_bolson_to_bolsonModifyFragment, bundle
+            )
         }
         binding.rvBolsones.layoutManager = LinearLayoutManager(activity)
         binding.rvBolsones.adapter = bolsonAdapter
@@ -70,7 +73,7 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
         CoroutineScope(Dispatchers.IO).launch {
             lateinit var bolsones: List<Bolson>
             try {
-                bolsones = bolsonProvider.getBolsones()
+                bolsones = BolsonApi().getBolsones().body()!!
                 activity!!.runOnUiThread {
                     data.clear()
                     data.addAll(bolsones)

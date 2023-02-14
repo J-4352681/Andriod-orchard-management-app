@@ -32,21 +32,33 @@ class BolsonModifyFragment() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentBolsonModifyBinding.inflate(inflater, container, false)
+        _binding = FragmentBolsonModifyBinding.inflate(
+            inflater, container, false
+        )
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
+
         binding.bBorrar.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 try { BolsonApi().deleteBolson(bolson.id_bolson) }
-                catch (e: Exception) {
-                    activity!!.runOnUiThread {
-                        Toast.makeText(activity, "Hubo un error. El elemento no pudo ser eliminado.", Toast.LENGTH_SHORT).show()
-                    }
-                } finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
+                catch (e: Exception) { activity!!.runOnUiThread { shortToast(
+                    "Hubo un error. El elemento no pudo ser eliminado."
+                ) } }
+                finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
+            }
+        }
+
+        binding.bGuardar.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                try { BolsonApi().putBolson(bolson.id_bolson, bolson) }
+                catch(e: Exception) { activity!!.runOnUiThread { shortToast(
+                    "Hubo un error. El elemento no pudo ser modificado."
+                ) } }
+                finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
             }
         }
     }
@@ -56,5 +68,14 @@ class BolsonModifyFragment() : Fragment() {
         binding.etCantidad.setText(bolson.cantidad.toString())
         binding.etFamilia.setText(bolson.idFp.toString())
         binding.etRonda.setText(bolson.idRonda.toString())
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        //TODO
+    }
+
+    private fun shortToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 }

@@ -12,9 +12,6 @@ import app.lajusta.databinding.FragmentRondasBinding
 class RondasFragment : Fragment() {
 
     private var _binding: FragmentRondasBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,16 +19,9 @@ class RondasFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(RondasViewModel::class.java)
-
         _binding = FragmentRondasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 

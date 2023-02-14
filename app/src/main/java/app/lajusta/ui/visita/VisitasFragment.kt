@@ -19,9 +19,6 @@ class VisitasFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val visitasViewModel =
-            ViewModelProvider(this).get(VisitasViewModel::class.java)
-
         _binding = FragmentVisitasListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
