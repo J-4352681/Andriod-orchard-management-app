@@ -29,7 +29,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/tv_title_bolson_modify" />
+                tools:text="@string/tv_title_bolson_create" />
 
 
             <TextView
@@ -138,10 +138,10 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/bBorrar"
+        android:id="@+id/bCancelar"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="@string/erase"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

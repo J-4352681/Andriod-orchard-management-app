@@ -43,6 +43,14 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.fabCrearBolson.setOnClickListener{
+            view.findNavController().navigate(R.id.bolsonCreateFragment)
+        }
+    }
+
     private fun initRecyclerView() {
         bolsonAdapter = BolsonAdapter(data) { bolson: Bolson ->
             val bundle = bundleOf("bolson" to bolson)

@@ -9,5 +9,5 @@ data class Bolson(
     val idFp: Int,
     val idRonda: Int,
     val id_bolson: Int,
-    // val verduras: List<Verdura>
+    //val verduras: List<Verdura>
 ): Parcelable

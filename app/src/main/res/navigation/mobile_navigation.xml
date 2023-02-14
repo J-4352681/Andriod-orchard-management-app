@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_nav_bolson_to_bolsonModifyFragment"
             app:destination="@id/bolsonModifyFragment"/>
+        <action
+            android:id="@+id/action_nav_bolson_to_bolsonCreateFragment"
+            app:destination="@id/bolsonCreateFragment" />
     </fragment>
 
     <fragment
@@ -42,4 +45,8 @@
             android:name="bolson"
             app:argType="app.lajusta.ui.bolson.Bolson" />
     </fragment>
+    <fragment
+        android:id="@+id/bolsonCreateFragment"
+        android:name="app.lajusta.ui.bolson.create.BolsonCreateFragment"
+        android:label="BolsonCreateFragment" />
 </navigation>
