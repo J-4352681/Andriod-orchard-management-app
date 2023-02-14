@@ -112,7 +112,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/etFamilia" />
 
             <Button
-                style="@style/Widget.AppCompat.ButtonBar.AlertDialog"
+                android:id="@+id/bBorrar"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginTop="24dp"

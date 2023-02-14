@@ -5,8 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.Bolson
+import app.lajusta.ui.bolson.api.BolsonApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class BolsonModifyFragment() : Fragment() {
 
@@ -32,6 +39,18 @@ class BolsonModifyFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
+        binding.bBorrar.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    BolsonApi().deleteBolson(bolson.id_bolson)
+                } catch (e: Exception) {
+                    activity!!.runOnUiThread {
+                        Toast.makeText(activity, "Hubo un error. El elemento no pudo ser eliminado.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            activity!!.onBackPressed()
+        }
     }
 
     private fun fillItem() {
