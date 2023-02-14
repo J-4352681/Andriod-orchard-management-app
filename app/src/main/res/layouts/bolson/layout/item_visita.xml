@@ -17,29 +17,29 @@
         android:paddingVertical="18dp" >
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvFecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            tools:text="titulo bolson" />
+            tools:text="fecha" />
 
         <TextView
-            android:id="@+id/tvCantidad"
+            android:id="@+id/tvTecnico"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="cantidad" />
+            tools:text="nombre del tecnico" />
 
         <TextView
-            android:id="@+id/tvFamilia"
+            android:id="@+id/tvQuinta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="familia." />
+            tools:text="quinta visitada." />
 
         <TextView
-            android:id="@+id/tvRonda"
+            android:id="@+id/tvSPACE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="ronda" />
+            tools:text="" />
 
         <View
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:background="@color/cardview_light_background"
             android:layout_marginTop="0dp"
             android:layout_marginStart="0dp"
-            android:layout_marginLeft="0dp" />
+            android:layout_marginLeft="0dp"/>
 
     </LinearLayout>
 

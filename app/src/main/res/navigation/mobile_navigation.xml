@@ -25,7 +25,7 @@
         android:id="@+id/nav_visitas"
         android:name="app.lajusta.ui.visita.VisitasFragment"
         android:label="@string/menu_visitas"
-        tools:layout="@layout/fragment_visitas" />
+        tools:layout="@layout/fragment_visitas_list" />
 
     <fragment
         android:id="@+id/nav_familias"
