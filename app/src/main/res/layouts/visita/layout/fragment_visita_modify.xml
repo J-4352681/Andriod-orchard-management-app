@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="@string/et_hint_modify_fecha"
-                android:inputType="number"
+                android:inputType="date"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvFecha"
@@ -58,7 +58,7 @@
                 android:id="@+id/tvTecnico"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/tv_tecnico"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -71,23 +71,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="@string/et_hint_modify_Tecnico"
-                android:inputType="text"
+                android:inputType="number"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTecnico"
                 tools:ignore="MissingConstraints" />
 
+            <TextView
+                android:id="@+id/tvDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/tv_desc_visita"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etTecnico"
+                tools:ignore="MissingConstraints" />
+
+            <EditText
+                android:id="@+id/etDesc"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="@string/et_hint_desc_visita"
+                android:inputType="text"
+                android:selectAllOnFocus="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDesc"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/tvQuinta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/tv_quinta"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etTecnico"
+                app:layout_constraintTop_toBottomOf="@+id/etDesc"
                 tools:ignore="MissingConstraints" />
 
             <Spinner
@@ -98,15 +120,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvQuinta" />
 
+            <TextView
+                android:id="@+id/tvParcelas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_Parcelas"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/rvParcelas"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/btnAddParcela"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/btn_agregarParcela"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinnerQuinta" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvParcelas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/spinnerQuinta"
+                app:layout_constraintTop_toBottomOf="@id/btnAddParcela"
                 tools:listitem="@layout/item_parcela_visita" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

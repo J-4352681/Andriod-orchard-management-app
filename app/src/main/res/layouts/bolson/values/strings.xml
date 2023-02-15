@@ -50,7 +50,7 @@
     <string name="tv_fecha">Fecha</string>
     <string name="et_hint_modify_fecha">Ingrese fecha</string>
     <string name="tv_tecnico">Tecnico/a</string>
-    <string name="et_hint_modify_Tecnico">Ingrese nombre de tecnico/a</string>
+    <string name="et_hint_modify_Tecnico">Ingrese id de tecnico/a</string>
     <string name="tv_quinta">Quinta</string>
     <string name="et_hint_modify_quinta">ingrese quinta</string>
     <string name="sp_Quinta">seleccione una quinta</string>

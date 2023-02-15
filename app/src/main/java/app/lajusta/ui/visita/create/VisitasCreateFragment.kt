@@ -11,6 +11,7 @@ import android.widget.Toast
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasCreateBinding
 import app.lajusta.ui.parcela.Parcela
+import app.lajusta.ui.quinta.API.QuintaApi
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.visita.api.VisitaApi
@@ -44,39 +45,28 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
         return binding.root
     }
 
+    private var quintas_encontradas:List<Quinta>? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        // access the items of the list
-        val nombresQuintas: Array<String> = getNombreQuintas()
-
-        // access the spinner
-        val spinner = binding.spinnerQuinta
-        val adapter: ArrayAdapter<String>? = (activity?.let {
-            ArrayAdapter<String>(
-                it,
-                android.R.layout.simple_spinner_item, nombresQuintas
-            )
-        })
-
-        binding.spinnerQuinta.adapter = adapter
-
+        fillSpinner()
 
         binding.bGuardar.setOnClickListener{
+
+            if(quintas_encontradas == null) shortToast("No se pudo guardar, repita en un momento...") else {
 
             val fecha = binding.etFecha.text.toString().trim()
             val tecnicoId = binding.etTecnico.text.toString().trim()
             val quintaNom = binding.spinnerQuinta.selectedItem.toString().trim()
+            val quintaId = getQuintaIdByName(quintaNom)
 
-            if ( fecha.isNotEmpty() && tecnicoId.isNotEmpty() && quintaNom.isNotEmpty() ){
+            if ( fecha.isNotEmpty() && tecnicoId.isNotEmpty() && quintaNom.isNotEmpty() && quintas_encontradas != null && quintaId != null ){
 
-                Toast.makeText(activity, "Datos correctos. Intento de postear.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Datos correctos. Intento de postear. $quintaId", Toast.LENGTH_SHORT).show()
 
 
                 val idVisita = createId()
                 val desc = binding.etDesc.text.toString().trim()
-                val quintaId = getQuintaIdByName(quintaNom)
                 val listaParcelas = getListaDeParcelas(idVisita)
 
                 // Create JSON using JSONObject
@@ -96,7 +86,7 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
 
                 CoroutineScope(Dispatchers.IO).launch {
                     // Do the POST request and get response
-                    val response = VisitaApi().postVisita(requestBody) /** CREAR VISITA API */
+                    val response = VisitaApi().postVisita(requestBody)
 
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
@@ -119,6 +109,7 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
                         }
                     }
                 }
+            } else shortToast("Ingrese los datos necesarios")
 
             }
 
@@ -134,17 +125,53 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
         _binding = null
     }
 
-    private fun getNombreQuintas():Array<String>{ /** Funcionalidad provisoria*/
-        return listOf("1","2","3").toTypedArray()
+    fun fillSpinner() {
+        CoroutineScope(Dispatchers.IO).launch {
+            lateinit var quintas: List<Quinta>
+            try {
+                quintas = QuintaApi().getQuintas().body()!!
+                activity!!.runOnUiThread {
+
+                    // access the items of the list
+                    val nombresQuintas: Array<String> = getNombreQuintas(quintas)
+
+                    // access the spinner
+                    val spinner = binding.spinnerQuinta
+                    val adapter: ArrayAdapter<String>? = (activity?.let {
+                        ArrayAdapter<String>(
+                            it,
+                            android.R.layout.simple_spinner_item, nombresQuintas
+                        )
+                    })
+
+                    spinner.adapter = adapter
+
+                }
+
+                quintas_encontradas = quintas
+
+            } catch(e: Exception) {
+                activity!!.runOnUiThread {
+                    shortToast("Hubo un error al listar las quintas.")
+                }
+            }
+        }
     }
 
-    private fun getQuintas():List<Quinta>{ /** Funcionalidad provisoria*/
-        val quinta: Quinta = Quinta(1,"sd","sd","dsadfs", 1)
-        val quinta1: Quinta = Quinta(2,"sds","ds","fff", 1)
-        return listOf(quinta,quinta1)
+    private fun shortToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
-    private fun getQuintaIdByName(name:String):Int{ /** Funcionalidad provisoria*/
-        return name.toInt()
+
+    private fun getNombreQuintas(quintas:List<Quinta>):Array<String>{
+        return quintas.map { it.nombre.orEmpty() }.toTypedArray()
+    }
+
+    private fun getQuintaByName(name:String):Quinta?{
+        return quintas_encontradas?.find { it.nombre == name }
+    }
+
+    private fun getQuintaIdByName(name:String):Int?{
+        return getQuintaByName(name)?.id_quinta
     }
 
     fun getListaDeParcelas(idVisita:Int):List<Parcela> { /** Funcionalidad provisoria */
