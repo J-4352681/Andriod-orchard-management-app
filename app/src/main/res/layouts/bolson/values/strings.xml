@@ -62,4 +62,9 @@
     <string name="agregar_verdura">Agregar verdura</string>
     <string name="fab_Crear_Bolson_desc">Boton flotante para crear un nuevo bolson</string>
     <string name="tv_title_bolson_create">Crear bolson</string>
+    <string name="desc_fab_add_visita">Boton flotante para crear una visita</string>
+    <string name="tv_desc_visita">Descripcion</string>
+    <string name="et_hint_desc_visita">Ingrese una descripcion</string>
+    <string name="tv_Parcelas">Parcelas</string>
+    <string name="btn_agregarParcela">Agregar Parcela</string>
 </resources>

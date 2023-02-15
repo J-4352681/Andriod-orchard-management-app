@@ -1,15 +1,15 @@
-package app.lajusta.ui.visita
+package app.lajusta.ui.visita.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasListBinding
 
-class VisitasFragment : Fragment() {
+class VisitasListFragment : Fragment() {
 
     private var _binding: FragmentVisitasListBinding? = null
     private val binding get() = _binding!!
@@ -19,10 +19,20 @@ class VisitasFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentVisitasListBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        _binding = FragmentVisitasListBinding.inflate(
+            inflater,
+            container,
+            false)
 
-        return root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.fabAddVisita.setOnClickListener{
+            view.findNavController().navigate(R.id.visitasCreateFragment)
+        }
     }
 
     override fun onDestroyView() {

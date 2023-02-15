@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     companion object {
-        const val baseUrl: String = "http://192.168.0.120:80/api/"
+        const val baseUrl: String = "http://192.168.0.15:80/api/"
         var userId:String = ""
         var userName:String = ""
         var userType:String = ""

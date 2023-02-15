@@ -26,4 +26,6 @@ class VerduraBolsonAdapter(
     }
 
     override fun getItemCount(): Int = verduras.size
+
+
 }

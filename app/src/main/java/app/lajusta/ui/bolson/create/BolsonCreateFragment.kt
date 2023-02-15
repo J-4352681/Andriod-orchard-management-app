@@ -20,6 +20,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import org.json.JSONObject
 import okhttp3.RequestBody
+import kotlin.random.Random
 
 
 class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
@@ -40,7 +41,9 @@ class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
 
         return binding.root
     }
-    private val verdura: Verdura = Verdura(1,"2023-02-14","2023-02-14","dsadfs", "Tomate", "Es un tomate")
+
+
+    private val verdura: Verdura = Verdura(1,"sd","sd","dsadfs", "Tomate","fssd")
     private val verduras: List<Verdura> = listOf(verdura,verdura,verdura,verdura,verdura,verdura,verdura)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,12 +54,13 @@ class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
             val ronda = binding.etRonda.text.toString().trim()
             val familia = binding.etFamilia.text.toString().trim() /** CAMBIAR POR UNA COMBOBOX QUE TAMBIEN NOS DE EL ID*/
             val cantidad = binding.etCantidad.text.toString().trim()
+            //val verdurass: List<Verdura> = binding.rvVerduras.adapter.getList()
 
             if ( ronda.isNotEmpty() && familia.isNotEmpty() && cantidad.isNotEmpty() && verduras.isNotEmpty()) {        /**CAMBIAR PARA QUE TENGA QUE TENER AL MENOS 7 VERDURAS**/
 
                 Toast.makeText(activity, "Datos correctos. Intento de postear.", Toast.LENGTH_SHORT).show()
 
-                val idBolson = cantidad.toInt() + 38 /** CAMBIAR POR UN ID REAL*/
+                val idBolson = createId()
 
                 // Create JSON using JSONObject
                 val jsonObject = JSONObject()
@@ -65,15 +69,6 @@ class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
                 jsonObject.put("idFp", familia)
                 jsonObject.put("idRonda", ronda)
                 jsonObject.put("verduras", verduras)
-
-                //Create a JSON object for verduras
-                /*val jsonVerduras = JSONObject()
-                jsonVerduras.put("id_verdura", 0)
-                jsonVerduras.put("tiempo_cosecha", "2023-02-14")
-                jsonVerduras.put("mes_siembra", "2023-02-14")
-                jsonVerduras.put("archImg", "string")
-                jsonVerduras.put("nombre", "string")
-                jsonVerduras.put("descripcion", "string")*/
 
                 // Convert JSONObject to String
                 val jsonObjectString = jsonObject.toString()
@@ -121,5 +116,9 @@ class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    fun createId():Int {    /** CAMBIAR POR UN VERDADERO ID */
+        return Random.nextInt(0, 1000)
     }
 }
