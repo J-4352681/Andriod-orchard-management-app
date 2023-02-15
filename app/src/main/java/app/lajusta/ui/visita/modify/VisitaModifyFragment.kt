@@ -61,12 +61,22 @@ class VisitaModifyFragment() : Fragment() {
         }
 
         binding.bGuardar.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try { VisitaApi().putVisita(visita.id_visita, visita) }
-                catch(e: Exception) { activity!!.runOnUiThread { shortToast(
-                    "Hubo un error. El elemento no pudo ser modificado."
-                ) } }
-                finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
+            try {
+                visita.id_tecnico = binding.etTecnico.text.toString().toInt()
+                //visita.fecha_visita = binding.etFecha.text.toString().toDate()
+                visita.descripcion = binding.etDesc.text.toString()
+                visita.id_quinta = binding.spinnerQuinta.id
+                visita.parcelas = parcelaVisitaAdapter.getParcelas()
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    try { VisitaApi().putVisita(visita.id_visita, visita) }
+                    catch(e: Exception) { activity!!.runOnUiThread { shortToast(
+                        "Hubo un error. El elemento no pudo ser modificado."
+                    ) } }
+                    finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
+                }
+            } catch(e: Exception) {
+                shortToast("Complete los campos con valores validos según corresponda.")
             }
         }
     }
@@ -120,13 +130,7 @@ class VisitaModifyFragment() : Fragment() {
     }
 
     private fun initRecyclerView() {
-        parcelaVisitaAdapter = ParcelaVisitaAdapter(
-            visita.parcelas
-        ) { position: Int ->
-            visita.parcelas = visita.parcelas.filterIndexed { i: Int, _: Parcela -> i != position }
-            parcelaVisitaAdapter.notifyDataSetChanged()
-            shortToast(visita.parcelas.toString())
-        }
+        parcelaVisitaAdapter = ParcelaVisitaAdapter(visita.parcelas)
         binding.rvParcelas.layoutManager = LinearLayoutManager(activity)
         binding.rvParcelas.adapter = parcelaVisitaAdapter
     }

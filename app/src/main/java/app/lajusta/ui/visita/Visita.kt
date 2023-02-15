@@ -8,9 +8,9 @@ import java.util.Date
 @Parcelize
 data class Visita(
     val id_visita: Int,
-    val fecha_visita: List<Int>,
-    val descripcion: String?,
-    val id_tecnico: Int,
-    val id_quinta: Int,
+    var fecha_visita: List<Int>,
+    var descripcion: String?,
+    var id_tecnico: Int,
+    var id_quinta: Int,
     var parcelas: List<Parcela>
 ): Parcelable

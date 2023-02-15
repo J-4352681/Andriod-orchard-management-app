@@ -7,8 +7,7 @@ import app.lajusta.R
 import app.lajusta.ui.parcela.Parcela
 
 class ParcelaVisitaAdapter(
-    private val parcelas: List<Parcela>,
-    private val clickListener: (Int) -> Unit
+    private var parcelas: List<Parcela>
 ) : RecyclerView.Adapter<ParcelaVisitaViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParcelaVisitaViewHolder {
         val view = LayoutInflater
@@ -18,8 +17,13 @@ class ParcelaVisitaAdapter(
     }
 
     override fun onBindViewHolder(holder: ParcelaVisitaViewHolder, position: Int) {
-        holder.bind(parcelas[position], clickListener, position)
+        holder.bind(parcelas[position]) {
+            parcelas = parcelas.filterIndexed { i: Int, _: Parcela -> i != position }
+            notifyDataSetChanged()
+        }
     }
 
     override fun getItemCount(): Int = parcelas.size
+
+    fun getParcelas(): List<Parcela> = parcelas
 }

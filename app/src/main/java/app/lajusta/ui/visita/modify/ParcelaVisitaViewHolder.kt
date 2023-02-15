@@ -11,12 +11,11 @@ class ParcelaVisitaViewHolder(
 
     private val binding = ItemParcelaVisitaBinding.bind(itemView)
 
-    fun bind(parcelaItem: Parcela, clickListener: (Int) -> Unit, position: Int) {
-        binding.tvVerdura.text = parcelaItem.verdura.nombre
-        binding.tvCantidadSurcos.text = parcelaItem.cantidad_surcos.toString()
+    fun bind(parcelaItem: Parcela, clickListener: () -> Unit) {
+        binding.tvVerdura.text = parcelaItem.verdura.nombre + " | Surcos: " + parcelaItem.cantidad_surcos.toString()
         if(parcelaItem.cosecha) binding.cbCosecha.isChecked = true
         if(parcelaItem.cubierta) binding.cbCubierto.isChecked = true
 
-        // binding.bEliminar.setOnClickListener { clickListener(position) }
+        binding.bEliminar.setOnClickListener { clickListener() }
     }
 }
