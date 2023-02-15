@@ -56,7 +56,7 @@ class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
             val cantidad = binding.etCantidad.text.toString().trim()
             //val verdurass: List<Verdura> = binding.rvVerduras.adapter.getList()
 
-            if ( ronda.isNotEmpty() && familia.isNotEmpty() && cantidad.isNotEmpty() && verduras.isNotEmpty()) {        /**CAMBIAR PARA QUE TENGA QUE TENER AL MENOS 7 VERDURAS**/
+            if ( ronda.isNotEmpty() && familia.isNotEmpty() && cantidad.isNotEmpty() && verduras.size >= 5) {
 
                 Toast.makeText(activity, "Datos correctos. Intento de postear.", Toast.LENGTH_SHORT).show()
 
