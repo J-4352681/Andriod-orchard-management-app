@@ -69,7 +69,14 @@ class VisitaModifyFragment() : Fragment() {
                 visita.parcelas = parcelaVisitaAdapter.getParcelas()
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    try { VisitaApi().putVisita(visita.id_visita, visita) }
+                    try {
+                        val response = VisitaApi().putVisita(visita)
+                        /* activity!!.runOnUiThread { longToast(
+                            response.code().toString() + "                          "
+                            + visita.descripcion
+                        ) } */
+                        if(!response.isSuccessful) throw Exception(response.code().toString())
+                    }
                     catch(e: Exception) { activity!!.runOnUiThread { shortToast(
                         "Hubo un error. El elemento no pudo ser modificado."
                     ) } }

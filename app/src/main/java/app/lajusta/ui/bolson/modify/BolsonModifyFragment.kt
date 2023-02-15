@@ -61,7 +61,10 @@ class BolsonModifyFragment() : Fragment() {
                 bolson.verduras = verduraBolsonAdapter.getVerduras()
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    try { BolsonApi().putBolson(bolson.id_bolson, bolson) }
+                    try {
+                        val response = BolsonApi().putBolson(bolson)
+                        if(!response.isSuccessful) throw Exception(response.code().toString())
+                    }
                     catch(e: Exception) { activity!!.runOnUiThread { shortToast(
                         "Hubo un error. El elemento no pudo ser modificado."
                     ) } }

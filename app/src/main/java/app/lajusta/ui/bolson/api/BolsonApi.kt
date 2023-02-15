@@ -22,8 +22,8 @@ interface BolsonApi {
     @POST("bolson")
     suspend fun postBolson(@Body requestBody: RequestBody): Response<RequestBody>
 
-    @PUT("bolson/{id}")
-    suspend fun putBolson(@Path("id") id: Int, @Body bolson: Bolson): Response<Unit>
+    @PUT("bolson")
+    suspend fun putBolson(@Body bolson: Bolson): Response<Unit>
 
     companion object {
         operator fun invoke() : BolsonApi {

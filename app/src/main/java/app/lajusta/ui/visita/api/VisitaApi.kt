@@ -23,8 +23,8 @@ interface VisitaApi {
     @POST("Visitas")
     suspend fun postVisita(@Body requestBody: RequestBody): Response<RequestBody>
 
-    @PUT("Visitas/{id}")
-    suspend fun putVisita(@Path("id") id: Int, @Body visita: Visita): Response<Unit>
+    @PUT("Visitas")
+    suspend fun putVisita(@Body visita: Visita): Response<Unit>
 
     companion object {
         operator fun invoke() : VisitaApi {
