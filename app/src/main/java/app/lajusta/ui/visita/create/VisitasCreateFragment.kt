@@ -10,14 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasCreateBinding
-import app.lajusta.databinding.FragmentVisitasListBinding
-import app.lajusta.ui.Parcela.Parcela
-import app.lajusta.ui.bolson.Bolson
-import app.lajusta.ui.bolson.api.BolsonApi
-import app.lajusta.ui.quinta.API.QuintaApi
+import app.lajusta.ui.parcela.Parcela
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.verdura.Verdura
-import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
@@ -52,10 +47,9 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val quintas = getQuintas()
 
         // access the items of the list
-        val nombresQuintas: Array<String> = getNombreQuintas(quintas)
+        val nombresQuintas: Array<String> = getNombreQuintas()
 
         // access the spinner
         val spinner = binding.spinnerQuinta
@@ -74,16 +68,15 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
             val fecha = binding.etFecha.text.toString().trim()
             val tecnicoId = binding.etTecnico.text.toString().trim()
             val quintaNom = binding.spinnerQuinta.selectedItem.toString().trim()
-            val quintaSeleccionada = getQuintaByName(quintas,quintaNom)
 
-            if ( fecha.isNotEmpty() && tecnicoId.isNotEmpty() && quintaNom.isNotEmpty() && quintaSeleccionada != null ){
+            if ( fecha.isNotEmpty() && tecnicoId.isNotEmpty() && quintaNom.isNotEmpty() ){
 
                 Toast.makeText(activity, "Datos correctos. Intento de postear.", Toast.LENGTH_SHORT).show()
 
 
                 val idVisita = createId()
                 val desc = binding.etDesc.text.toString().trim()
-                val quintaId = quintaSeleccionada.id_quinta
+                val quintaId = getQuintaIdByName(quintaNom)
                 val listaParcelas = getListaDeParcelas(idVisita)
 
                 // Create JSON using JSONObject
@@ -103,7 +96,7 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
 
                 CoroutineScope(Dispatchers.IO).launch {
                     // Do the POST request and get response
-                    val response = VisitaApi().postVisita(requestBody)
+                    val response = VisitaApi().postVisita(requestBody) /** CREAR VISITA API */
 
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
@@ -141,34 +134,21 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
         _binding = null
     }
 
-    private fun getNombreQuintas(quintas:List<Quinta>):Array<String>{
-        return quintas.map { it.nombre.orEmpty() }.toTypedArray()
+    private fun getNombreQuintas():Array<String>{ /** Funcionalidad provisoria*/
+        return listOf("1","2","3").toTypedArray()
     }
 
     private fun getQuintas():List<Quinta>{ /** Funcionalidad provisoria*/
-        /*val quinta: Quinta = Quinta(1,"quinta A","sd","dsadfs", 1)
-        val quinta1: Quinta = Quinta(2,"quinta B","ds","fff", 1)
-        val quinta2: Quinta = Quinta(3,"quinta C","dasdss","ddd", 1)
-        return listOf(quinta,quinta1, quinta2)*/
-
-        lateinit var quintas: List<Quinta>
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                quintas = QuintaApi().getQuintas().body()!!
-            } catch(e: Exception) {
-                activity!!.runOnUiThread {
-                    Toast.makeText(activity, "Hubo un error al listar los elementos.", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-        return quintas
+        val quinta: Quinta = Quinta(1,"sd","sd","dsadfs", 1)
+        val quinta1: Quinta = Quinta(2,"sds","ds","fff", 1)
+        return listOf(quinta,quinta1)
     }
-    private fun getQuintaByName(quintas:List<Quinta>,name:String):Quinta?{ /** Funcionalidad provisoria*/
-        return quintas.find { it.nombre == name }
+    private fun getQuintaIdByName(name:String):Int{ /** Funcionalidad provisoria*/
+        return name.toInt()
     }
 
     fun getListaDeParcelas(idVisita:Int):List<Parcela> { /** Funcionalidad provisoria */
-        val verdura: Verdura = Verdura(1,"sd","sd","dsadfs", "Tomate","fssd")
+        val verdura: Verdura = Verdura(1,arrayOf(2, 3, 4), arrayOf(1, 2, 4),"dsadfs", "Tomate","fssd")
         val par = Parcela(1,2,true,true,idVisita, verdura)
         val par1 = Parcela(2,3,false,true,idVisita, verdura)
         return listOf(par, par1)

@@ -1,13 +1,9 @@
 package app.lajusta.ui.bolson.modify
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import app.lajusta.R
-import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.verdura.Verdura
 
 class VerduraBolsonAdapter(
@@ -26,6 +22,4 @@ class VerduraBolsonAdapter(
     }
 
     override fun getItemCount(): Int = verduras.size
-
-
 }

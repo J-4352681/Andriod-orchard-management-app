@@ -43,7 +43,7 @@ class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
     }
 
 
-    private val verdura: Verdura = Verdura(1,"sd","sd","dsadfs", "Tomate","fssd")
+    private val verdura: Verdura = Verdura(1, arrayOf(2, 3, 4), arrayOf(1, 2, 4),"dsadfs", "Tomate","fssd")
     private val verduras: List<Verdura> = listOf(verdura,verdura,verdura,verdura,verdura,verdura,verdura)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

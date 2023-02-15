@@ -15,7 +15,6 @@ import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonListBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
-import app.lajusta.ui.bolson.api.BolsonProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,9 +23,8 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private var _binding: FragmentBolsonListBinding? = null
     private val binding get() = _binding!!
-    private val data = mutableListOf<Bolson>()
+    private val bolsonesList = mutableListOf<Bolson>()
     private lateinit var bolsonAdapter: BolsonAdapter
-    private lateinit var bolsonProvider: BolsonProvider
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +32,6 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBolsonListBinding.inflate(inflater, container, false)
-        bolsonProvider = BolsonProvider(BolsonApi())
 
         binding.svBolsones.setOnQueryTextListener(this)
         initRecyclerView()
@@ -51,7 +48,7 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initRecyclerView() {
-        bolsonAdapter = BolsonAdapter(data) { bolson: Bolson ->
+        bolsonAdapter = BolsonAdapter(bolsonesList) { bolson: Bolson ->
             val bundle = bundleOf("bolson" to bolson)
             this.findNavController().navigate(
                 R.id.action_nav_bolson_to_bolsonModifyFragment, bundle
@@ -73,13 +70,13 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
             try {
                 bolsones = BolsonApi().getBolsones().body()!!
                 activity!!.runOnUiThread {
-                    data.clear()
-                    data.addAll(bolsones)
+                    bolsonesList.clear()
+                    bolsonesList.addAll(bolsones)
                     bolsonAdapter.notifyDataSetChanged()
                 }
             } catch(e: Exception) {
                 activity!!.runOnUiThread {
-                    Toast.makeText(activity, "Hubo un error al listar los elementos.", Toast.LENGTH_SHORT).show()
+                    shortToast("Hubo un error al listar los elementos.")
                 }
             }
         }
