@@ -54,12 +54,21 @@ class BolsonModifyFragment() : Fragment() {
         }
 
         binding.bGuardar.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try { BolsonApi().putBolson(bolson.id_bolson, bolson) }
-                catch(e: Exception) { activity!!.runOnUiThread { shortToast(
-                    "Hubo un error. El elemento no pudo ser modificado."
-                ) } }
-                finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
+            try {
+                bolson.idRonda = binding.etRonda.text.toString().toInt()
+                bolson.idFp = binding.etFamilia.text.toString().toInt()
+                bolson.cantidad = binding.etCantidad.text.toString().toInt()
+                bolson.verduras = verduraBolsonAdapter.getVerduras()
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    try { BolsonApi().putBolson(bolson.id_bolson, bolson) }
+                    catch(e: Exception) { activity!!.runOnUiThread { shortToast(
+                        "Hubo un error. El elemento no pudo ser modificado."
+                    ) } }
+                    finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
+                }
+            } catch (e: Exception) {
+                shortToast("Complete los campos con valores validos según corresponda.")
             }
         }
     }
@@ -73,13 +82,7 @@ class BolsonModifyFragment() : Fragment() {
     }
 
     private fun initRecyclerView() {
-        verduraBolsonAdapter = VerduraBolsonAdapter(
-            bolson.verduras
-        ) { position: Int ->
-            bolson.verduras = bolson.verduras.filterIndexed { i: Int, _: Verdura -> i != position }
-            verduraBolsonAdapter.notifyDataSetChanged()
-            shortToast(bolson.verduras.toString())
-        }
+        verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras)
         binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
         binding.rvVerduras.adapter = verduraBolsonAdapter
     }

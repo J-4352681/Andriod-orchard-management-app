@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Bolson(
     val id_bolson: Int,
-    val cantidad: Int,
-    val idFp: Int,
-    val idRonda: Int,
+    var cantidad: Int,
+    var idFp: Int,
+    var idRonda: Int,
     var verduras: List<Verdura>
 ): Parcelable

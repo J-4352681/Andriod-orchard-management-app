@@ -7,8 +7,7 @@ import app.lajusta.R
 import app.lajusta.ui.verdura.Verdura
 
 class VerduraBolsonAdapter(
-    private val verduras: List<Verdura>,
-    private val clickListener: (Int) -> Unit
+    private var verduras: List<Verdura>
 ) : Adapter<VerduraBolsonViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VerduraBolsonViewHolder {
         val view = LayoutInflater
@@ -18,8 +17,13 @@ class VerduraBolsonAdapter(
     }
 
     override fun onBindViewHolder(holder: VerduraBolsonViewHolder, position: Int) {
-        holder.bind(verduras[position], clickListener, position)
+        holder.bind(verduras[position]) {
+            verduras = verduras.filterIndexed { i: Int, _: Verdura -> i != position }
+            notifyDataSetChanged()
+        }
     }
 
     override fun getItemCount(): Int = verduras.size
+
+    fun getVerduras(): List<Verdura> = verduras
 }

@@ -11,8 +11,8 @@ class VerduraBolsonViewHolder(
 
     private val binding = ItemVerduraBolsonBinding.bind(itemView)
 
-    fun bind(verduraItem: Verdura, clickListener: (Int) -> Unit, position: Int) {
+    fun bind(verduraItem: Verdura, clickListener: () -> Unit) {
         binding.tvTitle.text = verduraItem.nombre
-        binding.bEliminar.setOnClickListener { clickListener(position) }
+        binding.bEliminar.setOnClickListener { clickListener() }
     }
 }
