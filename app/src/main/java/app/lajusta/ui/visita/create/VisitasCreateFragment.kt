@@ -10,12 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasCreateBinding
-import app.lajusta.databinding.FragmentVisitasListBinding
-import app.lajusta.ui.Parcela.Parcela
-import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.parcela.Parcela
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.verdura.Verdura
-import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
@@ -151,7 +148,7 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
     }
 
     fun getListaDeParcelas(idVisita:Int):List<Parcela> { /** Funcionalidad provisoria */
-        val verdura: Verdura = Verdura(1,"sd","sd","dsadfs", "Tomate","fssd")
+        val verdura: Verdura = Verdura(1,arrayOf(2, 3, 4), arrayOf(1, 2, 4),"dsadfs", "Tomate","fssd")
         val par = Parcela(1,2,true,true,idVisita, verdura)
         val par1 = Parcela(2,3,false,true,idVisita, verdura)
         return listOf(par, par1)

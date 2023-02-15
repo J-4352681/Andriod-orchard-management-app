@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_nav_visitas_to_visitasCreateFragment"
             app:destination="@id/visitasCreateFragment" />
+        <action
+            android:id="@+id/action_nav_visita_to_visitaModifyFragment"
+            app:destination="@id/visitaModifyFragment"/>
     </fragment>
 
     <fragment
@@ -53,8 +56,18 @@
         android:id="@+id/bolsonCreateFragment"
         android:name="app.lajusta.ui.bolson.create.BolsonCreateFragment"
         android:label="Crear bolsón" />
+
+    <fragment
+        android:id="@+id/visitaModifyFragment"
+        android:name="app.lajusta.ui.visita.modify.VisitaModifyFragment"
+        android:label="Modificar visita"
+        tools:layout="@layout/fragment_visita_modify" >
+        <argument
+            android:name="visita"
+            app:argType="app.lajusta.ui.visita.Visita" />
+    </fragment>
     <fragment
         android:id="@+id/visitasCreateFragment"
         android:name="app.lajusta.ui.visita.create.VisitasCreateFragment"
-        android:label="VisitasCreateFragment" />
+        android:label="Crear visita" />
 </navigation>

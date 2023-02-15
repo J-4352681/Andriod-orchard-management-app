@@ -93,12 +93,29 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_nav_visita_to_visitaModifyFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_nav_visitas_to_visitasCreateFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="visitaModifyFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="318" />
+                            <option name="y" value="839" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

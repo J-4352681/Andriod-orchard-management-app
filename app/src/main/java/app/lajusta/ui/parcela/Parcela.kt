@@ -1,4 +1,4 @@
-package app.lajusta.ui.Parcela
+package app.lajusta.ui.parcela
 
 import android.os.Parcelable
 import app.lajusta.ui.verdura.Verdura
@@ -11,5 +11,5 @@ data class Parcela(
     val cubierta: Boolean,
     val cosecha: Boolean,
     val id_visita: Int,
-    var verduras: Verdura
+    var verdura: Verdura
 ): Parcelable
