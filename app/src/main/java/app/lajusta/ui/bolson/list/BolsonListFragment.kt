@@ -81,11 +81,11 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             activity!!.runOnUiThread {
                 bolsonesList.clear()
                 bolsonesList.addAll(bolsones)
-                fillBolsonesCompletos()
+                //fillBolsonesCompletos()
 
                 familiasList.clear()
                 familiasList.addAll(familias)
-                fillBolsonesCompletos()
+                //fillBolsonesCompletos()
 
                 rondasList.clear()
                 rondasList.addAll(rondas)
