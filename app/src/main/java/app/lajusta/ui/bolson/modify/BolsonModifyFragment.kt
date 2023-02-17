@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.api.BolsonApi
-import app.lajusta.ui.bolson.model.BolsonCompleto
+import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.generic.BaseFragment
 
 class BolsonModifyFragment: BaseFragment() {

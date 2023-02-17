@@ -3,11 +3,7 @@ package app.lajusta.ui.visita.list
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.lajusta.databinding.ItemVisitaBinding
-import app.lajusta.ui.quinta.API.QuintaApi
 import app.lajusta.ui.visita.Visita
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class VisitaViewHolder(
     itemView: View

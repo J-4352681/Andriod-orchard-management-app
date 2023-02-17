@@ -2,8 +2,7 @@ package app.lajusta.ui.generic
 
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import app.lajusta.ui.quinta.API.QuintaApi
-import app.lajusta.ui.quinta.Quinta
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,8 +36,10 @@ open class BaseFragment : Fragment() {
         failureMessage: String
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-            try { apiEffectiveCall() }
-            catch(e: Exception) { activity!!.runOnUiThread { shortToast(e.message.toString()/*failureMessage*/) } }
+            try {apiEffectiveCall() }
+            catch (e: Exception) {
+                activity!!.runOnUiThread { shortToast(failureMessage) }
+            }
         }
     }
 }

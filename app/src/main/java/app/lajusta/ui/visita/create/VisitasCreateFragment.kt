@@ -11,7 +11,7 @@ import android.widget.Toast
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasCreateBinding
 import app.lajusta.ui.parcela.Parcela
-import app.lajusta.ui.quinta.API.QuintaApi
+import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.visita.api.VisitaApi
@@ -166,7 +166,7 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
         return quintas.map { it.nombre.orEmpty() }.toTypedArray()
     }
 
-    private fun getQuintaByName(name:String):Quinta?{
+    private fun getQuintaByName(name:String): Quinta?{
         return quintas_encontradas?.find { it.nombre == name }
     }
 

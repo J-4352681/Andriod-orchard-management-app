@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import app.lajusta.R
 import app.lajusta.databinding.FragmentFamiliaModifyBinding
 import app.lajusta.ui.bolson.api.BolsonApi
-import app.lajusta.ui.bolson.model.BolsonCompleto
+import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.quinta.API.QuintaApi
-import app.lajusta.ui.rondas.Ronda
+import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.rondas.api.RondaApi
 
 class FamiliaModifyFragment: BaseFragment(){
@@ -20,7 +22,7 @@ class FamiliaModifyFragment: BaseFragment(){
     private var _binding: FragmentFamiliaModifyBinding? = null
     private val binding get() = _binding!!
     private lateinit var familia: Familia
-    private lateinit var rondas: List<Ronda>
+    private var bolsonesCompletos = mutableListOf<BolsonCompleto>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,9 +60,8 @@ class FamiliaModifyFragment: BaseFragment(){
             // API QUINTAS
             var quintas = QuintaApi().getQuintas().body()!!
             // API RONDAS
-            rondas = RondaApi().getRondas().body()!!
+            val rondas = RondaApi().getRondas().body()!!
             var bolsones = BolsonApi().getBolsones().body()!!
-            val bolsonesCompletos = mutableListOf<BolsonCompleto>()
 
 
             // PROCESAMIENTO QUINTAS
@@ -121,6 +122,13 @@ class FamiliaModifyFragment: BaseFragment(){
             returnSimpleApiCall(
                 { FamiliaApi().putFamilia(familia) },
                 "Hubo un error. La familia no pudo ser modificado."
+            )
+        }
+
+        binding.bVerBolsones.setOnClickListener {
+            val bundle = bundleOf("bolsones" to ArrayList<BolsonCompleto>(bolsonesCompletos))
+            this.findNavController().navigate(
+                R.id.bolsonFilteredListFragment, bundle
             )
         }
     }

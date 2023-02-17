@@ -6,12 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentVisitaModifyBinding
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.quinta.API.QuintaApi
+import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi

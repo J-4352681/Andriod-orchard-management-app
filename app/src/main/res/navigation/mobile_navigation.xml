@@ -31,6 +31,9 @@
         android:name="app.lajusta.ui.familia.modify.FamiliaModifyFragment"
         android:label="Modificar familia"
         tools:layout="@layout/fragment_familia_modify" >
+        <action
+            android:id="@+id/action_familiaModifyFragment_to_bolsonFilteredListFragment"
+            app:destination="@id/bolsonFilteredListFragment" />
         <argument
             android:name="familia"
             app:argType="app.lajusta.ui.familia.Familia" />
@@ -57,6 +60,22 @@
     </fragment>
 
     <fragment
+        android:id="@+id/bolsonFilteredListFragment"
+        android:name="app.lajusta.ui.bolson.list.BolsonFilteredListFragment"
+        android:label="Bolsones de la familia"
+        tools:layout="@layout/fragment_bolson_list" >
+        <action
+            android:id="@+id/action_bolsonFilteredListFragment_to_bolsonModifyFragment"
+            app:destination="@id/bolsonModifyFragment" />
+        <action
+            android:id="@+id/action_bolsonFilteredListFragment_to_bolsonCreateFragment"
+            app:destination="@id/bolsonCreateFragment" />
+        <argument
+            android:name="bolsones"
+            app:argType="app.lajusta.ui.bolson.BolsonesCompletos" />
+    </fragment>
+
+    <fragment
         android:id="@+id/bolsonModifyFragment"
         android:name="app.lajusta.ui.bolson.modify.BolsonModifyFragment"
         android:label="Modificar bolsón"
@@ -69,7 +88,11 @@
     <fragment
         android:id="@+id/bolsonCreateFragment"
         android:name="app.lajusta.ui.bolson.create.BolsonCreateFragment"
-        android:label="Crear bolsón" />
+        android:label="Crear bolsón" >
+        <argument
+            android:name="bolson"
+            app:argType="app.lajusta.ui.bolson.Bolson" />
+    </fragment>
 
 
     <!-- VISITA -->

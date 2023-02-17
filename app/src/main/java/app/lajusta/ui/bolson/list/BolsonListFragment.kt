@@ -1,12 +1,9 @@
 package app.lajusta.ui.bolson.list
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -16,13 +13,12 @@ import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonListBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
-import app.lajusta.ui.bolson.model.BolsonCompleto
+import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
-import kotlinx.coroutines.*
 
 class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
@@ -81,11 +77,9 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             activity!!.runOnUiThread {
                 bolsonesList.clear()
                 bolsonesList.addAll(bolsones)
-                fillBolsonesCompletos()
 
                 familiasList.clear()
                 familiasList.addAll(familias)
-                fillBolsonesCompletos()
 
                 rondasList.clear()
                 rondasList.addAll(rondas)
@@ -95,31 +89,17 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun fillBolsonesCompletos() {
-        if (bolsonesList.isNotEmpty() && familiasList.isNotEmpty() && rondasList.isNotEmpty()) {
-
-            var bolsonesCompletos: MutableList<BolsonCompleto> = mutableListOf<BolsonCompleto>()
-
-            bolsonesList.forEach { bolson ->
-                var familia = familiasList.find { it.id_fp == bolson.idFp }
-                var ronda = rondasList.find { it.id_ronda == bolson.idRonda }
-                if (familia != null && ronda != null)
-                    bolsonesCompletos.add(
-                        BolsonCompleto(
-                            bolson.id_bolson,
-                            bolson.cantidad,
-                            familia!!,
-                            ronda!!,
-                            bolson.verduras
-                        )
-                    )
-            }
-
-            activity!!.runOnUiThread {
-                bolsonesCompletosList.clear()
-                bolsonesCompletosList.addAll(bolsonesCompletos)
-                bolsonAdapter.notifyDataSetChanged()
-            }
+        bolsonesCompletosList.clear()
+        bolsonesList.forEach { bolson ->
+            bolsonesCompletosList.add(
+                BolsonCompleto.toBolsonCompleto(
+                    bolson,
+                    familiasList.find { it.id_fp == bolson.idFp }!!,
+                    rondasList.find { it.id_ronda == bolson.idRonda }!!
+                )
+            )
         }
+        bolsonAdapter.notifyDataSetChanged()
     }
 
 

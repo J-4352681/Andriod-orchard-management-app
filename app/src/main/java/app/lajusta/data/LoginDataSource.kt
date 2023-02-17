@@ -1,11 +1,8 @@
 package app.lajusta.data
 
 import android.util.Log
-import android.widget.Toast
 import app.lajusta.data.model.LoggedInUser
 import app.lajusta.data.model.UserType
-import app.lajusta.ui.bolson.Bolson
-import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.login.api.LoginApi
 import app.lajusta.ui.login.api.UsuarioLogin
 import app.lajusta.ui.login.api.UsuarioLoginResponse

@@ -1,7 +1,6 @@
-package app.lajusta.ui.bolson.model
+package app.lajusta.ui.bolson
 
 import android.os.Parcelable
-import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.verdura.Verdura
@@ -15,7 +14,7 @@ data class BolsonCompleto(
     var ronda: Ronda,
     var verduras: List<Verdura>
 ): Parcelable {
-    fun toBolson():Bolson {
+    fun toBolson(): Bolson {
         return Bolson(id_bolson,cantidad,familia.id_fp,ronda.id_ronda,verduras)
     }
 
@@ -31,3 +30,8 @@ data class BolsonCompleto(
         }
     }
 }
+
+@Parcelize
+data class BolsonesCompletos(
+    val bolsones: List<BolsonCompleto>
+): ArrayList<BolsonCompleto>(bolsones), Parcelable
