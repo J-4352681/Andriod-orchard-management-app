@@ -153,7 +153,7 @@
                 tools:text="Último bolsón: 5/3/2022" />
 
             <Button
-                android:id="@+id/btnAgregarVerdura"
+                android:id="@+id/btnVerBolsones"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

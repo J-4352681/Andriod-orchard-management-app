@@ -64,7 +64,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         }
         binding.rvBolsones.layoutManager = LinearLayoutManager(activity)
         binding.rvBolsones.adapter = bolsonAdapter
-        filterCompleto("")
+        filter("")
     }
 
     override fun onDestroyView() {
@@ -72,69 +72,29 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         _binding = null
     }
 
-    /*private fun filter(query: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            lateinit var bolsones: List<Bolson>
-            try {
-                bolsones = BolsonApi().getBolsones().body()!!
-                activity!!.runOnUiThread {
-                    bolsonesList.clear()
-                    bolsonesList.addAll(bolsones)
-                    bolsonAdapter.notifyDataSetChanged()
-                }
-            } catch (e: Exception) {
-                activity!!.runOnUiThread {
-                    shortToast("Hubo un error al listar los elementos.")
-                }
-            }
-        }
-    }*/
-
-
-    private fun filterCompleto(query: String) {
-
-        getBolsonesApiCall()
-        getFamiliasApiCall()
-        getRondasApiCall()
-
-    }
-
-    //Funciones get apicall
-
-    fun getBolsonesApiCall() {
+    private fun filter(query: String) {
         apiCall(suspend {
             val bolsones = BolsonApi().getBolsones().body()!!
+            val familias = FamiliaApi().getFamilias().body()!!
+            val rondas = RondaApi().getRondas().body()!!
+
             activity!!.runOnUiThread {
                 bolsonesList.clear()
                 bolsonesList.addAll(bolsones)
+                fillBolsonesCompletos()
+
+                familiasList.clear()
+                familiasList.addAll(familias)
+                fillBolsonesCompletos()
+
+                rondasList.clear()
+                rondasList.addAll(rondas)
                 fillBolsonesCompletos()
             }
         }, "Hubo un error al actualizar la lista de bolsones.")
     }
 
-    fun getFamiliasApiCall() {
-        apiCall(suspend {
-            val familias = FamiliaApi().getFamilias().body()!!
-            activity!!.runOnUiThread {
-                familiasList.clear()
-                familiasList.addAll(familias)
-                fillBolsonesCompletos()
-            }
-        }, "Hubo un error al actualizar la lista de familias.")
-    }
-
-    fun getRondasApiCall() {
-        apiCall(suspend {
-            val rondas = RondaApi().getRondas().body()!!
-            activity!!.runOnUiThread {
-                rondasList.clear()
-                rondasList.addAll(rondas)
-                fillBolsonesCompletos()
-            }
-        }, "Hubo un error al actualizar la lista de rondas.")
-    }
-
-    fun fillBolsonesCompletos() {
+    private fun fillBolsonesCompletos() {
         if (bolsonesList.isNotEmpty() && familiasList.isNotEmpty() && rondasList.isNotEmpty()) {
 
             var bolsonesCompletos: MutableList<BolsonCompleto> = mutableListOf<BolsonCompleto>()
@@ -164,7 +124,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        if (!query.isNullOrEmpty()) filterCompleto(query.lowercase())
+        if (!query.isNullOrEmpty()) filter(query.lowercase())
         return true
     }
 

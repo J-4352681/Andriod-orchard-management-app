@@ -2,6 +2,8 @@ package app.lajusta.ui.generic
 
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import app.lajusta.ui.quinta.API.QuintaApi
+import app.lajusta.ui.quinta.Quinta
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +18,7 @@ open class BaseFragment : Fragment() {
         Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 
-    protected fun simpleApiCall(
+    protected fun returnSimpleApiCall(
         apiEffectiveCall: suspend () -> Response<out Any>,
         failureMessage: String
     ) {
@@ -30,17 +32,13 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    // CUIDADO CON LAS API CALLS QUE LA "SIMPLE" HACE UN ON BACK PRESSED EN EL FINALLY
-    // CUIDADO CON LAS API CALLS QUE LA "SIMPLE" HACE UN ON BACK PRESSED EN EL FINALLY
-    // CUIDADO CON LAS API CALLS QUE LA "SIMPLE" HACE UN ON BACK PRESSED EN EL FINALLY
-
     protected fun apiCall(
         apiEffectiveCall: suspend () -> Unit,
         failureMessage: String
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             try { apiEffectiveCall() }
-            catch(e: Exception) { activity!!.runOnUiThread { shortToast(e.message!!) } }
+            catch(e: Exception) { activity!!.runOnUiThread { shortToast(e.message.toString()/*failureMessage*/) } }
         }
     }
 }

@@ -1,21 +1,14 @@
 package app.lajusta.ui.bolson.modify
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentBolsonModifyBinding
-import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.bolson.model.BolsonCompleto
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.verdura.Verdura
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class BolsonModifyFragment: BaseFragment() {
 
@@ -46,7 +39,7 @@ class BolsonModifyFragment: BaseFragment() {
         fillItem()
 
         binding.bBorrar.setOnClickListener {
-            simpleApiCall(
+            returnSimpleApiCall(
                 { BolsonApi().deleteBolson(bolson.id_bolson) },
                 "Hubo un error. El bolsón no pudo ser eliminado."
             )
@@ -60,7 +53,7 @@ class BolsonModifyFragment: BaseFragment() {
 
             // TODO verificar validez de campos
 
-            simpleApiCall(
+            returnSimpleApiCall(
                 { BolsonApi().putBolson(bolson.toBolson()) },
                 "Hubo un error. El bolson no pudo ser modificado."
             )

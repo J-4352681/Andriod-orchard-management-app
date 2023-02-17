@@ -1,27 +1,15 @@
 package app.lajusta.ui.bolson.create
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonCreateBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.generic.BaseFragment
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.MediaType
-import org.json.JSONObject
-import okhttp3.RequestBody
 import kotlin.random.Random
 
 
@@ -65,7 +53,7 @@ class BolsonCreateFragment : BaseFragment() {
                 val idBolson = createId()
                 val bolson = Bolson(idBolson,cantidad.toInt(),familia.toInt(),ronda.toInt(),verduras)
 
-                simpleApiCall(
+                returnSimpleApiCall(
                     { BolsonApi().postBolson(bolson)},
                     "Hubo un error. El bolson no pudo ser creado."
                 )

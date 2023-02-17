@@ -49,11 +49,13 @@ class FamiliaCreateFragment : BaseFragment() {
                 return@setOnClickListener
             }
 
-            simpleApiCall(
+            returnSimpleApiCall(
                 { FamiliaApi().postFamilia(familia) },
                 "Hubo un error. La familia no pudo ser creada."
             )
         }
+
+        binding.bCancelar.setOnClickListener { activity!!.onBackPressed() }
     }
 
     override fun onDestroyView() {

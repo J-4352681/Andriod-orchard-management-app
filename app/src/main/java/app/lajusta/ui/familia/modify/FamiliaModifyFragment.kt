@@ -4,21 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentFamiliaModifyBinding
 import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.bolson.model.BolsonCompleto
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.API.QuintaApi
-import app.lajusta.ui.quinta.Quinta
+import app.lajusta.ui.rondas.Ronda
+import app.lajusta.ui.rondas.api.RondaApi
 
 class FamiliaModifyFragment: BaseFragment(){
 
     private var _binding: FragmentFamiliaModifyBinding? = null
     private val binding get() = _binding!!
     private lateinit var familia: Familia
+    private lateinit var rondas: List<Ronda>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +46,7 @@ class FamiliaModifyFragment: BaseFragment(){
     }
 
     private fun fillItem() {
-        var date = familia.fecha_afiliacion.toMutableList()
-        date[1] += 1
-        binding.tvFechaSeleccionada.text = ArrayedDate.toString(date)
+        binding.tvFechaSeleccionada.text = ArrayedDate.toString(familia.fecha_afiliacion)
 
         binding.tvTitle.text =
             ("Familia " + familia.nombre
@@ -55,22 +55,40 @@ class FamiliaModifyFragment: BaseFragment(){
         binding.etNombre.setText(familia.nombre)
 
         apiCall(suspend {
-            val quintas = QuintaApi().getQuintas().body()!!.filter { it.fpId == familia.id_fp }
-            activity!!.runOnUiThread {
-                val textQuintas = quintas.map { it.nombre }.toString()
-                binding.tvQuintasList.text = textQuintas.subSequence(1, textQuintas.length-1)
-            }
-        }, "No se pudieron obtener las quintas de la familia.")
+            // API QUINTAS
+            var quintas = QuintaApi().getQuintas().body()!!
+            // API RONDAS
+            rondas = RondaApi().getRondas().body()!!
+            var bolsones = BolsonApi().getBolsones().body()!!
+            val bolsonesCompletos = mutableListOf<BolsonCompleto>()
 
-        /* apiCall(suspend {
-            val bolsones = BolsonApi().getBolsones().body()!!
-                .filter { it.idFp == familia.id_fp }
-                .map { it. }
-            val fechas =
+
+            // PROCESAMIENTO QUINTAS
+            val textQuintas = quintas
+                .filter { it.fpId == familia.id_fp }
+                .map { it.nombre }.toString()
+            // PROCESAMIENTO RONDAS
+            bolsones = bolsones.filter { it.idFp == familia.id_fp }
+            bolsones
+                .forEach { bolson ->
+                    bolsonesCompletos.add(
+                        BolsonCompleto.toBolsonCompleto(bolson, familia, rondas.filter {
+                            it.id_ronda == bolson.idRonda
+                        }.firstOrNull()!!)
+                    )
+                }
+            val fechasBolsonesRondas = bolsonesCompletos.map {
+                ArrayedDate.toString(it.ronda.fecha_inicio.toMutableList())
+            }.toString()
+
             activity!!.runOnUiThread {
-                val text
+                // UI QUINTAS
+                binding.tvQuintasList.text = textQuintas.subSequence(1, textQuintas.length-1)
+                // UI RONDAS
+                binding.tvUltimoBolson.text = fechasBolsonesRondas
+                    .subSequence(1, fechasBolsonesRondas.length-1)
             }
-        }) */ // TODO a completar
+        }, "No se pudieron obtener las quintas y/o bolsones de la familia.")
     }
 
     private fun setClickListeners() {
@@ -79,9 +97,9 @@ class FamiliaModifyFragment: BaseFragment(){
         ) )
 
         binding.bBorrar.setOnClickListener {
-            simpleApiCall(
+            returnSimpleApiCall(
                 { FamiliaApi().deleteFamilia(familia.id_fp) },
-                "Hubo un error. El bolsón no pudo ser eliminado."
+                "Hubo un error. La familia no pudo ser eliminada."
             )
         }
 
@@ -100,9 +118,9 @@ class FamiliaModifyFragment: BaseFragment(){
                 return@setOnClickListener
             }
 
-            simpleApiCall(
+            returnSimpleApiCall(
                 { FamiliaApi().putFamilia(familia) },
-                "Hubo un error. El familia no pudo ser modificado."
+                "Hubo un error. La familia no pudo ser modificado."
             )
         }
     }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -13,8 +14,14 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import app.lajusta.data.model.UserType
 import app.lajusta.databinding.ActivityMainBinding
+import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.login.LoginActivity
+import app.lajusta.ui.quinta.API.QuintaApi
+import app.lajusta.ui.quinta.Quinta
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
-        const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
-        //const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
+        //const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
+        const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
         var userId:String = ""
         var userName:String = ""
         var userType:String = ""

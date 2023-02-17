@@ -18,4 +18,16 @@ data class BolsonCompleto(
     fun toBolson():Bolson {
         return Bolson(id_bolson,cantidad,familia.id_fp,ronda.id_ronda,verduras)
     }
+
+    companion object {
+        fun toBolsonCompleto(bolson: Bolson, familia: Familia, ronda: Ronda): BolsonCompleto {
+            return BolsonCompleto(
+                bolson.id_bolson,
+                bolson.cantidad,
+                familia,
+                ronda,
+                bolson.verduras
+            )
+        }
+    }
 }
