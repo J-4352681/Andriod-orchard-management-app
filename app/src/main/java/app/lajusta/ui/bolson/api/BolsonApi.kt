@@ -19,6 +19,7 @@ interface BolsonApi {
     @DELETE("bolson/{id}")
     suspend fun deleteBolson(@Path("id") id: Int): Response<Unit>
 
+
     @POST("bolson")
     suspend fun postBolson(@Body bolson: Bolson): Response<Bolson>
 

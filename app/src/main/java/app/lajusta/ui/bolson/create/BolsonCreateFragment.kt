@@ -70,47 +70,6 @@ class BolsonCreateFragment : BaseFragment() {
                     "Hubo un error. El bolson no pudo ser creado."
                 )
 
-/*
-                // Create JSON using JSONObject
-                val jsonObject = JSONObject()
-                jsonObject.put("id_bolson", idBolson)
-                jsonObject.put("cantidad", cantidad)
-                jsonObject.put("idFp", familia)
-                jsonObject.put("idRonda", ronda)
-                jsonObject.put("verduras", verduras)
-
-                // Convert JSONObject to String
-                val jsonObjectString = jsonObject.toString()
-
-                // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
-                val requestBody:RequestBody = RequestBody.create(MediaType.get("application/json"),jsonObjectString)
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    // Do the POST request and get response
-                    val response = BolsonApi().postBolson(requestBody)
-
-                    withContext(Dispatchers.Main) {
-                        if (response.isSuccessful) {
-
-                            // Convert raw JSON to pretty JSON using GSON library
-                            val gson = GsonBuilder().setPrettyPrinting().create()
-                            val prettyJson = gson.toJson(
-                                JsonParser().parse(
-                                    response.body()
-                                        ?.toString() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
-                                )
-                            )
-
-                            Log.d("Pretty Printed JSON :", prettyJson)
-
-                        } else {
-
-                            Log.e("RETROFIT_ERROR", response.code().toString())
-
-                        }
-                    }
-                }
-*/
             } else {
                 Toast.makeText(activity, "Ingrese todos los datos y al menos 7 verduras.", Toast.LENGTH_SHORT).show()
             }
