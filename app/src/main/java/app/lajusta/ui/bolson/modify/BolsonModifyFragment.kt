@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.bolson.model.BolsonCompleto
 import app.lajusta.ui.verdura.Verdura
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ class BolsonModifyFragment() : Fragment() {
 
     private var _binding: FragmentBolsonModifyBinding? = null
     private val binding get() = _binding!!
-    private lateinit var bolson: Bolson
+    private lateinit var bolson: BolsonCompleto
     private lateinit var verduraBolsonAdapter: VerduraBolsonAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,14 +56,16 @@ class BolsonModifyFragment() : Fragment() {
 
         binding.bGuardar.setOnClickListener {
             try {
-                bolson.idRonda = binding.etRonda.text.toString().toInt()
-                bolson.idFp = binding.etFamilia.text.toString().toInt()
+                bolson.ronda.id_ronda = binding.etRonda.text.toString().toInt()
+                bolson.familia.id_fp = binding.etFamilia.text.toString().toInt()
                 bolson.cantidad = binding.etCantidad.text.toString().toInt()
                 bolson.verduras = verduraBolsonAdapter.getVerduras()
 
+                var bolsonMessage = bolson.toBolson()
+
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        val response = BolsonApi().putBolson(bolson)
+                        val response = BolsonApi().putBolson(bolsonMessage)
                         if(!response.isSuccessful) throw Exception(response.code().toString())
                     }
                     catch(e: Exception) { activity!!.runOnUiThread { shortToast(
@@ -79,8 +82,8 @@ class BolsonModifyFragment() : Fragment() {
     private fun fillItem() {
         binding.tvTitle.text = "Modificando bolsón " + bolson.id_bolson.toString()
         binding.etCantidad.setText(bolson.cantidad.toString())
-        binding.etFamilia.setText(bolson.idFp.toString())
-        binding.etRonda.setText(bolson.idRonda.toString())
+        binding.etFamilia.setText(bolson.familia.id_fp.toString())
+        binding.etRonda.setText(bolson.ronda.id_ronda.toString())
         initRecyclerView()
     }
 
