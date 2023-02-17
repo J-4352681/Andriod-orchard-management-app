@@ -13,13 +13,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasListBinding
+import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VisitasListFragment() : Fragment(), SearchView.OnQueryTextListener {
+class VisitasListFragment() : BaseFragment(), SearchView.OnQueryTextListener {
 
     private var _binding: FragmentVisitasListBinding? = null
     private val binding get() = _binding!!
@@ -65,22 +66,14 @@ class VisitasListFragment() : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun filter(query: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            lateinit var visitas: List<Visita>
-            try {
-                visitas = VisitaApi().getVisitas().body()!!
-                activity!!.runOnUiThread {
-                    visitasList.clear()
-                    visitasList.addAll(visitas)
-                    visitaAdapter.notifyDataSetChanged()
-                }
-            } catch(e: Exception) {
-                activity!!.runOnUiThread {
-                    // shortToast("Hubo un error al listar los elementos.")
-                    shortToast(e.message!!)
-                }
+        apiCall(suspend {
+            val visitas = VisitaApi().getVisitas().body()!!
+            activity!!.runOnUiThread {
+                visitasList.clear()
+                visitasList.addAll(visitas)
+                visitaAdapter.notifyDataSetChanged()
             }
-        }
+        }, "Hubo un error al actualizar la lista de visitas.")
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -90,9 +83,5 @@ class VisitasListFragment() : Fragment(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextChange(newText: String?): Boolean {
         return true
-    }
-
-    private fun shortToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 }

@@ -2,6 +2,7 @@ package app.lajusta.ui.visita
 
 import android.os.Parcelable
 import app.lajusta.ui.parcela.Parcela
+import app.lajusta.ui.parcela.ParcelaVisita
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
@@ -12,5 +13,5 @@ data class Visita(
     var descripcion: String?,
     var id_tecnico: Int,
     var id_quinta: Int,
-    var parcelas: List<Parcela>
+    var parcelas: List<ParcelaVisita>
 ): Parcelable

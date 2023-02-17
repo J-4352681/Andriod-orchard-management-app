@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.bolson.list.BolsonListFragment">
-    
+    tools:context=".ui.familia.list.FamiliaListFragment">
+
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/svBolsones"
+        android:id="@+id/svFamilia"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintVertical_bias="0"
@@ -18,19 +18,19 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBolsones"
+        android:id="@+id/rvFamilias"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/svBolsones"
+        app:layout_constraintTop_toBottomOf="@id/svFamilia"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_bolson"
+        tools:listitem="@layout/item_familia"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabCrearBolson"
-        android:contentDescription="@string/fab_Crear_Bolson_desc"
+        android:id="@+id/fabCrearFamilia"
+        android:contentDescription="Botón para crear nueva familia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

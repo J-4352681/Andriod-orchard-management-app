@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Familia(
-    var id_fp: Int,
+    val id_fp: Int,
     var nombre: String,
-    var fecha_afiliacion: Array<Int>?,
+    var fecha_afiliacion: List<Int>
 ): Parcelable

@@ -10,9 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentVisitaModifyBinding
-import app.lajusta.ui.bolson.Bolson
-import app.lajusta.ui.bolson.api.BolsonApi
-import app.lajusta.ui.parcela.Parcela
+import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.API.QuintaApi
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.visita.Visita
@@ -21,7 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VisitaModifyFragment() : Fragment() {
+class VisitaModifyFragment() : BaseFragment() {
     private var _binding: FragmentVisitaModifyBinding? = null
     private val binding get() = _binding!!
     private lateinit var visita: Visita
@@ -71,10 +69,9 @@ class VisitaModifyFragment() : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         val response = VisitaApi().putVisita(visita)
-                        /* activity!!.runOnUiThread { longToast(
-                            response.code().toString() + "                          "
-                            + visita.descripcion
-                        ) } */
+                        activity!!.runOnUiThread { longToast(
+                            response.body().toString()
+                        ) }
                         if(!response.isSuccessful) throw Exception(response.code().toString())
                     }
                     catch(e: Exception) { activity!!.runOnUiThread { shortToast(
@@ -140,13 +137,5 @@ class VisitaModifyFragment() : Fragment() {
         parcelaVisitaAdapter = ParcelaVisitaAdapter(visita.parcelas)
         binding.rvParcelas.layoutManager = LinearLayoutManager(activity)
         binding.rvParcelas.adapter = parcelaVisitaAdapter
-    }
-
-    private fun shortToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun longToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 }

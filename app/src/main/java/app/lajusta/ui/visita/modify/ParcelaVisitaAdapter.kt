@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.lajusta.R
 import app.lajusta.ui.parcela.Parcela
+import app.lajusta.ui.parcela.ParcelaVisita
 
 class ParcelaVisitaAdapter(
-    private var parcelas: List<Parcela>
+    private var parcelas: List<ParcelaVisita>
 ) : RecyclerView.Adapter<ParcelaVisitaViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParcelaVisitaViewHolder {
         val view = LayoutInflater
@@ -18,12 +19,12 @@ class ParcelaVisitaAdapter(
 
     override fun onBindViewHolder(holder: ParcelaVisitaViewHolder, position: Int) {
         holder.bind(parcelas[position]) {
-            parcelas = parcelas.filterIndexed { i: Int, _: Parcela -> i != position }
+            parcelas = parcelas.filterIndexed { i: Int, _: ParcelaVisita -> i != position }
             notifyDataSetChanged()
         }
     }
 
     override fun getItemCount(): Int = parcelas.size
 
-    fun getParcelas(): List<Parcela> = parcelas
+    fun getParcelas(): List<ParcelaVisita> = parcelas
 }
