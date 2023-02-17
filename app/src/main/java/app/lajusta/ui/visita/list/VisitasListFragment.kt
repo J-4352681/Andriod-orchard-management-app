@@ -13,9 +13,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasListBinding
+import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.quinta.api.QuintaApi
+import app.lajusta.ui.quinta.Quinta
+import app.lajusta.ui.usuarios.Usuario
+import app.lajusta.ui.usuarios.api.UsuariosApi
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
+import app.lajusta.ui.visita.create.VisitasCreateFragment
+import app.lajusta.ui.visita.model.VisitaCompleta
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,6 +32,9 @@ class VisitasListFragment() : BaseFragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentVisitasListBinding? = null
     private val binding get() = _binding!!
     private val visitasList = mutableListOf<Visita>()
+    private val quintasList = mutableListOf<Quinta>()
+    private val tecnicosList = mutableListOf<Usuario>()
+    private val visitasCompletasList = mutableListOf<VisitaCompleta>()
     private lateinit var visitaAdapter: VisitaAdapter
 
     override fun onCreateView(
@@ -49,7 +59,7 @@ class VisitasListFragment() : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initRecyclerView() {
-        visitaAdapter= VisitaAdapter(visitasList) { visita: Visita ->
+        visitaAdapter= VisitaAdapter(visitasCompletasList) { visita: VisitaCompleta ->
             val bundle = bundleOf("visita" to visita)
             this.findNavController().navigate(
                 R.id.action_nav_visita_to_visitaModifyFragment, bundle
@@ -68,12 +78,36 @@ class VisitasListFragment() : BaseFragment(), SearchView.OnQueryTextListener {
     private fun filter(query: String) {
         apiCall(suspend {
             val visitas = VisitaApi().getVisitas().body()!!
+            val quintas = QuintaApi().getQuintas().body()!!
+            val tecnicos = UsuariosApi().getUsuarios().body()!!
+
             activity!!.runOnUiThread {
                 visitasList.clear()
                 visitasList.addAll(visitas)
-                visitaAdapter.notifyDataSetChanged()
+
+                quintasList.clear()
+                quintasList.addAll(quintas)
+
+                tecnicosList.clear()
+                tecnicosList.addAll(tecnicos)
+
+                fillVisitasCompletas()
             }
         }, "Hubo un error al actualizar la lista de visitas.")
+    }
+
+    private fun fillVisitasCompletas(){
+        visitasCompletasList.clear()
+        visitasList.forEach { visita ->
+            visitasCompletasList.add(
+                VisitaCompleta.toVisitaCompleta(
+                    visita,
+                    tecnicosList.find { it.id_user == visita.id_tecnico }!!,
+                    quintasList.find { it.id_quinta == visita.id_quinta }!!
+                )
+            )
+        }
+        visitaAdapter.notifyDataSetChanged()
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.lajusta.R
 import app.lajusta.ui.visita.Visita
+import app.lajusta.ui.visita.model.VisitaCompleta
 
 class VisitaAdapter(
-    private val visitasList: List<Visita>,
-    private val clickListener: (Visita) -> Unit
+    private val visitasList: List<VisitaCompleta>,
+    private val clickListener: (VisitaCompleta) -> Unit
 ) : RecyclerView.Adapter<VisitaViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VisitaViewHolder {
