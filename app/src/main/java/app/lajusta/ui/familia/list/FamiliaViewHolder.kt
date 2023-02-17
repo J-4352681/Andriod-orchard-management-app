@@ -15,7 +15,7 @@ class FamiliaViewHolder(
     fun bind(familiaItem: Familia, clickListener: (Familia) -> Unit) {
         binding.tvTitle.text = familiaItem.nombre
         binding.tvDescripcion.text =
-            "Afiliación: " + ArrayedDate.toString(familiaItem.fecha_afiliacion)
+            "Fecha de afiliación: " + ArrayedDate.toString(familiaItem.fecha_afiliacion)
 
         itemView.setOnClickListener { clickListener(familiaItem) }
     }

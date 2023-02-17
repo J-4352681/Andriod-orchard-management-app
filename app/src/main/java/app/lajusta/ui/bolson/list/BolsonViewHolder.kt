@@ -16,9 +16,7 @@ class BolsonViewHolder(
 
         binding.tvTitle.text = "Bolsón: " + bolsonItem.id_bolson.toString()
         binding.tvFamilia.text = "Familia: " + bolsonItem.familia.nombre
-        binding.tvRonda.text = "Ronda: " + ArrayedDate.toString(
-            bolsonItem.ronda.fecha_inicio.toMutableList()
-        )
+        binding.tvRonda.text = "Ronda del: " + ArrayedDate.toString(bolsonItem.ronda.fecha_inicio)
         binding.tvCantidad.text = "Cantidad: " + bolsonItem.cantidad.toString()
 
         itemView.setOnClickListener { clickListener(bolsonItem) }

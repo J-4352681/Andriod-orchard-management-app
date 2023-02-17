@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Ronda(
     var id_ronda: Int,
-    var fecha_fin: Array<Int>?,
-    var fecha_inicio: Array<Int>,
+    var fecha_fin: List<Int>?,
+    var fecha_inicio: List<Int>,
     //var verdura: Verdura  //Tiene una verdura pero esta en null en las api...
 ): Parcelable
