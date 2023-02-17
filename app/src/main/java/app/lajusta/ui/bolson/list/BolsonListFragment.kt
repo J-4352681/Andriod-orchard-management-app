@@ -91,7 +91,7 @@ class BolsonListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun filterCompleto(query: String) {
 
-        val coroutineScope = CoroutineScope(Dispatchers.IO)
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
 
         //Antes llamaba a las funciones
         //var promesa_bolsones: Deferred<List<Bolson>> = getBolsones(coroutineScope)

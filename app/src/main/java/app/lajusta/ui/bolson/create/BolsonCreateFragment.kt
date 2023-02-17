@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonCreateBinding
+import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.generic.BaseFragment
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +25,7 @@ import okhttp3.RequestBody
 import kotlin.random.Random
 
 
-class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
+class BolsonCreateFragment : BaseFragment() {
 
     private var _binding: FragmentBolsonCreateBinding? = null
     private val binding get() = _binding!!
@@ -53,15 +55,22 @@ class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
 
             val ronda = binding.etRonda.text.toString().trim()
             val familia = binding.etFamilia.text.toString().trim() /** CAMBIAR POR UNA COMBOBOX QUE TAMBIEN NOS DE EL ID*/
-            val cantidad = binding.etCantidad.text.toString().trim()
+            val cantidad = binding.etCantidad.text.toString()
             //val verdurass: List<Verdura> = binding.rvVerduras.adapter.getList()
 
-            if ( ronda.isNotEmpty() && familia.isNotEmpty() && cantidad.isNotEmpty() && verduras.size >= 5) {
+            if ( ronda.isNotEmpty() && familia.isNotEmpty() && cantidad.isNotEmpty() && verduras.size == 7) {
 
                 Toast.makeText(activity, "Datos correctos. Intento de postear.", Toast.LENGTH_SHORT).show()
 
                 val idBolson = createId()
+                val bolson = Bolson(idBolson,cantidad.toInt(),familia.toInt(),ronda.toInt(),verduras)
 
+                simpleApiCall(
+                    { BolsonApi().postBolson(bolson)},
+                    "Hubo un error. El bolson no pudo ser creado."
+                )
+
+/*
                 // Create JSON using JSONObject
                 val jsonObject = JSONObject()
                 jsonObject.put("id_bolson", idBolson)
@@ -101,7 +110,7 @@ class BolsonCreateFragment : Fragment(R.layout.fragment_bolson_create) {
                         }
                     }
                 }
-
+*/
             } else {
                 Toast.makeText(activity, "Ingrese todos los datos y al menos 7 verduras.", Toast.LENGTH_SHORT).show()
             }

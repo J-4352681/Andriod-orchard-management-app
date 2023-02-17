@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.bolson.model.BolsonCompleto
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.verdura.Verdura
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +21,7 @@ class BolsonModifyFragment: BaseFragment() {
 
     private var _binding: FragmentBolsonModifyBinding? = null
     private val binding get() = _binding!!
-    private lateinit var bolson: Bolson
+    private lateinit var bolson: BolsonCompleto
     private lateinit var verduraBolsonAdapter: VerduraBolsonAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,15 +53,15 @@ class BolsonModifyFragment: BaseFragment() {
         }
 
         binding.bGuardar.setOnClickListener {
-            bolson.idRonda = binding.etRonda.text.toString().toInt()
-            bolson.idFp = binding.etFamilia.text.toString().toInt()
+            bolson.ronda.id_ronda = binding.etRonda.text.toString().toInt()
+            bolson.familia.id_fp = binding.etFamilia.text.toString().toInt()
             bolson.cantidad = binding.etCantidad.text.toString().toInt()
             bolson.verduras = verduraBolsonAdapter.getVerduras()
 
             // TODO verificar validez de campos
 
             simpleApiCall(
-                { BolsonApi().putBolson(bolson) },
+                { BolsonApi().putBolson(bolson.toBolson()) },
                 "Hubo un error. El bolson no pudo ser modificado."
             )
         }
@@ -69,8 +70,8 @@ class BolsonModifyFragment: BaseFragment() {
     private fun fillItem() {
         binding.tvTitle.text = "Modificando bolsón " + bolson.id_bolson.toString()
         binding.etCantidad.setText(bolson.cantidad.toString())
-        binding.etFamilia.setText(bolson.idFp.toString())
-        binding.etRonda.setText(bolson.idRonda.toString())
+        binding.etFamilia.setText(bolson.familia.id_fp.toString()) //Estos se pueden cambiar por bolson.familia.nombre y no deberian de ser editables en el futuro creo
+        binding.etRonda.setText(bolson.ronda.id_ronda.toString())  // Cambiar por bolson.ronda.fecha_inicio
         initRecyclerView()
     }
 
