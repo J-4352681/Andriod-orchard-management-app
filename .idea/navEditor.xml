@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="319" />
-                            <option name="y" value="-177" />
+                            <option name="x" value="314" />
+                            <option name="y" value="-165" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -25,8 +25,32 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="318" />
-                            <option name="y" value="136" />
+                            <option name="x" value="317" />
+                            <option name="y" value="117" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="familiaCreateFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-219" />
+                            <option name="y" value="119" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="familiaModifyFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-212" />
+                            <option name="y" value="400" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -37,8 +61,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="29" />
-                            <option name="y" value="-17" />
+                            <option name="x" value="31" />
+                            <option name="y" value="-26" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -66,6 +90,20 @@
                             <option name="x" value="29" />
                             <option name="y" value="270" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nav_familia_to_familiaCreateFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nav_familia_to_familiaModifyFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.verdura.Verdura
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BolsonModifyFragment() : Fragment() {
+class BolsonModifyFragment: BaseFragment() {
 
     private var _binding: FragmentBolsonModifyBinding? = null
     private val binding get() = _binding!!
@@ -44,35 +45,24 @@ class BolsonModifyFragment() : Fragment() {
         fillItem()
 
         binding.bBorrar.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try { BolsonApi().deleteBolson(bolson.id_bolson) }
-                catch (e: Exception) { activity!!.runOnUiThread { shortToast(
-                    "Hubo un error. El elemento no pudo ser eliminado."
-                ) } }
-                finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
-            }
+            simpleApiCall(
+                { BolsonApi().deleteBolson(bolson.id_bolson) },
+                "Hubo un error. El bolsón no pudo ser eliminado."
+            )
         }
 
         binding.bGuardar.setOnClickListener {
-            try {
-                bolson.idRonda = binding.etRonda.text.toString().toInt()
-                bolson.idFp = binding.etFamilia.text.toString().toInt()
-                bolson.cantidad = binding.etCantidad.text.toString().toInt()
-                bolson.verduras = verduraBolsonAdapter.getVerduras()
+            bolson.idRonda = binding.etRonda.text.toString().toInt()
+            bolson.idFp = binding.etFamilia.text.toString().toInt()
+            bolson.cantidad = binding.etCantidad.text.toString().toInt()
+            bolson.verduras = verduraBolsonAdapter.getVerduras()
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    try {
-                        val response = BolsonApi().putBolson(bolson)
-                        if(!response.isSuccessful) throw Exception(response.code().toString())
-                    }
-                    catch(e: Exception) { activity!!.runOnUiThread { shortToast(
-                        "Hubo un error. El elemento no pudo ser modificado."
-                    ) } }
-                    finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
-                }
-            } catch (e: Exception) {
-                shortToast("Complete los campos con valores validos según corresponda.")
-            }
+            // TODO verificar validez de campos
+
+            simpleApiCall(
+                { BolsonApi().putBolson(bolson) },
+                "Hubo un error. El bolson no pudo ser modificado."
+            )
         }
     }
 
@@ -88,13 +78,5 @@ class BolsonModifyFragment() : Fragment() {
         verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras)
         binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
         binding.rvVerduras.adapter = verduraBolsonAdapter
-    }
-
-    private fun shortToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun longToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
 }

@@ -1,6 +1,7 @@
 package app.lajusta.data
 
 import android.util.Log
+import android.widget.Toast
 import app.lajusta.data.model.LoggedInUser
 import app.lajusta.data.model.UserType
 import app.lajusta.ui.bolson.Bolson
@@ -8,10 +9,7 @@ import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.login.api.LoginApi
 import app.lajusta.ui.login.api.UsuarioLogin
 import app.lajusta.ui.login.api.UsuarioLoginResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Response
 import java.io.IOException
 import java.lang.Exception
@@ -32,7 +30,7 @@ class LoginDataSource {
             if (username == "administrador" && password == "administrador") {
                 val admin = LoggedInUser(38, "administrador", UserType.ADMIN, "TOKEN")
                 return Result.Success(admin)
-            } else
+            }
 
             if (username == "tecnico" && password == "tecnico") {
                 val tec = LoggedInUser(44, "tecnico", UserType.TECNICO, "token")
@@ -43,9 +41,10 @@ class LoginDataSource {
 
             var data:Response<UsuarioLoginResponse>? = null
 
-            CoroutineScope(Dispatchers.IO).launch { /** NO ESTA FUNCIONANDO, NO SE COMPLETA ANTES DE LO SIGUIENTE*/
+            CoroutineScope(Dispatchers.IO).async { /** NO ESTA FUNCIONANDO, NO SE COMPLETA ANTES DE LO SIGUIENTE*/
 
-                    val user = UsuarioLogin(username, password )
+                val user = UsuarioLogin(username, password )
+                Log.e("Aviso", " corrutinae")
                     try {
                         val result = LoginApi().login(user)
                         data = result
@@ -55,10 +54,13 @@ class LoginDataSource {
 
             }
 
+            Log.e("RETROFIT_ERROR", "Datos: " + data.toString())
+
             val test = data
             test?.let {
                 if(it.isSuccessful) {
                     println("Codigo ${it.code()}")
+                    Log.e("Entro al let ", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
                     println(it.body()?.token)
                     val tec = LoggedInUser(it.body()?.id_user,username , intToUserType(it.body()?.rol), it.body()?.token)
                     return Result.Success(tec)
