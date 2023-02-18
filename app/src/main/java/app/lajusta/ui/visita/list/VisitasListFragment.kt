@@ -19,7 +19,10 @@ import app.lajusta.ui.usuarios.api.UsuariosApi
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
 import app.lajusta.ui.visita.model.VisitaCompleta
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
@@ -70,23 +73,25 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun filter(query: String) {
+        lateinit var visitas: List<Visita>
+        lateinit var quintas: List<Quinta>
+        lateinit var tecnicos: List<Usuario>
+
         apiCall(suspend {
-            val visitas = VisitaApi().getVisitas().body()!!
-            val quintas = QuintaApi().getQuintas().body()!!
-            val tecnicos = UsuariosApi().getUsuarios().body()!!
+            visitas = VisitaApi().getVisitas().body()!!
+            quintas = QuintaApi().getQuintas().body()!!
+            tecnicos = UsuariosApi().getUsuarios().body()!!
+        }, {
+            visitasList.clear()
+            visitasList.addAll(visitas)
 
-            activity!!.runOnUiThread {
-                visitasList.clear()
-                visitasList.addAll(visitas)
+            quintasList.clear()
+            quintasList.addAll(quintas)
 
-                quintasList.clear()
-                quintasList.addAll(quintas)
+            tecnicosList.clear()
+            tecnicosList.addAll(tecnicos)
 
-                tecnicosList.clear()
-                tecnicosList.addAll(tecnicos)
-
-                fillVisitasCompletas()
-            }
+            fillVisitasCompletas()
         }, "Hubo un error al actualizar la lista de visitas.")
 
     }

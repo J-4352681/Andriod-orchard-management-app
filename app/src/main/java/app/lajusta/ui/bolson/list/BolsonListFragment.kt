@@ -19,7 +19,10 @@ import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
@@ -70,24 +73,24 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun filter(query: String) {
+        lateinit var bolsones: List<Bolson>
+        lateinit var familias: List<Familia>
+        lateinit var rondas: List<Ronda>
+
         apiCall(suspend {
-            val bolsones = BolsonApi().getBolsones().body()!!
-            val familias = FamiliaApi().getFamilias().body()!!
-            val rondas = RondaApi().getRondas().body()!!
+            bolsones = BolsonApi().getBolsones().body()!!
+            familias = FamiliaApi().getFamilias().body()!!
+            rondas = RondaApi().getRondas().body()!!
+        }, {
+            bolsonesList.clear()
+            bolsonesList.addAll(bolsones)
 
-            activity!!.runOnUiThread {
-                bolsonesList.clear()
-                bolsonesList.addAll(bolsones)
+            familiasList.clear()
+            familiasList.addAll(familias)
 
-
-
-                familiasList.clear()
-                familiasList.addAll(familias)
-
-                rondasList.clear()
-                rondasList.addAll(rondas)
-                fillBolsonesCompletos()
-            }
+            rondasList.clear()
+            rondasList.addAll(rondas)
+            fillBolsonesCompletos()
         }, "Hubo un error al actualizar la lista de bolsones.")
     }
 

@@ -25,10 +25,7 @@ import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -121,19 +118,20 @@ class VisitasCreateFragment : BaseFragment() {
     }
 
     fun apiCallGet() {
+        lateinit var quintas: List<Quinta>
+        lateinit var tecnicos: List<Usuario>
+
         apiCall(suspend {
-            val quintas = QuintaApi().getQuintas().body()!!
-            val tecnicos = UsuariosApi().getUsuarios().body()!!
+            quintas = QuintaApi().getQuintas().body()!!
+            tecnicos = UsuariosApi().getUsuarios().body()!!
+        }, {
+            quintasList.clear()
+            quintasList.addAll(quintas)
 
-            activity!!.runOnUiThread {
-                quintasList.clear()
-                quintasList.addAll(quintas)
+            tecnicosList.clear()
+            tecnicosList.addAll(tecnicos)
 
-                tecnicosList.clear()
-                tecnicosList.addAll(tecnicos)
-
-                fillSpinners()
-            }
+            fillSpinners()
         }, "Hubo un error al actualizar la lista de visitas.")
     }
 

@@ -14,6 +14,9 @@ import app.lajusta.databinding.FragmentFamiliasListBinding
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
@@ -61,13 +64,13 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun filter(query: String) {
+        lateinit var familias: List<Familia>
         apiCall(suspend {
-            val familias = FamiliaApi().getFamilias().body()!!
-            activity!!.runOnUiThread {
-                familiasList.clear()
-                familiasList.addAll(familias)
-                familiaAdapter.notifyDataSetChanged()
-            }
+            familias = FamiliaApi().getFamilias().body()!!
+        }, {
+            familiasList.clear()
+            familiasList.addAll(familias)
+            familiaAdapter.notifyDataSetChanged()
         }, "Hubo un error al listar los elementos.")
     }
 

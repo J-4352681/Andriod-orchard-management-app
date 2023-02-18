@@ -8,14 +8,18 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import app.lajusta.R
 import app.lajusta.databinding.FragmentFamiliaModifyBinding
+import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.quinta.api.QuintaApi
+import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
+import kotlinx.coroutines.*
 
 class FamiliaModifyFragment: BaseFragment(){
 
@@ -23,6 +27,9 @@ class FamiliaModifyFragment: BaseFragment(){
     private val binding get() = _binding!!
     private lateinit var familia: Familia
     private var bolsonesCompletos = mutableListOf<BolsonCompleto>()
+    private var quintas = mutableListOf<Quinta>()
+    private var rondas = mutableListOf<Ronda>()
+    private var bolsones = mutableListOf<Bolson>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,39 +64,38 @@ class FamiliaModifyFragment: BaseFragment(){
         binding.etNombre.setText(familia.nombre)
 
         apiCall(suspend {
-            // API QUINTAS
-            var quintas = QuintaApi().getQuintas().body()!!
-            // API RONDAS
-            val rondas = RondaApi().getRondas().body()!!
-            var bolsones = BolsonApi().getBolsones().body()!!
-
-
-            // PROCESAMIENTO QUINTAS
-            val textQuintas = quintas
-                .filter { it.fpId == familia.id_fp }
-                .map { it.nombre }.toString()
-            // PROCESAMIENTO RONDAS
-            bolsones = bolsones.filter { it.idFp == familia.id_fp }
-            bolsones
-                .forEach { bolson ->
-                    bolsonesCompletos.add(
-                        BolsonCompleto.toBolsonCompleto(bolson, familia, rondas.filter {
-                            it.id_ronda == bolson.idRonda
-                        }.firstOrNull()!!)
-                    )
-                }
-            val fechasBolsonesRondas = bolsonesCompletos.map {
-                ArrayedDate.toString(it.ronda.fecha_inicio.toMutableList())
-            }.toString()
-
-            activity!!.runOnUiThread {
-                // UI QUINTAS
-                binding.tvQuintasList.text = textQuintas.subSequence(1, textQuintas.length-1)
-                // UI RONDAS
-                binding.tvUltimoBolson.text = fechasBolsonesRondas
-                    .subSequence(1, fechasBolsonesRondas.length-1)
-            }
+            quintas = QuintaApi().getQuintas().body()!!.toMutableList()
+            rondas = RondaApi().getRondas().body()!!.toMutableList()
+            bolsones = BolsonApi().getBolsones().body()!!.toMutableList()
+        }, {
+            fillQuintas()
+            fillRondas()
         }, "No se pudieron obtener las quintas y/o bolsones de la familia.")
+
+    }
+
+    private fun fillQuintas() {
+        val textQuintas = quintas
+            .filter { it.fpId == familia.id_fp }
+            .map { it.nombre }.toString()
+        binding.tvQuintasList.text = textQuintas.subSequence(1, textQuintas.length-1)
+    }
+
+    private fun fillRondas() {
+        bolsones = bolsones.filter { it.idFp == familia.id_fp }.toMutableList()
+        bolsones
+            .forEach { bolson ->
+                bolsonesCompletos.add(
+                    BolsonCompleto.toBolsonCompleto(bolson, familia, rondas.filter {
+                        it.id_ronda == bolson.idRonda
+                    }.firstOrNull()!!)
+                )
+            }
+        val fechasBolsonesRondas = bolsonesCompletos.map {
+            ArrayedDate.toString(it.ronda.fecha_inicio.toMutableList())
+        }.toString()
+        binding.tvUltimoBolson.text = fechasBolsonesRondas
+            .subSequence(1, fechasBolsonesRondas.length-1)
     }
 
     private fun setClickListeners() {

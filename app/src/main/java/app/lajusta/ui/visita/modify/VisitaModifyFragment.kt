@@ -20,6 +20,7 @@ import app.lajusta.ui.visita.api.VisitaApi
 import app.lajusta.ui.visita.model.VisitaCompleta
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class VisitaModifyFragment() : BaseFragment() {
@@ -136,19 +137,20 @@ class VisitaModifyFragment() : BaseFragment() {
     }
 
     fun apiCallGet(startingTec: String, staringQuinta: String) {
+        lateinit var quintas: List<Quinta>
+        lateinit var tecnicos: List<Usuario>
+
         apiCall(suspend {
-            val quintas = QuintaApi().getQuintas().body()!!
-            val tecnicos = UsuariosApi().getUsuarios().body()!!
+            quintas = QuintaApi().getQuintas().body()!!
+            tecnicos = UsuariosApi().getUsuarios().body()!!
+        }, {
+            quintasList.clear()
+            quintasList.addAll(quintas)
 
-            activity!!.runOnUiThread {
-                quintasList.clear()
-                quintasList.addAll(quintas)
+            tecnicosList.clear()
+            tecnicosList.addAll(tecnicos)
 
-                tecnicosList.clear()
-                tecnicosList.addAll(tecnicos)
-
-                fillSpinners(startingTec, staringQuinta)
-            }
+            fillSpinners(startingTec, staringQuinta)
         }, "Hubo un error al buscar los datos de quintas y tecnicos.")
     }
 
