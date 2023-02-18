@@ -20,9 +20,6 @@ class LoginDataSource {
     fun login(username: String, password: String): Result<LoggedInUser> {
         try {
             // TODO: handle loggedInUser authentication
-            // Agregar llamada a una API de usuarios para verificar si el usuario nuevo forma parte de ellos
-            // Por ahora voy a hacer 2 usuarios, uno admin y otro tecnico
-            //java.util.UUID.randomUUID().toString()
 
             if (username == "administrador" && password == "administrador") {
                 val admin = LoggedInUser(38, "administrador", UserType.ADMIN, "TOKEN")
@@ -34,49 +31,29 @@ class LoginDataSource {
                 return Result.Success(tec)
             }
 
-            Log.e("Aviso", " llego al login data resourse")
+            return runBlocking {
+                val user = UsuarioLogin(username, password)
+                try {
+                    val result = LoginApi().login(user)
+                    if (result.isSuccessful) {
+                        Log.i("token", result.body()?.token.orEmpty())
 
-            var data:Response<UsuarioLoginResponse>? = null
-
-            CoroutineScope(Dispatchers.IO).async { /** NO ESTA FUNCIONANDO, NO SE COMPLETA ANTES DE LO SIGUIENTE*/
-
-                val user = UsuarioLogin(username, password )
-                Log.e("Aviso", " corrutinae")
-                    try {
-                        val result = LoginApi().login(user)
-                        data = result
-                    } catch(e: Exception) {
-                        Log.e("RETROFIT_ERROR", e.message.orEmpty())
+                        val tec = LoggedInUser(
+                            result.body()?.id_user,
+                            username,
+                            intToUserType(result.body()?.rol),
+                            result.body()?.token
+                        )
+                        return@runBlocking Result.Success(tec)
+                    } else {
+                        Log.e("No fue exitoso ", "mal")
+                        return@runBlocking Result.Error(Exception("Usuario no existente"))
                     }
-
-            }
-
-            Log.e("RETROFIT_ERROR", "Datos: " + data.toString())
-
-            val test = data
-            test?.let {
-                if(it.isSuccessful) {
-                    println("Codigo ${it.code()}")
-                    Log.e("Entro al let ", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-                    println(it.body()?.token)
-                    val tec = LoggedInUser(it.body()?.id_user,username , intToUserType(it.body()?.rol), it.body()?.token)
-                    return Result.Success(tec)
-                } else{
-                    println("Codigo ${it.code()}")
-                    println(it.errorBody())
-                    Log.e("RETROFIT_ERROR ", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+                } catch (e: Exception) {
+                    Log.e("RETROFIT_ERROR", e.message.orEmpty())
+                    return@runBlocking Result.Error(Exception("ERROR AL BUSCAR DATOS"))
                 }
             }
-
-
-
-
-
-
-
-            //val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
-            //return Result.Success(fakeUser)
-            return Result.Error(Exception("Usuario no existente (administrador administrador)"));
         } catch (e: Throwable) {
             return Result.Error(IOException("Error logging in", e))
         }
@@ -86,7 +63,7 @@ class LoginDataSource {
         // TODO: revoke authentication
     }
 
-    private fun intToUserType(num:Int?):UserType?{
+    private fun intToUserType(num: Int?): UserType? {
         if (num == 1) return UserType.ADMIN
         else if (num == 2) return UserType.TECNICO
         return null
