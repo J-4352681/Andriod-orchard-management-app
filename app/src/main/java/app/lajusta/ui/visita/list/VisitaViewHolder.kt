@@ -18,8 +18,11 @@ class VisitaViewHolder(
         binding.tvFecha.text = "Fecha: " + ArrayedDate.toString(visitaItem.fecha_visita)
         binding.tvQuinta.text = "Quinta: " + visitaItem.quinta.nombre
         binding.tvTecnico.text = "Técnico: " + visitaItem.tecnico.nombre
-        //binding.tvSPACE .text = "Parcelas: " + visitaItem.parcelas.map { it.id_parcela }.toString() //El id de las psrcelas es medio inutil, capaz la cantidad, o la verdura!
-        binding.tvSPACE .text = "Parcelas con: " + visitaItem.parcelas.map { it.verdura.nombre }.toString()
+        var verdurasParcela = visitaItem.parcelas.map { it.verdura.nombre }.toSet().toString()
+        verdurasParcela = verdurasParcela.substring(1, verdurasParcela.length - 1)
+        if(verdurasParcela.isNotEmpty())
+            binding.tvSPACE .text = "Parcelas con: " + verdurasParcela
+        else binding.tvSPACE .text = "Parcela sin verduras."
 
         itemView.setOnClickListener { clickListener(visitaItem) }
     }
