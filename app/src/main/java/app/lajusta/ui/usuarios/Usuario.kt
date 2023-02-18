@@ -8,7 +8,7 @@ import java.util.Date
 
 @Parcelize
 data class Usuario(
-    val id_user: Int,
+    var id_user: Int,
     var nombre: String,
     var apellido: String,
     var direccion: String?,

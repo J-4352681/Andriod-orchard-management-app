@@ -19,7 +19,11 @@ data class VisitaCompleta(
     var parcelas: List<ParcelaVisita>
 ): Parcelable{
 
+    fun toVisita():Visita{
+        return Visita(id_visita, fecha_visita, descripcion, tecnico.id_user, quinta.id_quinta, parcelas)
+    }
 companion object {
+
     fun toVisitaCompleta(visita: Visita, tecnico: Usuario, quinta: Quinta): VisitaCompleta {
         return VisitaCompleta(
             visita.id_visita,

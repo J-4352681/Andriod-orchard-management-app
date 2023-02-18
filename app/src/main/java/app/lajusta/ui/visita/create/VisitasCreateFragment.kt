@@ -10,10 +10,18 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasCreateBinding
+import app.lajusta.ui.bolson.Bolson
+import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.generic.ArrayedDate
+import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.parcela.Parcela
+import app.lajusta.ui.parcela.ParcelaVisita
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
+import app.lajusta.ui.usuarios.Usuario
+import app.lajusta.ui.usuarios.api.UsuariosApi
 import app.lajusta.ui.verdura.Verdura
+import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
@@ -27,10 +35,11 @@ import org.json.JSONObject
 import kotlin.random.Random
 
 
-class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
+class VisitasCreateFragment : BaseFragment() {
 
-    private var _binding:FragmentVisitasCreateBinding? = null
+    private var _binding: FragmentVisitasCreateBinding? = null
     private val binding get() = _binding!!
+    private var today = ArrayedDate.todayArrayed()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,82 +49,68 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
         _binding = FragmentVisitasCreateBinding.inflate(
             inflater,
             container,
-            false)
+            false
+        )
 
         return binding.root
     }
 
-    private var quintas_encontradas:List<Quinta>? = null
+    private val quintasList = mutableListOf<Quinta>()
+    private val tecnicosList = mutableListOf<Usuario>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fillSpinner()
+        apiCallGet()
 
-        binding.bGuardar.setOnClickListener{
+        var date = today.toMutableList()
+        date[1] += 1
+        binding.tvFechaSeleccionada.text = ArrayedDate.toString(date)
 
-            if(quintas_encontradas == null) shortToast("No se pudo guardar, repita en un momento...") else {
+        binding.bFecha.setOnClickListener(ArrayedDate.datePickerListener(
+            activity!!, binding.tvFechaSeleccionada
+        ) )
 
-            val fecha = binding.etFecha.text.toString().trim()
-            val tecnicoId = binding.etTecnico.text.toString().trim()
+        binding.bGuardar.setOnClickListener {
+
+            if(quintasList.isNullOrEmpty() && tecnicosList.isNullOrEmpty()) {
+                shortToast("Hubo problemas recuperando los datos de la base de datos. Intente mas tarde.")
+                return@setOnClickListener
+            }
+
+            val fecha = ArrayedDate.toArray(binding.tvFechaSeleccionada.text.toString())
+            val tecnicoNom = binding.spinnerTecnico.selectedItem.toString().trim()
             val quintaNom = binding.spinnerQuinta.selectedItem.toString().trim()
             val quintaId = getQuintaIdByName(quintaNom)
+            val tecnicoId = getTecnicoIdByName(tecnicoNom)
 
-            if ( fecha.isNotEmpty() && tecnicoId.isNotEmpty() && quintaNom.isNotEmpty() && quintas_encontradas != null && quintaId != null ){
+            val desc = binding.etDesc.text.toString().trim()
+            val listaParcelas = listOf<ParcelaVisita>() /** CAMBIAR */
 
-                Toast.makeText(activity, "Datos correctos. Intento de postear. $quintaId", Toast.LENGTH_SHORT).show()
-
-
-                val idVisita = createId()
-                val desc = binding.etDesc.text.toString().trim()
-                val listaParcelas = getListaDeParcelas(idVisita)
-
-                // Create JSON using JSONObject
-                val jsonObject = JSONObject()
-                jsonObject.put("id_visita", idVisita)
-                jsonObject.put("fecha_visita", fecha)
-                jsonObject.put("descripcion", desc)
-                jsonObject.put("id_tecnico", tecnicoId)
-                jsonObject.put("id_quinta", quintaId)
-                jsonObject.put("parcelas", listaParcelas)
-
-                // Convert JSONObject to String
-                val jsonObjectString = jsonObject.toString()
-
-                // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
-                val requestBody: RequestBody = RequestBody.create(MediaType.get("application/json"),jsonObjectString)
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    // Do the POST request and get response
-                    val response = VisitaApi().postVisita(requestBody)
-
-                    withContext(Dispatchers.Main) {
-                        if (response.isSuccessful) {
-
-                            // Convert raw JSON to pretty JSON using GSON library
-                            val gson = GsonBuilder().setPrettyPrinting().create()
-                            val prettyJson = gson.toJson(
-                                JsonParser().parse(
-                                    response.body()
-                                        ?.toString() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
-                                )
-                            )
-
-                            Log.d("Pretty Printed JSON :", prettyJson)
-
-                        } else {
-
-                            Log.e("RETROFIT_ERROR", response.code().toString())
-
-                        }
-                    }
-                }
-            } else shortToast("Ingrese los datos necesarios")
-
+            if(fecha.isNullOrEmpty()) {
+                shortToast("Debe seleccionar una fecha")
+                return@setOnClickListener
             }
+
+            if(tecnicoNom.isNullOrEmpty() && tecnicoId != null) {
+                shortToast("Debe seleccionar un tecnico")
+                return@setOnClickListener
+            }
+
+            if(quintaNom.isNullOrEmpty() && quintaId != null) {
+                shortToast("Debe escribir una quinta")
+                return@setOnClickListener
+            }
+
+
+            returnSimpleApiCall({
+                VisitaApi().postVisita(
+                    Visita(0,fecha,desc,tecnicoId!!,quintaId!!,listaParcelas)
+                )
+            }, "Hubo un error. La visita no pudo ser creada.")
 
         }
 
-        binding.bCancelar.setOnClickListener{
+        binding.bCancelar.setOnClickListener {
             activity?.onBackPressed()
         }
     }
@@ -125,63 +120,85 @@ class VisitasCreateFragment : Fragment(R.layout.fragment_visitas_create) {
         _binding = null
     }
 
-    fun fillSpinner() {
-        CoroutineScope(Dispatchers.IO).launch {
-            lateinit var quintas: List<Quinta>
-            try {
-                quintas = QuintaApi().getQuintas().body()!!
-                activity!!.runOnUiThread {
+    fun apiCallGet() {
+        apiCall(suspend {
+            val quintas = QuintaApi().getQuintas().body()!!
+            val tecnicos = UsuariosApi().getUsuarios().body()!!
 
-                    // access the items of the list
-                    val nombresQuintas: Array<String> = getNombreQuintas(quintas)
+            activity!!.runOnUiThread {
+                quintasList.clear()
+                quintasList.addAll(quintas)
 
-                    // access the spinner
-                    val spinner = binding.spinnerQuinta
-                    val adapter: ArrayAdapter<String>? = (activity?.let {
-                        ArrayAdapter<String>(
-                            it,
-                            android.R.layout.simple_spinner_item, nombresQuintas
-                        )
-                    })
+                tecnicosList.clear()
+                tecnicosList.addAll(tecnicos)
 
-                    spinner.adapter = adapter
-
-                }
-
-                quintas_encontradas = quintas
-
-            } catch(e: Exception) {
-                activity!!.runOnUiThread {
-                    shortToast("Hubo un error al listar las quintas.")
-                }
+                fillSpinners()
             }
-        }
+        }, "Hubo un error al actualizar la lista de visitas.")
     }
 
-    private fun shortToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    private fun fillSpinners(){
+        // access the items of the list
+        val nombresQuintas: Array<String> = getNombreQuintas(quintasList)
+        val nombresTecnicos: Array<String> = getNombreTecnicos(tecnicosList)
+
+        // access the spinner
+        val spinnerQuintas = binding.spinnerQuinta
+        val adapterQuintas: ArrayAdapter<String>? = (activity?.let {
+            ArrayAdapter<String>(
+                it,
+                R.layout.spinner_item, nombresQuintas
+            )
+        })
+
+        val spinnerTecnicos = binding.spinnerTecnico
+        val adapterTecnicos: ArrayAdapter<String>? = (activity?.let {
+            ArrayAdapter<String>(
+                it,
+                R.layout.spinner_item, nombresTecnicos
+            )
+        })
+
+        // bind
+        spinnerQuintas.adapter = adapterQuintas
+        spinnerTecnicos.adapter = adapterTecnicos
     }
 
-    private fun getNombreQuintas(quintas:List<Quinta>):Array<String>{
+    private fun getNombreQuintas(quintas: List<Quinta>): Array<String> {
         return quintas.map { it.nombre.orEmpty() }.toTypedArray()
     }
 
-    private fun getQuintaByName(name:String): Quinta?{
-        return quintas_encontradas?.find { it.nombre == name }
+    private fun getNombreTecnicos(tecnicos: List<Usuario>): Array<String> {
+        return tecnicos.map { it.nombre.orEmpty() }.toTypedArray()
     }
 
-    private fun getQuintaIdByName(name:String):Int?{
+    private fun getQuintaByName(name: String): Quinta? {
+        return quintasList?.find { it.nombre == name }
+    }
+
+    private fun getQuintaIdByName(name: String): Int? {
         return getQuintaByName(name)?.id_quinta
     }
 
-    fun getListaDeParcelas(idVisita:Int):List<Parcela> { /** Funcionalidad provisoria */
-        val verdura: Verdura = Verdura(1,arrayOf(2, 3, 4), arrayOf(1, 2, 4),"dsadfs", "Tomate","fssd")
-        val par = Parcela(1,2,true,true,idVisita, verdura)
-        val par1 = Parcela(2,3,false,true,idVisita, verdura)
-        return listOf(par, par1)
-     }
+    private fun getTecnicoByName(name: String): Usuario? {
+        return tecnicosList?.find { it.nombre == name }
+    }
 
-    fun createId():Int {    /** CAMBIAR POR UN VERDADERO ID */
+    private fun getTecnicoIdByName(name: String): Int? {
+        return getTecnicoByName(name)?.id_user
+    }
+
+    fun getListaDeParcelasVisita(): List<ParcelaVisita> {
+        /** Funcionalidad provisoria */
+        val verdura: Verdura =
+            Verdura(1, arrayOf(2, 3, 4), arrayOf(1, 2, 4), "dsadfs", "Tomate", "fssd")
+        val par = ParcelaVisita(1, 2, true, true, verdura)
+        val par1 = ParcelaVisita(2, 3, false, true, verdura)
+        return listOf(par, par1)
+    }
+
+    fun createId(): Int {
+        /** Este ID sera reemplazado en el backend */
         return Random.nextInt(0, 1000)
     }
 

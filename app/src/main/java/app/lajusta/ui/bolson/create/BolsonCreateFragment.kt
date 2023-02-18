@@ -38,7 +38,7 @@ class BolsonCreateFragment : BaseFragment() {
     }
 
     private val verdura: Verdura = Verdura(1, arrayOf(2, 3, 4), arrayOf(1, 2, 4),"dsadfs", "Tomate","fssd")
-    private val verduras: List<Verdura> = listOf(verdura,verdura,verdura,verdura,verdura,verdura,verdura)
+    private val verduras: List<Verdura> = listOf(verdura,verdura,verdura,verdura,verdura,verdura,verdura) /** CAMBIAR POR EL CRUD DE VERDURAS */
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

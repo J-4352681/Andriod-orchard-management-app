@@ -4,16 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasListBinding
-import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
@@ -21,13 +18,9 @@ import app.lajusta.ui.usuarios.Usuario
 import app.lajusta.ui.usuarios.api.UsuariosApi
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
-import app.lajusta.ui.visita.create.VisitasCreateFragment
 import app.lajusta.ui.visita.model.VisitaCompleta
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class VisitasListFragment() : BaseFragment(), SearchView.OnQueryTextListener {
+class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private var _binding: FragmentVisitasListBinding? = null
     private val binding get() = _binding!!

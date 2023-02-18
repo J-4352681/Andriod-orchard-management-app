@@ -1,5 +1,6 @@
 package app.lajusta.ui.generic
 
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -26,7 +27,9 @@ open class BaseFragment : Fragment() {
                 val response = apiEffectiveCall()
                 if(!response.isSuccessful) throw Exception(response.code().toString())
             }
-            catch(e: Exception) { activity!!.runOnUiThread { shortToast(failureMessage) } }
+            catch(e: Exception) { activity!!.runOnUiThread {
+                shortToast(failureMessage)
+                Log.e("RETROFIT ERROR", e.message!!) } }
             finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
         }
     }

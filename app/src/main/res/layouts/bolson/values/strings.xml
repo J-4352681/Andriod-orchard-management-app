@@ -67,4 +67,6 @@
     <string name="et_hint_desc_visita">Ingrese una descripcion</string>
     <string name="tv_Parcelas">Parcelas</string>
     <string name="btn_agregarParcela">Agregar Parcela</string>
+    <string name="sp_tecnico">Seleccione un tecnico</string>
+    <string name="tv_title_visita_create">Crear visita</string>
 </resources>

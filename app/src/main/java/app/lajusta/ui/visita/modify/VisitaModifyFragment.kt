@@ -13,6 +13,7 @@ import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
+import app.lajusta.ui.visita.model.VisitaCompleta
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 class VisitaModifyFragment() : BaseFragment() {
     private var _binding: FragmentVisitaModifyBinding? = null
     private val binding get() = _binding!!
-    private lateinit var visita: Visita
+    private lateinit var visita: VisitaCompleta
     private lateinit var parcelaVisitaAdapter: ParcelaVisitaAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,15 +59,15 @@ class VisitaModifyFragment() : BaseFragment() {
 
         binding.bGuardar.setOnClickListener {
             try {
-                visita.id_tecnico = binding.etTecnico.text.toString().toInt()
-                //visita.fecha_visita = binding.etFecha.text.toString().toDate()
+                visita.tecnico.id_user = binding.etTecnico.text.toString().toInt()  /**ARREGLAR FECHA */
+                //visita.fecha_visita = binding.etFecha.text.toString().toDate() /***/
                 visita.descripcion = binding.etDesc.text.toString()
-                visita.id_quinta = binding.spinnerQuinta.id
+                visita.quinta.id_quinta = binding.spinnerQuinta.id
                 visita.parcelas = parcelaVisitaAdapter.getParcelas()
 
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        val response = VisitaApi().putVisita(visita)
+                        val response = VisitaApi().putVisita(visita.toVisita())
                         activity!!.runOnUiThread { longToast(
                             response.body().toString()
                         ) }
@@ -86,7 +87,7 @@ class VisitaModifyFragment() : BaseFragment() {
     private fun fillItem() {
         binding.tvTitle.text = "Modificando visita " + visita.id_visita.toString()
         binding.etFecha.setText(visita.fecha_visita.toString())
-        binding.etTecnico.setText(visita.id_tecnico.toString())
+        binding.etTecnico.setText(visita.tecnico.id_user.toString())
         binding.etDesc.setText(visita.descripcion.toString())
 
         //LLenar combobox y iniciar veriable quintas_encontradas

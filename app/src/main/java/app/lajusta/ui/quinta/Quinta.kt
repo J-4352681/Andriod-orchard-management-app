@@ -5,9 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Quinta(
-    val id_quinta: Int,
-    val nombre: String?,
-    val direccion: String?,
-    val geoImg: String?,
-    val fpId: Int,
+    var id_quinta: Int,
+    var nombre: String?,
+    var direccion: String?,
+    var geoImg: String?,
+    var fpId: Int,
 ): Parcelable

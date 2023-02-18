@@ -19,7 +19,7 @@ interface VisitaApi {
     suspend fun deleteVisita(@Path("id") id: Int): Response<Unit>
 
     @POST("Visitas")
-    suspend fun postVisita(@Body requestBody: RequestBody): Response<RequestBody>
+    suspend fun postVisita(@Body Visita: Visita): Response<Visita>
 
     @PUT("Visitas")
     suspend fun putVisita(@Body visita: Visita): Response<Unit>
