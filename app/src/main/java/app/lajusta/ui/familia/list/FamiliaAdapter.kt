@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import app.lajusta.R
 import app.lajusta.ui.familia.Familia
+import app.lajusta.ui.familia.FamiliaCompleta
 
 class FamiliaAdapter(
-    private val familiasList: List<Familia>,
-    private val clickListener: (Familia) -> Unit
+    private val familiasList: List<FamiliaCompleta>,
+    private val clickListener: (FamiliaCompleta) -> Unit
 ) : Adapter<FamiliaViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FamiliaViewHolder {

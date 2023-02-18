@@ -39,7 +39,11 @@ open class BaseFragment : Fragment() {
             try {
                 apiEffectiveCall()
                 GlobalScope.launch(Dispatchers.Main) {
-                    apiCallUIBlock()
+                    try {
+                        apiCallUIBlock()
+                    } catch (e: Exception) {
+                        shortToast("Otro error")
+                    }
                 }
             }
             catch (e: Exception) {

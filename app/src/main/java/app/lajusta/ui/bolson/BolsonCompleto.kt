@@ -2,6 +2,7 @@ package app.lajusta.ui.bolson
 
 import android.os.Parcelable
 import app.lajusta.ui.familia.Familia
+import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.verdura.Verdura
 import kotlinx.parcelize.Parcelize
@@ -27,6 +28,27 @@ data class BolsonCompleto(
                 ronda,
                 bolson.verduras
             )
+        }
+
+        fun filter(
+            bolsonesCompletos: MutableList<BolsonCompleto>,
+            bolsonesCompletosOriginal: MutableList<BolsonCompleto>,
+            query: String?
+        ): MutableList<BolsonCompleto> {
+            bolsonesCompletos.clear()
+            if(query.isNullOrEmpty()) bolsonesCompletos.addAll(bolsonesCompletosOriginal)
+            else bolsonesCompletos.addAll(
+                bolsonesCompletosOriginal.filter { bolson ->
+                    bolson.familia.nombre.lowercase().contains(query)
+                    || bolson.verduras.filter {
+                        it.nombre.lowercase().contains(query)
+                    }.isNotEmpty()
+                    || ArrayedDate.toString(bolson.ronda.fecha_inicio).contains(query)
+                    || ArrayedDate.toString(bolson.ronda.fecha_fin!!).contains(query)
+                    || bolson.cantidad.toString().contains(query)
+                }
+            )
+            return bolsonesCompletos
         }
     }
 }

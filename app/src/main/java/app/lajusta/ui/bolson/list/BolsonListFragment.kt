@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
@@ -19,19 +18,16 @@ import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private var _binding: FragmentBolsonListBinding? = null
     private val binding get() = _binding!!
-    private val bolsonesList = mutableListOf<Bolson>()
-    private val familiasList = mutableListOf<Familia>()
-    private val rondasList = mutableListOf<Ronda>()
-    private val bolsonesCompletosList = mutableListOf<BolsonCompleto>()
+    private var bolsones = listOf<Bolson>()
+    private var familias = listOf<Familia>()
+    private var rondas = listOf<Ronda>()
+    private val bolsonesCompletos = mutableListOf<BolsonCompleto>()
+    private val bolsonesCompletosOriginal = mutableListOf<BolsonCompleto>()
     private lateinit var bolsonAdapter: BolsonAdapter
 
     override fun onCreateView(
@@ -40,10 +36,6 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBolsonListBinding.inflate(inflater, container, false)
-
-        binding.svBolsones.setOnQueryTextListener(this)
-        initRecyclerView()
-
         return binding.root
     }
 
@@ -51,20 +43,22 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.fabCrearBolson.setOnClickListener {
-            view.findNavController().navigate(R.id.bolsonCreateFragment)
+            this.findNavController().navigate(R.id.action_nav_bolson_to_bolsonCreateFragment)
         }
+
+        binding.svBolsones.setOnQueryTextListener(this)
+
+        initRecyclerView()
     }
 
     private fun initRecyclerView() {
-        bolsonAdapter = BolsonAdapter(bolsonesCompletosList) { bolson: BolsonCompleto ->
+        bolsonAdapter = BolsonAdapter(bolsonesCompletos) { bolson: BolsonCompleto ->
             val bundle = bundleOf("bolson" to bolson)
-            this.findNavController().navigate(
-                R.id.action_nav_bolson_to_bolsonModifyFragment, bundle
-            )
+            this.findNavController().navigate(R.id.bolsonModifyFragment, bundle)
         }
         binding.rvBolsones.layoutManager = LinearLayoutManager(activity)
         binding.rvBolsones.adapter = bolsonAdapter
-        filter("")
+        listInit()
     }
 
     override fun onDestroyView() {
@@ -72,49 +66,37 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         _binding = null
     }
 
-    private fun filter(query: String) {
-        lateinit var bolsones: List<Bolson>
-        lateinit var familias: List<Familia>
-        lateinit var rondas: List<Ronda>
-
+    private fun listInit() {
         apiCall(suspend {
             bolsones = BolsonApi().getBolsones().body()!!
             familias = FamiliaApi().getFamilias().body()!!
             rondas = RondaApi().getRondas().body()!!
         }, {
-            bolsonesList.clear()
-            bolsonesList.addAll(bolsones)
+            bolsonesCompletos.clear()
+            bolsonesCompletos.addAll(bolsones.map { bolson ->
+                BolsonCompleto.toBolsonCompleto(
+                    bolson,
+                    familias.find { it.id_fp == bolson.idFp }!!,
+                    rondas.find { it.id_ronda == bolson.idRonda }!!
+                )
+            })
 
-            familiasList.clear()
-            familiasList.addAll(familias)
+            bolsonesCompletosOriginal.clear()
+            bolsonesCompletosOriginal.addAll(bolsonesCompletos)
 
-            rondasList.clear()
-            rondasList.addAll(rondas)
-            fillBolsonesCompletos()
+            bolsonAdapter.notifyDataSetChanged()
         }, "Hubo un error al actualizar la lista de bolsones.")
     }
 
-    private fun fillBolsonesCompletos() {
-        bolsonesCompletosList.clear()
-        bolsonesList.forEach { bolson ->
-            bolsonesCompletosList.add(
-                BolsonCompleto.toBolsonCompleto(
-                    bolson,
-                    familiasList.find { it.id_fp == bolson.idFp }!!,
-                    rondasList.find { it.id_ronda == bolson.idRonda }!!
-                )
-            )
-        }
+    private fun filter(query: String?) {
+        BolsonCompleto.filter(bolsonesCompletos, bolsonesCompletosOriginal, query)
         bolsonAdapter.notifyDataSetChanged()
     }
 
+    override fun onQueryTextSubmit(query: String?): Boolean = true
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        if (!query.isNullOrEmpty()) filter(query.lowercase())
-        return true
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
+    override fun onQueryTextChange(query: String?): Boolean {
+        filter(query!!.lowercase())
         return true
     }
 }

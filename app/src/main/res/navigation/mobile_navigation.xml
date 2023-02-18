@@ -36,7 +36,7 @@
             app:destination="@id/bolsonFilteredListFragment" />
         <argument
             android:name="familia"
-            app:argType="app.lajusta.ui.familia.Familia" />
+            app:argType="app.lajusta.ui.familia.FamiliaCompleta" />
     </fragment>
 
     <fragment

@@ -12,6 +12,7 @@ import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.familia.Familia
+import app.lajusta.ui.familia.FamiliaCompleta
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
@@ -25,10 +26,9 @@ class FamiliaModifyFragment: BaseFragment(){
 
     private var _binding: FragmentFamiliaModifyBinding? = null
     private val binding get() = _binding!!
-    private lateinit var familia: Familia
-    private var bolsonesCompletos = mutableListOf<BolsonCompleto>()
-    private var quintas = mutableListOf<Quinta>()
-    private var rondas = mutableListOf<Ronda>()
+    private lateinit var familia: FamiliaCompleta
+    private val bolsonesCompletos = mutableListOf<BolsonCompleto>()
+    private var rondas = listOf<Ronda>()
     private var bolsones = mutableListOf<Bolson>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,24 +64,23 @@ class FamiliaModifyFragment: BaseFragment(){
         binding.etNombre.setText(familia.nombre)
 
         apiCall(suspend {
-            quintas = QuintaApi().getQuintas().body()!!.toMutableList()
             rondas = RondaApi().getRondas().body()!!.toMutableList()
-            bolsones = BolsonApi().getBolsones().body()!!.toMutableList()
         }, {
             fillQuintas()
             fillRondas()
         }, "No se pudieron obtener las quintas y/o bolsones de la familia.")
-
     }
 
     private fun fillQuintas() {
-        val textQuintas = quintas
-            .filter { it.fpId == familia.id_fp }
-            .map { it.nombre }.toString()
+        val textQuintas = familia.quintas.map { it.nombre }.toString()
         binding.tvQuintasList.text = textQuintas.subSequence(1, textQuintas.length-1)
     }
 
     private fun fillRondas() {
+        rondas
+    }
+
+    /* private fun fillRondas2() {
         bolsones = bolsones.filter { it.idFp == familia.id_fp }.toMutableList()
         bolsones
             .forEach { bolson ->
@@ -96,7 +95,7 @@ class FamiliaModifyFragment: BaseFragment(){
         }.toString()
         binding.tvUltimoBolson.text = fechasBolsonesRondas
             .subSequence(1, fechasBolsonesRondas.length-1)
-    }
+    } */
 
     private fun setClickListeners() {
         binding.bFecha.setOnClickListener(ArrayedDate.datePickerListener(
@@ -126,7 +125,7 @@ class FamiliaModifyFragment: BaseFragment(){
             }
 
             returnSimpleApiCall(
-                { FamiliaApi().putFamilia(familia) },
+                { FamiliaApi().putFamilia(familia.toFamilia()) },
                 "Hubo un error. La familia no pudo ser modificado."
             )
         }

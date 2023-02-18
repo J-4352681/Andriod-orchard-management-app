@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.lajusta.R
-import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.model.VisitaCompleta
 
 class VisitaAdapter(

@@ -4,7 +4,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.lajusta.databinding.ItemVisitaBinding
 import app.lajusta.ui.generic.ArrayedDate
-import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.model.VisitaCompleta
 
 class VisitaViewHolder(

@@ -1,6 +1,5 @@
 package app.lajusta.ui.visita.modify
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,17 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentVisitaModifyBinding
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.parcela.ParcelaVisita
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.usuarios.Usuario
 import app.lajusta.ui.usuarios.api.UsuariosApi
-import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
 import app.lajusta.ui.visita.model.VisitaCompleta
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class VisitaModifyFragment() : BaseFragment() {
@@ -60,19 +56,9 @@ class VisitaModifyFragment() : BaseFragment() {
         )
 
         binding.bBorrar.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    VisitaApi().deleteVisita(visita.id_visita)
-                } catch (e: Exception) {
-                    activity!!.runOnUiThread {
-                        shortToast(
-                            "Hubo un error. El elemento no pudo ser eliminado."
-                        )
-                    }
-                } finally {
-                    activity!!.runOnUiThread { activity!!.onBackPressed() }
-                }
-            }
+            returnSimpleApiCall({
+                VisitaApi().deleteVisita(visita.id_visita)
+            }, "Hubo un error. El elemento no pudo ser eliminado.")
         }
 
         binding.bGuardar.setOnClickListener {

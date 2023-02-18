@@ -4,6 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.lajusta.databinding.ItemFamiliaBinding
 import app.lajusta.ui.familia.Familia
+import app.lajusta.ui.familia.FamiliaCompleta
 import app.lajusta.ui.generic.ArrayedDate
 
 class FamiliaViewHolder(
@@ -12,10 +13,15 @@ class FamiliaViewHolder(
 
     private val binding = ItemFamiliaBinding.bind(itemView)
 
-    fun bind(familiaItem: Familia, clickListener: (Familia) -> Unit) {
+    fun bind(familiaItem: FamiliaCompleta, clickListener: (FamiliaCompleta) -> Unit) {
         binding.tvTitle.text = familiaItem.nombre
-        binding.tvDescripcion.text =
+        val quintas = familiaItem.quintas.map { it.nombre }.toString()
+        binding.tvDescripcion.text = (
             "Fecha de afiliación: " + ArrayedDate.toString(familiaItem.fecha_afiliacion)
+            + "\nQuintas: " + if (familiaItem.quintas.isNotEmpty())
+                quintas.subSequence(1, quintas.length-1)
+                else "Familias sin quintas."
+        )
 
         itemView.setOnClickListener { clickListener(familiaItem) }
     }
