@@ -19,6 +19,7 @@ import app.lajusta.ui.usuarios.api.UsuariosApi
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
 import app.lajusta.ui.visita.model.VisitaCompleta
+import kotlinx.coroutines.delay
 
 class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
@@ -87,6 +88,7 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
                 fillVisitasCompletas()
             }
         }, "Hubo un error al actualizar la lista de visitas.")
+
     }
 
     private fun fillVisitasCompletas(){

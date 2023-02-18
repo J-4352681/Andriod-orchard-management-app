@@ -41,6 +41,7 @@ open class BaseFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             try {apiEffectiveCall() }
             catch (e: Exception) {
+                Log.e("RETROFIT ERROR", e.message!!)
                 activity!!.runOnUiThread { shortToast(failureMessage) }
             }
         }

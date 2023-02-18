@@ -69,4 +69,5 @@
     <string name="btn_agregarParcela">Agregar Parcela</string>
     <string name="sp_tecnico">Seleccione un tecnico</string>
     <string name="tv_title_visita_create">Crear visita</string>
+    <string name="fecha_ejemplo">2/3/2000</string>
 </resources>

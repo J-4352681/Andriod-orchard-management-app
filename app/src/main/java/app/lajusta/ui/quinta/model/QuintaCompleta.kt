@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class QuintaCompleta(
     val id_quinta: Int,
-    val nombre: String?,
+    val nombre: String,
     val direccion: String?,
     val geoImg: String?,
     val familia: Familia,

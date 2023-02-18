@@ -19,6 +19,7 @@ import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
+import kotlinx.coroutines.delay
 
 class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
@@ -77,6 +78,8 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             activity!!.runOnUiThread {
                 bolsonesList.clear()
                 bolsonesList.addAll(bolsones)
+
+
 
                 familiasList.clear()
                 familiasList.addAll(familias)
