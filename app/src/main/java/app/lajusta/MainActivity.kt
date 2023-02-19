@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
-        // const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
-        const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
+        const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
+        //const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
         var userId:String = ""
         var userName:String = ""
         var userType:String = ""
@@ -69,17 +69,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
+            R.id.action_profile -> {
                 val i = Intent(applicationContext, ProfileActivity::class.java)
                 startActivity(i)
                 true
             }
-            R.id.action_profile ->{
+            R.id.action_logout ->{
                 userId = ""
                 userName = ""
                 userType = ""
+                token = ""
                 goToLogin()
                 finish()
+                return true
+            }
+            R.id.action_debug_map ->{
+                goToGenericMap()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -95,5 +100,10 @@ class MainActivity : AppCompatActivity() {
         val i = Intent(applicationContext, LoginActivity::class.java)
         startActivity(i)
         finish()
+    }
+
+    private fun goToGenericMap() {
+        val i = Intent(applicationContext, QuintaMapaActivity::class.java)
+        startActivity(i)
     }
 }
