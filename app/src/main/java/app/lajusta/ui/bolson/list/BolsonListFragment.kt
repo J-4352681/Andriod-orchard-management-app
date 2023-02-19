@@ -20,7 +20,6 @@ import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
 
 class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
-
     private var _binding: FragmentBolsonListBinding? = null
     private val binding get() = _binding!!
     private var bolsones = listOf<Bolson>()
@@ -28,7 +27,16 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var rondas = listOf<Ronda>()
     private val bolsonesCompletos = mutableListOf<BolsonCompleto>()
     private val bolsonesCompletosOriginal = mutableListOf<BolsonCompleto>()
+    private var bolsonesCompletosArg: MutableList<BolsonCompleto>? = null
     private lateinit var bolsonAdapter: BolsonAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let { bundle ->
+            val data = bundle.getParcelableArrayList<BolsonCompleto>("bolsones")
+            if(data != null) bolsonesCompletosArg = data?.toMutableList()!!
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +51,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.fabCrearBolson.setOnClickListener {
-            this.findNavController().navigate(R.id.action_nav_bolson_to_bolsonCreateFragment)
+            this.findNavController().navigate(R.id.bolsonCreateFragment)
         }
 
         binding.svBolsones.setOnQueryTextListener(this)
@@ -73,7 +81,8 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             rondas = RondaApi().getRondas().body()!!
         }, {
             bolsonesCompletos.clear()
-            bolsonesCompletos.addAll(bolsones.map { bolson ->
+            if(bolsonesCompletosArg != null) bolsonesCompletos.addAll(bolsonesCompletosArg!!)
+            else bolsonesCompletos.addAll(bolsones.map { bolson ->
                 BolsonCompleto.toBolsonCompleto(
                     bolson,
                     familias.find { it.id_fp == bolson.idFp }!!,

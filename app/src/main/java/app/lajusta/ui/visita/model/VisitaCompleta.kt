@@ -44,12 +44,12 @@ data class VisitaCompleta(
             else visitasCompletas.addAll(
                 visitasCompletasOriginal.filter { visita ->
                     visita.tecnico.nombre.lowercase().contains(query)
-                            || ArrayedDate.toString(visita.fecha_visita).contains(query)
-                            || visita.quinta.nombre.lowercase().contains(query)
-                            || visita.parcelas.filter {
+                    || ArrayedDate.toString(visita.fecha_visita).contains(query)
+                    || visita.quinta.nombre.lowercase().contains(query)
+                    || visita.parcelas.any {
                         it.verdura.nombre.lowercase().contains(query)
-                    }.isNotEmpty()
-                            || visita.descripcion!!.lowercase().contains(query)
+                    }
+                    || visita.descripcion!!.lowercase().contains(query)
                 }
             )
             return visitasCompletas

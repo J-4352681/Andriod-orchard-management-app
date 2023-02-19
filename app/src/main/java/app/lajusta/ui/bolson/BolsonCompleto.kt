@@ -22,11 +22,7 @@ data class BolsonCompleto(
     companion object {
         fun toBolsonCompleto(bolson: Bolson, familia: Familia, ronda: Ronda): BolsonCompleto {
             return BolsonCompleto(
-                bolson.id_bolson,
-                bolson.cantidad,
-                familia,
-                ronda,
-                bolson.verduras
+                bolson.id_bolson, bolson.cantidad, familia, ronda, bolson.verduras
             )
         }
 
@@ -40,9 +36,9 @@ data class BolsonCompleto(
             else bolsonesCompletos.addAll(
                 bolsonesCompletosOriginal.filter { bolson ->
                     bolson.familia.nombre.lowercase().contains(query)
-                    || bolson.verduras.filter {
+                    || bolson.verduras.any {
                         it.nombre.lowercase().contains(query)
-                    }.isNotEmpty()
+                    }
                     || ArrayedDate.toString(bolson.ronda.fecha_inicio).contains(query)
                     || ArrayedDate.toString(bolson.ronda.fecha_fin!!).contains(query)
                     || bolson.cantidad.toString().contains(query)

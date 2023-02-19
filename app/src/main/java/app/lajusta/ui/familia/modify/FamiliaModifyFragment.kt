@@ -8,19 +8,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import app.lajusta.R
 import app.lajusta.databinding.FragmentFamiliaModifyBinding
-import app.lajusta.ui.bolson.Bolson
-import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.bolson.BolsonCompleto
-import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.FamiliaCompleta
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.quinta.Quinta
-import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
-import kotlinx.coroutines.*
 
 class FamiliaModifyFragment: BaseFragment(){
 
@@ -29,7 +23,6 @@ class FamiliaModifyFragment: BaseFragment(){
     private lateinit var familia: FamiliaCompleta
     private val bolsonesCompletos = mutableListOf<BolsonCompleto>()
     private var rondas = listOf<Ronda>()
-    private var bolsones = mutableListOf<Bolson>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,25 +70,19 @@ class FamiliaModifyFragment: BaseFragment(){
     }
 
     private fun fillRondas() {
-        rondas
-    }
+        bolsonesCompletos.clear()
+        bolsonesCompletos.addAll(familia.bolsones.map { bolson ->
+            BolsonCompleto.toBolsonCompleto(bolson, familia.toFamilia(), familia.rondas.find {
+                it.id_ronda == bolson.idRonda
+            }!!)
+        }.toMutableList())
 
-    /* private fun fillRondas2() {
-        bolsones = bolsones.filter { it.idFp == familia.id_fp }.toMutableList()
-        bolsones
-            .forEach { bolson ->
-                bolsonesCompletos.add(
-                    BolsonCompleto.toBolsonCompleto(bolson, familia, rondas.filter {
-                        it.id_ronda == bolson.idRonda
-                    }.firstOrNull()!!)
-                )
-            }
         val fechasBolsonesRondas = bolsonesCompletos.map {
             ArrayedDate.toString(it.ronda.fecha_inicio.toMutableList())
         }.toString()
         binding.tvUltimoBolson.text = fechasBolsonesRondas
             .subSequence(1, fechasBolsonesRondas.length-1)
-    } */
+    }
 
     private fun setClickListeners() {
         binding.bFecha.setOnClickListener(ArrayedDate.datePickerListener(

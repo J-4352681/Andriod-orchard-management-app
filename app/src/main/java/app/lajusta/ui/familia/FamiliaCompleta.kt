@@ -4,6 +4,7 @@ import android.os.Parcelable
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.quinta.Quinta
+import app.lajusta.ui.rondas.Ronda
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -12,7 +13,8 @@ data class FamiliaCompleta(
     var nombre: String,
     var fecha_afiliacion: List<Int>,
     val quintas: MutableList<Quinta>,
-    val bolsones: MutableList<Bolson>
+    val bolsones: MutableList<Bolson>,
+    val rondas: MutableList<Ronda>
 ): Parcelable {
     fun toFamilia(): Familia {
         return Familia(id_fp, nombre, fecha_afiliacion)
@@ -22,14 +24,11 @@ data class FamiliaCompleta(
         fun toFamiliaCompleta(
             familia: Familia,
             quintas: MutableList<Quinta>,
-            bolsones: MutableList<Bolson>
+            bolsones: MutableList<Bolson>,
+            rondas: MutableList<Ronda>
         ): FamiliaCompleta {
             return FamiliaCompleta(
-                familia.id_fp,
-                familia.nombre,
-                familia.fecha_afiliacion,
-                quintas,
-                bolsones
+                familia.id_fp, familia.nombre, familia.fecha_afiliacion, quintas, bolsones, rondas
             )
         }
 
@@ -43,13 +42,16 @@ data class FamiliaCompleta(
             else familiasCompletas.addAll(
                 familiasCompletasOriginales.filter { familia ->
                     familia.nombre.lowercase().contains(query)
-                    /*|| familia.verduras.map { it.nombre.lowercase() }.contains(query)
-                    || ArrayedDate.toString(familia.ronda.fecha_inicio).contains(query)
-                    || ArrayedDate.toString(familia.ronda.fecha_fin!!).contains(query)
-                    || familia.cantidad.toString().contains(query)*/
+                    || familia.quintas.any { it.nombre == query }
+                    || ArrayedDate.toString(familia.fecha_afiliacion).contains(query)
                 }
             )
             return familiasCompletas
         }
     }
 }
+
+@Parcelize
+data class FamiliasCompletas(
+    val familias: List<FamiliaCompleta>
+): ArrayList<FamiliaCompleta>(familias), Parcelable

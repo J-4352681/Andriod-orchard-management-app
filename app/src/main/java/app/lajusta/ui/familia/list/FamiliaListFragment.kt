@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentFamiliasListBinding
 import app.lajusta.ui.bolson.Bolson
+import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.FamiliaCompleta
@@ -19,17 +20,28 @@ import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.quinta.api.QuintaApi
+import app.lajusta.ui.rondas.Ronda
+import app.lajusta.ui.rondas.api.RondaApi
 
 class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
-
     private var _binding: FragmentFamiliasListBinding? = null
     private val binding get() = _binding!!
     private var familias = listOf<Familia>()
     private var quintas = listOf<Quinta>()
     private var bolsones = listOf<Bolson>()
+    private var rondas = listOf<Ronda>()
     private val familiasCompletas = mutableListOf<FamiliaCompleta>()
     private val familiasCompletasOriginal = mutableListOf<FamiliaCompleta>()
+    private var familiasCompletasArg: MutableList<FamiliaCompleta>? = null
     private lateinit var familiaAdapter: FamiliaAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let { bundle ->
+            val data = bundle.getParcelableArrayList<FamiliaCompleta>("familias")
+            if(data != null) familiasCompletasArg = data?.toMutableList()!!
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,14 +84,17 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             familias = FamiliaApi().getFamilias().body()!!
             quintas = QuintaApi().getQuintas().body()!!
             bolsones = BolsonApi().getBolsones().body()!!
+            rondas = RondaApi().getRondas().body()!!
         }, {
             familiasCompletas.clear()
             familiasCompletas.addAll(familias.map { familia ->
-                FamiliaCompleta.toFamiliaCompleta(
-                    familia,
-                    quintas.filter { it.fpId == familia.id_fp }.toMutableList(),
-                    bolsones.filter { it.idFp == familia.id_fp }.toMutableList()
-                )
+                val quintas = quintas.filter { it.fpId == familia.id_fp }.toMutableList()
+                val bolsones = bolsones.filter { it.idFp == familia.id_fp }.toMutableList()
+                val rondas = rondas.filter { ronda ->
+                    bolsones.any { bolson -> bolson.idRonda == ronda.id_ronda }
+                }.toMutableList()
+
+                FamiliaCompleta.toFamiliaCompleta(familia, quintas, bolsones, rondas)
             })
 
             familiasCompletasOriginal.clear()

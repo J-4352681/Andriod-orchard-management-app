@@ -18,12 +18,17 @@
         android:name="app.lajusta.ui.familia.list.FamiliaListFragment"
         android:label="@string/menu_familias"
         tools:layout="@layout/fragment_familias_list" >
-        <action
-            android:id="@+id/action_nav_familia_to_familiaCreateFragment"
-            app:destination="@id/familiaCreateFragment" />
-        <action
-            android:id="@+id/action_nav_familia_to_familiaModifyFragment"
-            app:destination="@id/familiaModifyFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/familiaFilteredListFragment"
+        android:name="app.lajusta.ui.familia.list.FamiliaListFragment"
+        android:label="Familias"
+        tools:layout="@layout/fragment_familias_list" >
+        <argument
+            android:name="familias"
+            app:argType="app.lajusta.ui.familia.FamiliasCompletas"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -31,9 +36,6 @@
         android:name="app.lajusta.ui.familia.modify.FamiliaModifyFragment"
         android:label="Modificar familia"
         tools:layout="@layout/fragment_familia_modify" >
-        <action
-            android:id="@+id/action_familiaModifyFragment_to_bolsonFilteredListFragment"
-            app:destination="@id/bolsonFilteredListFragment" />
         <argument
             android:name="familia"
             app:argType="app.lajusta.ui.familia.FamiliaCompleta" />
@@ -51,28 +53,17 @@
         android:name="app.lajusta.ui.bolson.list.BolsonListFragment"
         android:label="@string/menu_bolsones"
         tools:layout="@layout/fragment_bolson_list" >
-        <action
-            android:id="@+id/action_nav_bolson_to_bolsonModifyFragment"
-            app:destination="@id/bolsonModifyFragment"/>
-        <action
-            android:id="@+id/action_nav_bolson_to_bolsonCreateFragment"
-            app:destination="@id/bolsonCreateFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/bolsonFilteredListFragment"
-        android:name="app.lajusta.ui.bolson.list.BolsonFilteredListFragment"
-        android:label="Bolsones de la familia"
+        android:name="app.lajusta.ui.bolson.list.BolsonListFragment"
+        android:label="Bolsones"
         tools:layout="@layout/fragment_bolson_list" >
-        <action
-            android:id="@+id/action_bolsonFilteredListFragment_to_bolsonModifyFragment"
-            app:destination="@id/bolsonModifyFragment" />
-        <action
-            android:id="@+id/action_bolsonFilteredListFragment_to_bolsonCreateFragment"
-            app:destination="@id/bolsonCreateFragment" />
         <argument
             android:name="bolsones"
-            app:argType="app.lajusta.ui.bolson.BolsonesCompletos" />
+            app:argType="app.lajusta.ui.bolson.BolsonesCompletos"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -101,12 +92,6 @@
         android:name="app.lajusta.ui.visita.list.VisitasListFragment"
         android:label="@string/menu_visitas"
         tools:layout="@layout/fragment_visitas_list" >
-        <action
-            android:id="@+id/action_nav_visitas_to_visitasCreateFragment"
-            app:destination="@id/visitasCreateFragment" />
-        <action
-            android:id="@+id/action_nav_visita_to_visitaModifyFragment"
-            app:destination="@id/visitaModifyFragment"/>
     </fragment>
 
     <fragment
