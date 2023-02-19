@@ -22,26 +22,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/tv_title_bolson_modify" />
-
-
-            <TextView
                 android:id="@+id/tvCantidad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/tv_cantidad"
                 android:textSize="16sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
                 tools:ignore="MissingConstraints" />
 
             <EditText
@@ -63,7 +50,6 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/tv_ronda"
                 android:textSize="16sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etCantidad"
                 tools:ignore="MissingConstraints" />
@@ -87,7 +73,6 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/tv_familia"
                 android:textSize="16sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etRonda"
                 tools:ignore="MissingConstraints" />
@@ -111,7 +96,6 @@
                 android:layout_marginTop="16dp"
                 android:text="Verduras"
                 android:textSize="16sp"
-                android:textStyle="bold"
                 android:paddingVertical="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etFamilia"

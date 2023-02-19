@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_bolson">
+    app:startDestination="@+id/nav_familias">
 
     <!-- RONDA -->
     <fragment
@@ -108,5 +108,44 @@
         android:id="@+id/visitasCreateFragment"
         android:name="app.lajusta.ui.visita.create.VisitasCreateFragment"
         android:label="Crear visita" />
+
+
+    <!-- QUINTA -->
+    <fragment
+        android:id="@+id/nav_quintas"
+        android:name="app.lajusta.ui.quinta.list.QuintaListFragment"
+        android:label="Quinta"
+        tools:layout="@layout/fragment_quinta_list" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/quintaFilteredListFragment"
+        android:name="app.lajusta.ui.quinta.list.QuintaListFragment"
+        android:label="Bolsones"
+        tools:layout="@layout/fragment_bolson_list" >
+        <argument
+            android:name="quintas"
+            app:argType="app.lajusta.ui.quinta.model.QuintasCompletas"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quintaModifyFragment"
+        android:name="app.lajusta.ui.quinta.modify.QuintaModifyFragment"
+        android:label="Modificar quinta"
+        tools:layout="@layout/fragment_quinta_modify" >
+        <argument
+            android:name="quinta"
+            app:argType="app.lajusta.ui.quinta.Quinta" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quintaCreateFragment"
+        android:name="app.lajusta.ui.quinta.create.QuintaCreateFragment"
+        android:label="Crear quinta" >
+        <argument
+            android:name="quinta"
+            app:argType="app.lajusta.ui.quinta.Quinta" />
+    </fragment>
 
 </navigation>

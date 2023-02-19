@@ -87,7 +87,8 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             rondas = RondaApi().getRondas().body()!!
         }, {
             familiasCompletas.clear()
-            familiasCompletas.addAll(familias.map { familia ->
+            if(familiasCompletasArg != null) familiasCompletas.addAll(familiasCompletasArg!!)
+            else familiasCompletas.addAll(familias.map { familia ->
                 val quintas = quintas.filter { it.fpId == familia.id_fp }.toMutableList()
                 val bolsones = bolsones.filter { it.idFp == familia.id_fp }.toMutableList()
                 val rondas = rondas.filter { ronda ->

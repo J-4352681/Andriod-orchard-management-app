@@ -19,7 +19,7 @@ interface QuintaApi {
     suspend fun deleteQuinta(@Path("id") id: Int): Response<Unit>
 
     @POST("Quintas")
-    suspend fun postQuinta(@Body requestBody: RequestBody): Response<RequestBody>
+    suspend fun postQuinta(@Body requestBody: Quinta): Response<RequestBody>
 
     @PUT("Quintas/{id}")
     suspend fun putQuinta(@Path("id") id: Int, @Body quinta: Quinta): Response<Unit>

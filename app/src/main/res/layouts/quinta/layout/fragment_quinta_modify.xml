@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bolson_create"
+    android:id="@+id/bolson_modify"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
@@ -22,47 +22,69 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvCantidad"
+                android:id="@+id/tvNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/tv_cantidad"
+                android:text="Nombre"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints" />
 
             <EditText
-                android:id="@+id/etCantidad"
+                android:id="@+id/etNombre"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="@string/et_hint_modify_cantidad"
-                android:inputType="number"
+                android:hint="Ingrese nombre"
+                android:inputType="text"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCantidad"
+                app:layout_constraintTop_toBottomOf="@+id/tvNombre"
                 tools:ignore="MissingConstraints" />
 
 
             <TextView
-                android:id="@+id/tvRonda"
+                android:id="@+id/tvDireccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/tv_ronda"
+                android:text="Dirección"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etCantidad"
+                app:layout_constraintTop_toBottomOf="@+id/etNombre"
                 tools:ignore="MissingConstraints" />
 
             <EditText
-                android:id="@+id/etRonda"
+                android:id="@+id/etDireccion"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="@string/et_hint_modify_Ronda"
+                android:hint="Ingrese dirección"
                 android:selectAllOnFocus="true"
-                android:inputType="number"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvRonda"
+                app:layout_constraintTop_toBottomOf="@+id/tvDireccion"
+                tools:ignore="MissingConstraints" />
+
+
+            <TextView
+                android:id="@+id/tvImagen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Imagen"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etDireccion"
+                tools:ignore="MissingConstraints" />
+
+            <EditText
+                android:id="@+id/etImagen"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:autofillHints="name"
+                android:hint="Ingrese imagen"
+                android:selectAllOnFocus="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvImagen"
                 tools:ignore="MissingConstraints" />
 
 
@@ -74,53 +96,17 @@
                 android:text="@string/tv_familia"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etRonda"
+                app:layout_constraintTop_toBottomOf="@+id/etImagen"
                 tools:ignore="MissingConstraints" />
 
-            <EditText
-                android:id="@+id/etFamilia"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/sFamilia"
+                android:layout_width="390dp"
                 android:layout_height="48dp"
-                android:autofillHints="name"
-                android:hint="@string/et_hint_modify_familia"
-                android:inputType="number"
-                android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFamilia"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/tvVerduras"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Verduras"
-                android:textSize="16sp"
-                android:paddingVertical="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etFamilia"
-                tools:ignore="MissingConstraints" />
-
-            <Button
-                android:id="@+id/btnAgregarVerdura"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/agregar_verdura"
-                app:layout_constraintLeft_toRightOf="@id/tvVerduras"
-                app:layout_constraintTop_toBottomOf="@+id/etFamilia"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="MissingConstraints" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvVerduras"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnAgregarVerdura"
-                tools:listitem="@layout/item_verdura_bolson" />
+                app:layout_constraintTop_toBottomOf="@+id/tvFamilia" />
+                <!-- android:contentDescription="Seleccione familia"
+                android:prompt="Selecciones familia" -->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -136,10 +122,10 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/bCancelar"
+        android:id="@+id/bBorrar"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="@string/cancel"
+        android:text="@string/erase"
         android:backgroundTint="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

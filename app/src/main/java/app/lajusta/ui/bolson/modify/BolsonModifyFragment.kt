@@ -61,7 +61,6 @@ class BolsonModifyFragment: BaseFragment() {
     }
 
     private fun fillItem() {
-        binding.tvTitle.text = "Modificando bolsón " + bolson.id_bolson.toString()
         binding.etCantidad.setText(bolson.cantidad.toString())
         binding.etFamilia.setText(bolson.familia.id_fp.toString()) //Estos se pueden cambiar por bolson.familia.nombre y no deberian de ser editables en el futuro creo
         binding.etRonda.setText(bolson.ronda.id_ronda.toString())  // Cambiar por bolson.ronda.fecha_inicio

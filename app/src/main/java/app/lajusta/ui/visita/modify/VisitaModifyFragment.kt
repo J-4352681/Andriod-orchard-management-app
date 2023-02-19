@@ -96,11 +96,13 @@ class VisitaModifyFragment() : BaseFragment() {
                 visita.fecha_visita = fecha
                 visita.descripcion = desc
                 visita.tecnico.id_user = tecnicoId!!
-                visita.quinta.id_quinta = quintaId!!
                 visita.parcelas = listaParcelas
 
+                val v = visita.toVisita()
+                v.id_quinta = quintaId!!
+
                 returnSimpleApiCall({
-                    VisitaApi().putVisita(visita.toVisita())
+                    VisitaApi().putVisita(v)
                 }, "Hubo un error. La visita no pudo ser creada.")
 
             } catch (e: Exception) {

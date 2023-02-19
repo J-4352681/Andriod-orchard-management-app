@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasListBinding
+import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
@@ -29,7 +30,16 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var tecnicos = listOf<Usuario>()
     private val visitasCompletas = mutableListOf<VisitaCompleta>()
     private val visitasCompletasOriginal = mutableListOf<VisitaCompleta>()
+    private var visitasCompletasArg: MutableList<VisitaCompleta>? = null
     private lateinit var visitaAdapter: VisitaAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let { bundle ->
+            val data = bundle.getParcelableArrayList<VisitaCompleta>("visitas")
+            if(data != null) visitasCompletasArg = data?.toMutableList()!!
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,7 +84,8 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             tecnicos = UsuariosApi().getUsuarios().body()!!
         }, {
             visitasCompletas.clear()
-            visitasCompletas.addAll(visitas.map { visita ->
+            if(visitasCompletasArg != null) visitasCompletas.addAll(visitasCompletasArg!!)
+            else visitasCompletas.addAll(visitas.map { visita ->
                 VisitaCompleta.toVisitaCompleta(
                     visita,
                     tecnicos.find { it.id_user == visita.id_tecnico }!!,

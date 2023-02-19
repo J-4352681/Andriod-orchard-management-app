@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Quinta(
-    var id_quinta: Int,
+    val id_quinta: Int,
     var nombre: String,
     var direccion: String?,
     var geoImg: String?,
