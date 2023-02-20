@@ -13,6 +13,8 @@ import app.lajusta.ui.familia.FamiliaCompleta
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.quinta.model.QuintaCompleta
+import app.lajusta.ui.quinta.model.QuintaCompletaPrefill
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
 
@@ -22,6 +24,7 @@ class FamiliaModifyFragment: BaseFragment(){
     private val binding get() = _binding!!
     private lateinit var familia: FamiliaCompleta
     private val bolsonesCompletos = mutableListOf<BolsonCompleto>()
+    private val quintasCompletas = mutableListOf<QuintaCompleta>()
     private var rondas = listOf<Ronda>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +68,11 @@ class FamiliaModifyFragment: BaseFragment(){
     }
 
     private fun fillQuintas() {
+        quintasCompletas.clear()
+        quintasCompletas.addAll(familia.quintas.map { quinta ->
+            QuintaCompleta.toQuintaCompleta(quinta, familia.toFamilia())
+        })
+
         val textQuintas = familia.quintas.map { it.nombre }.toString()
         binding.tvQuintasList.text = textQuintas.subSequence(1, textQuintas.length-1)
     }
@@ -75,7 +83,7 @@ class FamiliaModifyFragment: BaseFragment(){
             BolsonCompleto.toBolsonCompleto(bolson, familia.toFamilia(), familia.rondas.find {
                 it.id_ronda == bolson.idRonda
             }!!)
-        }.toMutableList())
+        })
 
         val fechasBolsonesRondas = bolsonesCompletos.map {
             ArrayedDate.toString(it.ronda.fecha_inicio.toMutableList())
@@ -121,6 +129,22 @@ class FamiliaModifyFragment: BaseFragment(){
             val bundle = bundleOf("bolsones" to ArrayList<BolsonCompleto>(bolsonesCompletos))
             this.findNavController().navigate(
                 R.id.bolsonFilteredListFragment, bundle
+            )
+        }
+
+        binding.bVerQuintas.setOnClickListener {
+            val bundle = bundleOf("quintas" to ArrayList<QuintaCompleta>(quintasCompletas))
+            this.findNavController().navigate(
+                R.id.quintaFilteredListFragment, bundle
+            )
+        }
+
+        binding.bNuevaQuinta.setOnClickListener {
+            val bundle = bundleOf("quinta" to QuintaCompletaPrefill(
+                null, null, null, familia.toFamilia()
+            ))
+            this.findNavController().navigate(
+                R.id.quintaCreateFragment, bundle
             )
         }
     }

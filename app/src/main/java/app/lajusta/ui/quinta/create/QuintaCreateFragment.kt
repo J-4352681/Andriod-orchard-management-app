@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.text.isDigitsOnly
+import android.widget.SpinnerAdapter
 import app.lajusta.R
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
@@ -13,20 +13,23 @@ import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.databinding.FragmentQuintaCreateBinding
+import app.lajusta.ui.quinta.model.QuintaCompleta
+import app.lajusta.ui.quinta.model.QuintaCompletaPrefill
 
 class QuintaCreateFragment : BaseFragment() {
     private var _binding: FragmentQuintaCreateBinding? = null
     private val binding get() = _binding!!
-    // private lateinit var quinta: QuintaCompleta?
+    private var quinta: QuintaCompletaPrefill? = null
     private var familias = listOf<Familia>()
 
     // TODO parametrizar create para pre-llenarlo
-    /* override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
-            quinta = bundle.getParcelable("quinta")
+            val data = bundle.getParcelable<QuintaCompletaPrefill>("quinta")
+            if(data != null) quinta = data!!
         }
-    } */
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,13 +51,23 @@ class QuintaCreateFragment : BaseFragment() {
         apiCall(
             { familias = FamiliaApi().getFamilias().body()!! },
             {
-                val familias = ArrayAdapter(
+                val familiasAdapter = ArrayAdapter(
                     activity!!, R.layout.spinner_item, familias.map { it.nombre }
                 )
-                binding.sFamilia.adapter = familias
+                binding.sFamilia.adapter = familiasAdapter
+
+                if(quinta != null && quinta!!.familia != null) { binding.sFamilia.setSelection(
+                    familiasAdapter.getPosition(quinta!!.familia!!.nombre)
+                ) }
             },
             "Hubo un error al obtener las familias."
         )
+
+        if(quinta != null) {
+            if(quinta!!.geoImg != null) { binding.etImagen.setText(quinta!!.geoImg) }
+            if(quinta!!.nombre != null) { binding.etNombre.setText(quinta!!.nombre) }
+            if(quinta!!.direccion != null) { binding.etDireccion.setText(quinta!!.direccion) }
+        }
     }
 
     private fun setClickListeners() {

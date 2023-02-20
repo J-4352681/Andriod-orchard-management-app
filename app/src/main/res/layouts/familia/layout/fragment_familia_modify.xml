@@ -120,14 +120,23 @@
                 tools:text="Quinta1, quinta2, quinta3." />
 
             <Button
-                android:id="@+id/bQuintas"
+                android:id="@+id/bVerQuintas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Administrar quintas"
+                android:text="Ver quintas"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvQuintasList"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/bNuevaQuinta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Nueva quinta"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvQuintasList"
                 tools:ignore="MissingConstraints" />
 
 
@@ -139,7 +148,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bQuintas"
+                app:layout_constraintTop_toBottomOf="@id/bVerQuintas"
                 android:text="Bolsones" />
 
             <TextView
@@ -159,6 +168,15 @@
                 android:layout_marginTop="8dp"
                 android:text="Ver bolsones"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvUltimoBolson"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/bVerRondas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Ver rondas"
                 app:layout_constraintTop_toBottomOf="@+id/tvUltimoBolson"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="MissingConstraints" />

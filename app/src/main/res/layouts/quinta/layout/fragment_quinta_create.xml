@@ -28,13 +28,14 @@
                 android:layout_marginTop="16dp"
                 android:text="Nombre"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints" />
 
             <EditText
                 android:id="@+id/etNombre"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:hint="Ingrese nombre"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
@@ -50,6 +51,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Dirección"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etNombre"
                 tools:ignore="MissingConstraints" />
@@ -57,9 +59,10 @@
             <EditText
                 android:id="@+id/etDireccion"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:hint="Ingrese dirección"
                 android:selectAllOnFocus="true"
+                android:inputType="textMultiLine"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDireccion"
                 tools:ignore="MissingConstraints" />
@@ -72,6 +75,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Imagen"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etDireccion"
                 tools:ignore="MissingConstraints" />
@@ -79,7 +83,7 @@
             <EditText
                 android:id="@+id/etImagen"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:autofillHints="name"
                 android:hint="Ingrese imagen"
                 android:selectAllOnFocus="true"
@@ -95,6 +99,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/tv_familia"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etImagen"
                 tools:ignore="MissingConstraints" />

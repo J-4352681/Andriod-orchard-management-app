@@ -80,9 +80,6 @@
         android:id="@+id/bolsonCreateFragment"
         android:name="app.lajusta.ui.bolson.create.BolsonCreateFragment"
         android:label="Crear bolsón" >
-        <argument
-            android:name="bolson"
-            app:argType="app.lajusta.ui.bolson.Bolson" />
     </fragment>
 
 
@@ -121,8 +118,8 @@
     <fragment
         android:id="@+id/quintaFilteredListFragment"
         android:name="app.lajusta.ui.quinta.list.QuintaListFragment"
-        android:label="Bolsones"
-        tools:layout="@layout/fragment_bolson_list" >
+        android:label="Quintas"
+        tools:layout="@layout/fragment_quinta_list" >
         <argument
             android:name="quintas"
             app:argType="app.lajusta.ui.quinta.model.QuintasCompletas"
@@ -145,7 +142,9 @@
         android:label="Crear quinta" >
         <argument
             android:name="quinta"
-            app:argType="app.lajusta.ui.quinta.Quinta" />
+            app:argType="app.lajusta.ui.quinta.model.QuintaCompleta"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 </navigation>

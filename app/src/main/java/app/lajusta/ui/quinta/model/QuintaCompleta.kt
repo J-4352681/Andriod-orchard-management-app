@@ -43,3 +43,11 @@ data class QuintaCompleta(
 data class QuintasCompletas(
     val quintas: List<QuintaCompleta>
 ): ArrayList<QuintaCompleta>(quintas), Parcelable
+
+@Parcelize
+data class QuintaCompletaPrefill(
+    var nombre: String?,
+    var direccion: String?,
+    var geoImg: String?,
+    var familia: Familia?,
+): Parcelable

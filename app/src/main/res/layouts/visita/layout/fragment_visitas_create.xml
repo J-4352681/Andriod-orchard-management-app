@@ -26,6 +26,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/tv_fecha"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints" />
 
@@ -67,6 +68,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/tv_desc_visita"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llFecha"
                 tools:ignore="MissingConstraints" />
@@ -89,6 +91,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/tv_tecnico"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etDesc"
                 tools:ignore="MissingConstraints" />
@@ -109,6 +112,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/tv_quinta"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinnerTecnico"
                 tools:ignore="MissingConstraints" />
@@ -128,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tv_Parcelas"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/rvParcelas"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints" />
