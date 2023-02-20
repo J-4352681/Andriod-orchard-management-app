@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FamiliaCompleta(
-    var id_fp: Int,
+    val id_fp: Int,
     var nombre: String,
     var fecha_afiliacion: List<Int>,
     val quintas: MutableList<Quinta>,

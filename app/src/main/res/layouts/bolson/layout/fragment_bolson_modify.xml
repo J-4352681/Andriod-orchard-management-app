@@ -28,6 +28,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/tv_cantidad"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints" />
 
@@ -50,20 +51,17 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/tv_ronda"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etCantidad"
                 tools:ignore="MissingConstraints" />
 
-            <EditText
-                android:id="@+id/etRonda"
+            <Spinner
+                android:id="@+id/sRonda"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="@string/et_hint_modify_Ronda"
-                android:selectAllOnFocus="true"
-                android:inputType="number"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvRonda"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintTop_toBottomOf="@+id/tvRonda" />
 
 
             <TextView
@@ -73,21 +71,18 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/tv_familia"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etRonda"
+                app:layout_constraintTop_toBottomOf="@+id/sRonda"
                 tools:ignore="MissingConstraints" />
 
-            <EditText
-                android:id="@+id/etFamilia"
+            <Spinner
+                android:id="@+id/sFamilia"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:autofillHints="name"
-                android:hint="@string/et_hint_modify_familia"
-                android:inputType="number"
-                android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFamilia"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintTop_toBottomOf="@+id/tvFamilia" />
+
 
             <TextView
                 android:id="@+id/tvVerduras"
@@ -96,9 +91,10 @@
                 android:layout_marginTop="16dp"
                 android:text="Verduras"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 android:paddingVertical="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etFamilia"
+                app:layout_constraintTop_toBottomOf="@+id/sFamilia"
                 tools:ignore="MissingConstraints" />
 
             <Button
@@ -108,7 +104,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/agregar_verdura"
                 app:layout_constraintLeft_toRightOf="@id/tvVerduras"
-                app:layout_constraintTop_toBottomOf="@+id/etFamilia"
+                app:layout_constraintTop_toBottomOf="@+id/sFamilia"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="MissingConstraints" />
 

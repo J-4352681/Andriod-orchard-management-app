@@ -149,7 +149,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/bVerQuintas"
-                android:text="Bolsones" />
+                android:text="Bolsones aportados a rondas" />
 
             <TextView
                 android:id="@+id/tvUltimoBolson"

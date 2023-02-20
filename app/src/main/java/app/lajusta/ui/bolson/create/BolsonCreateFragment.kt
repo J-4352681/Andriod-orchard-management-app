@@ -4,28 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonCreateBinding
+import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.familia.Familia
+import app.lajusta.ui.familia.api.FamiliaApi
+import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.rondas.Ronda
+import app.lajusta.ui.rondas.api.RondaApi
 import kotlin.random.Random
 
 
 class BolsonCreateFragment : BaseFragment() {
     private var _binding: FragmentBolsonCreateBinding? = null
     private val binding get() = _binding!!
-    // private lateinit var bolson: BolsonCompleto?
-
-    // TODO parametrizar create para pre-llenarlo
-    /* override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let { bundle ->
-            bolson = bundle.getParcelable("bolson")
-        }
-    } */
+    private var familias = listOf<Familia>()
+    private var rondas = listOf<Ronda>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,22 +43,10 @@ class BolsonCreateFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // fillItem()
+        fillItem()
 
         binding.bGuardar.setOnClickListener{
-            val ronda = binding.etRonda.text.toString().trim()
-            val familia = binding.etFamilia.text.toString().trim() /** CAMBIAR POR UNA COMBOBOX QUE TAMBIEN NOS DE EL ID*/
             val cantidad = binding.etCantidad.text.toString()
-
-            if(ronda.isNullOrEmpty()) {
-                shortToast("Debe seleccionar una ronda")
-                return@setOnClickListener
-            }
-
-            if(familia.isNullOrEmpty()) {
-                shortToast("Debe seleccionar una familia")
-                return@setOnClickListener
-            }
 
             if(cantidad.isNullOrEmpty()) {
                 shortToast("Debe escribir una cantidad")
@@ -70,18 +59,46 @@ class BolsonCreateFragment : BaseFragment() {
             }
 
             returnSimpleApiCall({
-                BolsonApi().postBolson(
-                    Bolson(0,cantidad.toInt(),familia.toInt(),ronda.toInt(),verduras)
-                )
+                BolsonApi().postBolson(Bolson(
+                    0, cantidad.toInt(),
+                    familias.find {
+                        it.nombre == binding.sFamilia.selectedItem.toString()
+                    }!!.id_fp,
+                    rondas.find {
+                        it.id_ronda ==
+                            binding.sRonda.selectedItem
+                                .toString().split("#")[0].toInt()
+                    }!!.id_ronda,
+                    verduras
+                ) )
             }, "Hubo un error. El bolsón no pudo ser creado.")
         }
 
         binding.bCancelar.setOnClickListener{ activity?.onBackPressed() }
     }
 
-    /* private fun fillItem() {
-        if(bolson != null)
-    } */
+    private fun fillItem() {
+        apiCall(
+            {
+                familias = FamiliaApi().getFamilias().body()!!
+                rondas = RondaApi().getRondas().body()!!
+            }, {
+                val familiasAdapter = ArrayAdapter(
+                    activity!!, R.layout.spinner_item, familias.map { it.nombre }
+                )
+                binding.sFamilia.adapter = familiasAdapter
+
+                val rondasAdapter = ArrayAdapter(
+                    activity!!, R.layout.spinner_item, rondas.map {
+                        (it.id_ronda.toString() + "# "
+                        + ArrayedDate.toString(it.fecha_inicio)
+                        + " - " + ArrayedDate.toString(it.fecha_fin!!))
+                    }
+                )
+                binding.sRonda.adapter = rondasAdapter
+            }, "No se pudieron obtener las familias."
+        )
+    }
 
     override fun onDestroy() {
         super.onDestroy()

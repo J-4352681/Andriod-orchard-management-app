@@ -4,11 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonModifyBinding
+import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.bolson.BolsonCompleto
+import app.lajusta.ui.familia.Familia
+import app.lajusta.ui.familia.api.FamiliaApi
+import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.rondas.Ronda
+import app.lajusta.ui.rondas.api.RondaApi
 
 class BolsonModifyFragment: BaseFragment() {
 
@@ -16,6 +24,8 @@ class BolsonModifyFragment: BaseFragment() {
     private val binding get() = _binding!!
     private lateinit var bolson: BolsonCompleto
     private lateinit var verduraBolsonAdapter: VerduraBolsonAdapter
+    private var familias = listOf<Familia>()
+    private var rondas = listOf<Ronda>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,24 +56,59 @@ class BolsonModifyFragment: BaseFragment() {
         }
 
         binding.bGuardar.setOnClickListener {
-            bolson.ronda.id_ronda = binding.etRonda.text.toString().toInt()
-            bolson.familia.id_fp = binding.etFamilia.text.toString().toInt()
-            bolson.cantidad = binding.etCantidad.text.toString().toInt()
-            bolson.verduras = verduraBolsonAdapter.getVerduras()
-
             // TODO verificar validez de campos
 
             returnSimpleApiCall(
-                { BolsonApi().putBolson(bolson.toBolson()) },
+                { BolsonApi().putBolson(Bolson(
+                    bolson.id_bolson,
+                    binding.etCantidad.text.toString().toInt(),
+                    familias.find {
+                        it.nombre == binding.sFamilia.selectedItem.toString()
+                    }!!.id_fp,
+                    rondas.find {
+                        it.id_ronda ==
+                            binding.sRonda.selectedItem
+                                .toString().split("#")[0].toInt()
+                    }!!.id_ronda,
+                    verduraBolsonAdapter.getVerduras()
+                )) },
                 "Hubo un error. El bolson no pudo ser modificado."
             )
         }
     }
 
     private fun fillItem() {
+        apiCall(
+            {
+                familias = FamiliaApi().getFamilias().body()!!
+                rondas = RondaApi().getRondas().body()!!
+            }, {
+                val familiasAdapter = ArrayAdapter(
+                    activity!!, R.layout.spinner_item, familias.map { it.nombre }
+                )
+                binding.sFamilia.adapter = familiasAdapter
+                binding.sFamilia.setSelection(
+                    familiasAdapter.getPosition(bolson.familia.nombre)
+                )
+
+                val rondasAdapter = ArrayAdapter(
+                    activity!!, R.layout.spinner_item, rondas.map {
+                        (it.id_ronda.toString() + "# "
+                        + ArrayedDate.toString(it.fecha_inicio)
+                        + " - " + ArrayedDate.toString(it.fecha_fin!!))
+                    }
+                )
+                binding.sRonda.adapter = rondasAdapter
+                binding.sRonda.setSelection(
+                    rondasAdapter.getPosition(
+                        (bolson.ronda.id_ronda.toString() + "# "
+                        + ArrayedDate.toString(bolson.ronda.fecha_inicio)
+                        + " - " + ArrayedDate.toString(bolson.ronda.fecha_fin!!))
+                    )
+                )
+            }, "No se pudieron obtener las familias."
+        )
         binding.etCantidad.setText(bolson.cantidad.toString())
-        binding.etFamilia.setText(bolson.familia.id_fp.toString()) //Estos se pueden cambiar por bolson.familia.nombre y no deberian de ser editables en el futuro creo
-        binding.etRonda.setText(bolson.ronda.id_ronda.toString())  // Cambiar por bolson.ronda.fecha_inicio
         initRecyclerView()
     }
 

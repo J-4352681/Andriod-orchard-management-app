@@ -50,12 +50,12 @@ class QuintaModifyFragment: BaseFragment() {
         apiCall(
             { familias = FamiliaApi().getFamilias().body()!! },
             {
-                val familias = ArrayAdapter(
+                val familiasAdapter = ArrayAdapter(
                     activity!!, R.layout.spinner_item, familias.map { it.nombre }
                 )
-                binding.sFamilia.adapter = familias
+                binding.sFamilia.adapter = familiasAdapter
                 binding.sFamilia.setSelection(
-                    familias.getPosition(quinta.familia.nombre)
+                    familiasAdapter.getPosition(quinta.familia.nombre)
                 )
             },
             "Hubo un error al obtener las familias."
