@@ -79,7 +79,18 @@
     <fragment
         android:id="@+id/bolsonCreateFragment"
         android:name="app.lajusta.ui.bolson.create.BolsonCreateFragment"
-        android:label="Crear bolsón" >
+        android:label="Crear bolsón"
+        tools:layout="@layout/fragment_bolson_create" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/verdurasSelectFragment"
+        android:name="app.lajusta.ui.bolson.extra.VerdurasSelectFragment"
+        android:label="Selección de verduras de bolsón"
+        tools:layout="@layout/fragment_verduras_select" >
+        <argument
+            android:name="verduras"
+            app:argType="app.lajusta.ui.verdura.Verduras"/>
     </fragment>
 
 
