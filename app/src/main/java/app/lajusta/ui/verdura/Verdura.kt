@@ -18,3 +18,8 @@ data class Verdura(
 data class Verduras(
     val verduras: List<Verdura>
 ): ArrayList<Verdura>(verduras), Parcelable
+
+@Parcelize
+data class IdVerduras(
+    val verduras: List<Int>
+): ArrayList<Int>(verduras), Parcelable

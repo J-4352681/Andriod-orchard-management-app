@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
@@ -19,6 +20,7 @@ import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
+import app.lajusta.ui.verdura.Verdura
 
 class BolsonModifyFragment: BaseFragment() {
 
@@ -28,6 +30,9 @@ class BolsonModifyFragment: BaseFragment() {
     private lateinit var verduraBolsonAdapter: VerduraBolsonAdapter
     private var familias = listOf<Familia>()
     private var rondas = listOf<Ronda>()
+    private var verdurasQuinta = listOf<Verdura>()
+    private var verdurasNoQuinta = listOf<Verdura>()
+    private val verdurasTotales = mutableListOf<Verdura>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +85,8 @@ class BolsonModifyFragment: BaseFragment() {
     }
 
     private fun fillItem() {
+        verdurasTotales.addAll(bolson.verduras)
+
         apiCall(
             {
                 familias = FamiliaApi().getFamilias().body()!!
@@ -113,9 +120,12 @@ class BolsonModifyFragment: BaseFragment() {
         binding.etCantidad.setText(bolson.cantidad.toString())
 
         binding.btnAgregarVerdura.setOnClickListener {
-            val bundle = bundleOf("idFamilia" to familias.find {
-                it.nombre == binding.sFamilia.selectedItem
-            }!!.id_fp)
+            val bundle = bundleOf(
+                "idFamilia" to familias.find {
+                    it.nombre == binding.sFamilia.selectedItem
+                }!!.id_fp,
+                "preseleccionadas" to verdurasTotales.map { it.id_verdura }
+            )
             this.findNavController().navigate(R.id.verduraSelectFragment, bundle)
         }
 
@@ -123,8 +133,25 @@ class BolsonModifyFragment: BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras)
+        verduraBolsonAdapter = VerduraBolsonAdapter(verdurasTotales)
         binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
         binding.rvVerduras.adapter = verduraBolsonAdapter
+
+        val stateHandle: SavedStateHandle =
+            findNavController().currentBackStackEntry?.savedStateHandle!!
+
+        stateHandle.getLiveData<List<Verdura>>("verdurasQuinta")
+            .observe(viewLifecycleOwner) { data ->
+                verdurasQuinta = data
+                verdurasTotales.clear()
+                verdurasTotales.addAll(verdurasQuinta + verdurasNoQuinta)
+            }
+
+        stateHandle.getLiveData<List<Verdura>>("verdurasNoQuinta")
+            .observe(viewLifecycleOwner) { data ->
+                verdurasNoQuinta = data
+                verdurasTotales.clear()
+                verdurasTotales.addAll(verdurasQuinta + verdurasNoQuinta)
+            }
     }
 }

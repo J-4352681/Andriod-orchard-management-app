@@ -34,7 +34,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
             val data = bundle.getParcelableArrayList<BolsonCompleto>("bolsones")
-            if(data != null) bolsonesCompletosArg = data?.toMutableList()!!
+            if(data != null) bolsonesCompletosArg = data.toMutableList()
         }
     }
 
@@ -49,6 +49,8 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        listInit()
 
         binding.fabCrearBolson.setOnClickListener {
             this.findNavController().navigate(R.id.bolsonCreateFragment)
@@ -66,12 +68,6 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         }
         binding.rvBolsones.layoutManager = LinearLayoutManager(activity)
         binding.rvBolsones.adapter = bolsonAdapter
-        listInit()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun listInit() {
@@ -107,5 +103,10 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onQueryTextChange(query: String?): Boolean {
         filter(query!!.lowercase())
         return true
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

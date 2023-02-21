@@ -92,6 +92,10 @@
             android:name="idFamilia"
             app:argType="integer"
             app:nullable="false"/>
+        <argument
+            android:name="verdurasPreseleccionadas"
+            app:argType="integer[]"
+            app:nullable="false"/>
     </fragment>
 
 

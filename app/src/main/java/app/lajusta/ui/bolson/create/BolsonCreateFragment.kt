@@ -1,5 +1,6 @@
 package app.lajusta.ui.bolson.create
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ import app.lajusta.ui.rondas.api.RondaApi
 class BolsonCreateFragment : BaseFragment() {
     private var _binding: FragmentBolsonCreateBinding? = null
     private val binding get() = _binding!!
+    private var cantidad: Int = 0
     private var familias = listOf<Familia>()
     private var rondas = listOf<Ronda>()
     private var verdurasQuinta = listOf<Verdura>()
@@ -42,9 +44,6 @@ class BolsonCreateFragment : BaseFragment() {
         )
         return binding.root
     }
-
-    private val verdura: Verdura = Verdura(1, arrayOf(2, 3, 4), arrayOf(1, 2, 4),"dsadfs", "Tomate","fssd")
-    private val verduras: List<Verdura> = listOf(verdura,verdura,verdura,verdura,verdura,verdura,verdura) /** CAMBIAR POR EL CRUD DE VERDURAS */
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -102,42 +101,58 @@ class BolsonCreateFragment : BaseFragment() {
 
     private fun setClickListeners() {
         binding.bGuardar.setOnClickListener{
-            val cantidad = binding.etCantidad.text.toString()
+            val cantidadtxt = binding.etCantidad.text.toString()
 
-            if(cantidad.isNullOrEmpty()) {
+            if(cantidadtxt.isEmpty()) {
                 shortToast("Debe escribir una cantidad")
                 return@setOnClickListener
-            }
+            } else cantidad = cantidadtxt.toInt()
 
-            if(verduras.size < 7) {
-                shortToast("Deben ser al menos 7 verduras")
-                return@setOnClickListener
-            }
-
-            returnSimpleApiCall({
-                BolsonApi().postBolson(Bolson(
-                    0, cantidad.toInt(),
-                    familias.find {
-                        it.nombre == binding.sFamilia.selectedItem.toString()
-                    }!!.id_fp,
-                    rondas.find {
-                        it.id_ronda ==
-                                binding.sRonda.selectedItem
-                                    .toString().split("#")[0].toInt()
-                    }!!.id_ronda,
-                    verduras
-                ) )
-            }, "Hubo un error. El bolsón no pudo ser creado.")
+            if(verdurasTotales.size < 7) {
+                shortToast("Deberían ser al menos 7 verduras")
+                AlertDialog.Builder(activity!!)
+                    .setMessage("¿Seguro desea proceder con menos de 7 verduras?")
+                    .setCancelable(false)
+                    .setPositiveButton("Si") { dialog, id ->
+                        commitChange()
+                    }
+                    .setNegativeButton("No") { dialog, id ->
+                        dialog.dismiss()
+                    }
+                    .create()
+                    .show()
+            } else commitChange()
         }
 
         binding.bCancelar.setOnClickListener{ activity?.onBackPressed() }
 
         binding.btnAgregarVerdura.setOnClickListener {
-            val bundle = bundleOf("idFamilia" to familias.find {
-                it.nombre == binding.sFamilia.selectedItem
-            }!!.id_fp)
+            val bundle = bundleOf(
+                "idFamilia" to familias.find {
+                    it.nombre == binding.sFamilia.selectedItem
+                }!!.id_fp,
+                "preseleccionadas" to verdurasTotales.map { it.id_verdura }
+            )
             this.findNavController().navigate(R.id.verduraSelectFragment, bundle)
         }
+    }
+
+    private fun commitChange() {
+        returnSimpleApiCall({
+            val bolson = Bolson(
+                0, cantidad,
+                familias.find {
+                    it.nombre == binding.sFamilia.selectedItem.toString()
+                }!!.id_fp,
+                rondas.find {
+                    it.id_ronda ==
+                            binding.sRonda.selectedItem
+                                .toString().split("#")[0].toInt()
+                }!!.id_ronda,
+                verdurasTotales
+            )
+            BolsonApi().postBolson(bolson)
+        }, "Hubo un error. El bolsón no pudo ser creado.")
     }
 
     override fun onDestroy() {
