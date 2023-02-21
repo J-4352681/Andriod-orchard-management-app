@@ -16,8 +16,8 @@ import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.rondas.Ronda
-import app.lajusta.ui.rondas.api.RondaApi
+import app.lajusta.ui.ronda.Ronda
+import app.lajusta.ui.ronda.api.RondaApi
 
 class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentBolsonListBinding? = null

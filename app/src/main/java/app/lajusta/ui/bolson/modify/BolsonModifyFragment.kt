@@ -18,8 +18,8 @@ import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.rondas.Ronda
-import app.lajusta.ui.rondas.api.RondaApi
+import app.lajusta.ui.ronda.Ronda
+import app.lajusta.ui.ronda.api.RondaApi
 import app.lajusta.ui.verdura.Verdura
 
 class BolsonModifyFragment: BaseFragment() {

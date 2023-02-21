@@ -4,7 +4,7 @@ import android.os.Parcelable
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.quinta.Quinta
-import app.lajusta.ui.rondas.Ronda
+import app.lajusta.ui.ronda.Ronda
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

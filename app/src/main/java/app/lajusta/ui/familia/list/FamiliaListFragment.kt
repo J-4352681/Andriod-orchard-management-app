@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentFamiliasListBinding
 import app.lajusta.ui.bolson.Bolson
-import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.FamiliaCompleta
@@ -20,8 +19,8 @@ import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.quinta.api.QuintaApi
-import app.lajusta.ui.rondas.Ronda
-import app.lajusta.ui.rondas.api.RondaApi
+import app.lajusta.ui.ronda.Ronda
+import app.lajusta.ui.ronda.api.RondaApi
 
 class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentFamiliasListBinding? = null

@@ -8,9 +8,35 @@
     <!-- RONDA -->
     <fragment
         android:id="@+id/nav_rondas"
-        android:name="app.lajusta.ui.rondas.RondasFragment"
+        android:name="app.lajusta.ui.ronda.list.RondaListFragment"
         android:label="@string/menu_rondas"
         tools:layout="@layout/fragment_rondas" />
+
+    <fragment
+        android:id="@+id/rondaFilteredListFragment"
+        android:name="app.lajusta.ui.ronda.list.RondaListFragment"
+        android:label="Rondas"
+        tools:layout="@layout/fragment_ronda_list" >
+        <argument
+            android:name="rondas"
+            app:argType="app.lajusta.ui.ronda.Rondas"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rondaModifyFragment"
+        android:name="app.lajusta.ui.ronda.modify.RondaModifyFragment"
+        android:label="Modificar ronda"
+        tools:layout="@layout/fragment_ronda_modify" >
+        <argument
+            android:name="ronda"
+            app:argType="app.lajusta.ui.ronda.Ronda" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rondaCreateFragment"
+        android:name="app.lajusta.ui.ronda.create.RondaCreateFragment"
+        android:label="Crear ronda" />
 
     <!-- FAMILIA -->
     <fragment
