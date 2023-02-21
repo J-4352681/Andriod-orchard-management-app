@@ -1,18 +1,38 @@
 package app.lajusta.ui.verdura
 
 import android.os.Parcelable
-import app.lajusta.ui.bolson.BolsonCompleto
+import app.lajusta.ui.generic.ArrayedDate
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Verdura(
     val id_verdura: Int,
-    var tiempo_cosecha: Array<Int>?,
-    var mes_siembra: Array<Int>?,
+    var tiempo_cosecha: List<Int>?,
+    var mes_siembra: List<Int>?,
     var archImg: String?,
     var nombre: String,
     var descripcion: String?,
-): Parcelable
+): Parcelable {
+    companion object {
+        fun filter(
+            verduras: MutableList<Verdura>,
+            verdurasOriginales: MutableList<Verdura>,
+            query: String?
+        ): MutableList<Verdura> {
+            verduras.clear()
+            if(query.isNullOrEmpty()) verduras.addAll(verdurasOriginales)
+            else verduras.addAll(
+                verdurasOriginales.filter { verdura ->
+                    verdura.nombre.contains(query)
+                    || verdura.descripcion!!.contains(query)
+                    || ArrayedDate.toString(verdura.tiempo_cosecha!!).contains(query)
+                    || ArrayedDate.toString(verdura.mes_siembra!!).contains(query)
+                }
+            )
+            return verduras
+        }
+    }
+}
 
 @Parcelize
 data class Verduras(

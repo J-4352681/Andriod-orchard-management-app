@@ -10,13 +10,13 @@
         android:id="@+id/nav_rondas"
         android:name="app.lajusta.ui.ronda.list.RondaListFragment"
         android:label="@string/menu_rondas"
-        tools:layout="@layout/fragment_rondas" />
+        tools:layout="@layout/fragment_ronda_list" />
 
     <fragment
         android:id="@+id/rondaFilteredListFragment"
         android:name="app.lajusta.ui.ronda.list.RondaListFragment"
         android:label="Rondas"
-        tools:layout="@layout/fragment_ronda_list" >
+        tools:layout="@layout/fragment_verdura_list" >
         <argument
             android:name="rondas"
             app:argType="app.lajusta.ui.ronda.Rondas"
@@ -27,7 +27,7 @@
         android:id="@+id/rondaModifyFragment"
         android:name="app.lajusta.ui.ronda.modify.RondaModifyFragment"
         android:label="Modificar ronda"
-        tools:layout="@layout/fragment_ronda_modify" >
+        tools:layout="@layout/fragment_verdura_modify" >
         <argument
             android:name="ronda"
             app:argType="app.lajusta.ui.ronda.Ronda" />
@@ -193,5 +193,39 @@
         android:name="app.lajusta.ui.quinta.map.QuintaMapaFragment"
         android:label="fragment_quinta_mapa"
         tools:layout="@layout/fragment_quinta_mapa" />
+
+
+    <!-- VERDURA -->
+    <fragment
+        android:id="@+id/nav_verduras"
+        android:name="app.lajusta.ui.verdura.list.VerduraListFragment"
+        android:label="Verduras"
+        tools:layout="@layout/fragment_verdura_list" />
+
+    <fragment
+        android:id="@+id/verduraFilteredListFragment"
+        android:name="app.lajusta.ui.verdura.list.VerduraListFragment"
+        android:label="Verduras"
+        tools:layout="@layout/fragment_verdura_list" >
+        <argument
+            android:name="verduras"
+            app:argType="app.lajusta.ui.verdura.Verduras"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/verduraModifyFragment"
+        android:name="app.lajusta.ui.verdura.modify.VerduraModifyFragment"
+        android:label="Modificar verdura"
+        tools:layout="@layout/fragment_verdura_modify" >
+        <argument
+            android:name="verdura"
+            app:argType="app.lajusta.ui.verdura.Verdura" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/verduraCreateFragment"
+        android:name="app.lajusta.ui.verdura.create.VerduraCreateFragment"
+        android:label="Crear verdura" />
 
 </navigation>

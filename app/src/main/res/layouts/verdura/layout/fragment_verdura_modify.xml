@@ -21,27 +21,74 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
             <TextView
-                android:id="@+id/tvFechaInicio"
+                android:id="@+id/tvNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="Fecha de inicio" />
+                android:text="Nombre" />
+
+            <EditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese nombre"
+                android:inputType="text"
+                android:selectAllOnFocus="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvNombre"
+                tools:ignore="MissingConstraints" />
+
+
+            <TextView
+                android:id="@+id/tvDescripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etNombre"
+                android:text="Descripción" />
+
+            <EditText
+                android:id="@+id/etDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese descripción"
+                android:inputType="textMultiLine"
+                android:minLines="1"
+                android:maxLines="4"
+                android:selectAllOnFocus="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDescripcion"
+                tools:ignore="MissingConstraints" />
+
+
+            <TextView
+                android:id="@+id/tvFechaCosecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etDescripcion"
+                android:text="Fecha de cosecha" />
 
             <LinearLayout
                 android:id="@+id/llechaInicio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tvFechaInicio"
+                app:layout_constraintTop_toBottomOf="@id/tvFechaCosecha"
                 android:paddingVertical="8dp" >
 
                 <TextView
-                    android:id="@+id/tvFechaInicioSeleccionada"
+                    android:id="@+id/tvFechaCosechaSeleccionada"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
@@ -55,15 +102,15 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/bFechaInicio"
+                    android:id="@+id/bFechaCosecha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Seleccionar fecha de inicio"/>
+                    android:text="Seleccionar fecha de cosecha"/>
             </LinearLayout>
 
 
             <TextView
-                android:id="@+id/tvFechaFin"
+                android:id="@+id/tvFechaSiembra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -71,17 +118,17 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/llechaInicio"
-                android:text="Fecha de fin" />
+                android:text="Fecha de siembra" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tvFechaFin"
+                app:layout_constraintTop_toBottomOf="@id/tvFechaSiembra"
                 android:paddingVertical="8dp" >
 
                 <TextView
-                    android:id="@+id/tvFechaFinSeleccionada"
+                    android:id="@+id/tvFechaSiembraSeleccionada"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
@@ -95,10 +142,10 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/bFechaFin"
+                    android:id="@+id/bFechaSiembra"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Seleccionar fecha de fin"/>
+                    android:text="Seleccionar fecha de siembra"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

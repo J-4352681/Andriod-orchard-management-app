@@ -63,7 +63,10 @@ class RondaModifyFragment: BaseFragment() {
             )
         }
 
-        binding.bCancelar.setOnClickListener { activity!!.onBackPressed() }
+        binding.bEliminar.setOnClickListener { returnSimpleApiCall(
+            { RondaApi().deleteRonda(ronda.id_ronda) },
+            "Hubo un error. La ronda no pudo ser eliminada."
+        ) }
     }
 
 

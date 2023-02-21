@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:gravity="center_vertical"
-    android:paddingBottom="5dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginHorizontal="5dp"
     xmlns:tools="http://schemas.android.com/tools" >
 
     <LinearLayout
         android:id="@+id/llContent"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:layout_marginHorizontal="15dp"
-        android:paddingVertical="8dp" >
+        android:layout_margin="10dp"
+        android:paddingVertical="8dp"  >
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            tools:text="Nombre verdura" />
+            tools:text="Tomate" />
 
-        <View
+        <TextView
+            android:id="@+id/tvDescripcion"
             android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:background="@color/cardview_light_background"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="0dp"/>
+            android:layout_height="wrap_content"
+            tools:text="El tomate es una verdura roja." />
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

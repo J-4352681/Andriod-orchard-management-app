@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
-        const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
-        //const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
+        //const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
+        const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
         var userId:String = ""
         var userName:String = ""
         var userType:String = ""
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.nav_rondas, R.id.nav_visitas,
                 R.id.nav_familias, R.id.nav_bolson,
-                R.id.nav_quintas
+                R.id.nav_quintas, R.id.nav_verduras
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

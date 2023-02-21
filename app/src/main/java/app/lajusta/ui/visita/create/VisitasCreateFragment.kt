@@ -189,7 +189,7 @@ class VisitasCreateFragment : BaseFragment() {
     fun getListaDeParcelasVisita(): List<ParcelaVisita> {
         /** Funcionalidad provisoria */
         val verdura: Verdura =
-            Verdura(1, arrayOf(2, 3, 4), arrayOf(1, 2, 4), "dsadfs", "Tomate", "fssd")
+            Verdura(1, listOf(2, 3, 4), listOf(1, 2, 4), "dsadfs", "Tomate", "fssd")
         val par = ParcelaVisita(1, 2, true, true, verdura)
         val par1 = ParcelaVisita(2, 3, false, true, verdura)
         return listOf(par, par1)

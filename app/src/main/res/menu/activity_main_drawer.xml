@@ -20,5 +20,9 @@
             android:id="@+id/nav_quintas"
             android:title="Quintas" />
 
+        <item
+            android:id="@+id/nav_verduras"
+            android:title="Verduras" />
+
     </group>
 </menu>
