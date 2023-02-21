@@ -64,5 +64,12 @@ data class Usuario(
             else if (num == tecNumber) return tecName
             return "UNKNOWN"
         }
+
+        fun isAdmin(num:Int): Boolean {
+            return num == adminNumber
+        }
+        fun isAdmin(name:String): Boolean {
+            return name == adminName
+        }
     }
 }

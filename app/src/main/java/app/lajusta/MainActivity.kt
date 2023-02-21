@@ -18,6 +18,7 @@ import app.lajusta.data.model.UserType
 import app.lajusta.databinding.ActivityMainBinding
 import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.login.LoginActivity
+import app.lajusta.ui.usuarios.Usuario
 import com.google.android.material.navigation.NavigationView
 
 
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         //TODO Hacer el ABM de usuarios
-        if (userType == UserType.ADMIN.toString()) {
+        //if (Usuario.isAdmin(userType)) {
             appBarConfiguration = AppBarConfiguration(
                 setOf(
                     R.id.nav_rondas, R.id.nav_visitas,
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.nav_usuarios
                 ), drawerLayout
             )
-        } else {
+        /*} else {
             appBarConfiguration = AppBarConfiguration(
                 setOf(
                     R.id.nav_rondas, R.id.nav_visitas,
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.nav_quintas, R.id.nav_verduras
                 ), drawerLayout
             )
-        }
+        }*/
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
@@ -94,10 +95,6 @@ class MainActivity : AppCompatActivity() {
                 token = ""
                 goToLogin()
                 finish()
-                return true
-            }
-            R.id.action_debug_map -> {
-                goToGenericMap()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
