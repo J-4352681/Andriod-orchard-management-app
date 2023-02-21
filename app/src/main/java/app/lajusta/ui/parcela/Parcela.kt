@@ -7,9 +7,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Parcela(
     val id_parcela: Int,
-    val cantidad_surcos: Int,
-    val cubierta: Boolean,
-    val cosecha: Boolean,
-    val id_visita: Int,
-    var verdura: Verdura
+    var cantidad_surcos: Int,
+    var cubierta: Boolean,
+    var cosecha: Boolean,
+    var id_visita: Int,
+    var id_verdura: Verdura
 ): Parcelable

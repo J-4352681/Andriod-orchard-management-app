@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.View
 import android.widget.TextView
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 class ArrayedDate() {
@@ -26,6 +25,10 @@ class ArrayedDate() {
                 date[2].toString() + delimiter
                 + date[1] + delimiter + date[0]
             )
+        }
+
+        fun toDate(date: List<Int>): Date {
+            return sdf.parse(toString(date))!!
         }
 
         fun todayStringed(): String = toString(todayArrayed())

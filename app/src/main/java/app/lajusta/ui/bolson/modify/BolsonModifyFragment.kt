@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonModifyBinding
@@ -109,6 +111,14 @@ class BolsonModifyFragment: BaseFragment() {
             }, "No se pudieron obtener las familias."
         )
         binding.etCantidad.setText(bolson.cantidad.toString())
+
+        binding.btnAgregarVerdura.setOnClickListener {
+            val bundle = bundleOf("idFamilia" to familias.find {
+                it.nombre == binding.sFamilia.selectedItem
+            }!!.id_fp)
+            this.findNavController().navigate(R.id.verduraSelectFragment, bundle)
+        }
+
         initRecyclerView()
     }
 

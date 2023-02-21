@@ -1,6 +1,7 @@
-package app.lajusta.ui.verdura.extra
+package app.lajusta.ui.bolson.extra
 
 import android.view.View
+import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import app.lajusta.databinding.ItemVerduraBinding
 import app.lajusta.databinding.ItemVerduraSelectBinding
@@ -12,8 +13,8 @@ class VerduraSelectViewHolder(
 
     private val binding = ItemVerduraSelectBinding.bind(itemView)
 
-    fun bind(verduraItem: Verdura, clickListener: (Verdura) -> Unit) {
+    fun bind(verduraItem: Verdura, clickListener: (CheckBox) -> Unit) {
         binding.cbNombre.text = verduraItem.nombre
-        itemView.setOnClickListener { clickListener(verduraItem) }
+        itemView.setOnClickListener { clickListener(binding.cbNombre) }
     }
 }

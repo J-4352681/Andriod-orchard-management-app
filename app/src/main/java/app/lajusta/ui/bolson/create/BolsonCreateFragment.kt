@@ -5,21 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonCreateBinding
-import app.lajusta.databinding.FragmentBolsonModifyBinding
 import app.lajusta.ui.bolson.Bolson
-import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.bolson.api.BolsonApi
+import app.lajusta.ui.bolson.modify.VerduraBolsonAdapter
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.rondas.Ronda
 import app.lajusta.ui.rondas.api.RondaApi
-import kotlin.random.Random
 
 
 class BolsonCreateFragment : BaseFragment() {
@@ -27,6 +28,10 @@ class BolsonCreateFragment : BaseFragment() {
     private val binding get() = _binding!!
     private var familias = listOf<Familia>()
     private var rondas = listOf<Ronda>()
+    private var verdurasQuinta = listOf<Verdura>()
+    private var verdurasNoQuinta = listOf<Verdura>()
+    private val verdurasTotales = mutableListOf<Verdura>()
+    private lateinit var verduraBolsonAdapter: VerduraBolsonAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,37 +49,7 @@ class BolsonCreateFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
-
-        binding.bGuardar.setOnClickListener{
-            val cantidad = binding.etCantidad.text.toString()
-
-            if(cantidad.isNullOrEmpty()) {
-                shortToast("Debe escribir una cantidad")
-                return@setOnClickListener
-            }
-
-            if(verduras.size < 7) {
-                shortToast("Deben ser al menos 7 verduras")
-                return@setOnClickListener
-            }
-
-            returnSimpleApiCall({
-                BolsonApi().postBolson(Bolson(
-                    0, cantidad.toInt(),
-                    familias.find {
-                        it.nombre == binding.sFamilia.selectedItem.toString()
-                    }!!.id_fp,
-                    rondas.find {
-                        it.id_ronda ==
-                            binding.sRonda.selectedItem
-                                .toString().split("#")[0].toInt()
-                    }!!.id_ronda,
-                    verduras
-                ) )
-            }, "Hubo un error. El bolsón no pudo ser creado.")
-        }
-
-        binding.bCancelar.setOnClickListener{ activity?.onBackPressed() }
+        setClickListeners()
     }
 
     private fun fillItem() {
@@ -98,6 +73,71 @@ class BolsonCreateFragment : BaseFragment() {
                 binding.sRonda.adapter = rondasAdapter
             }, "No se pudieron obtener las familias."
         )
+
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        verduraBolsonAdapter = VerduraBolsonAdapter(verdurasTotales)
+        binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
+        binding.rvVerduras.adapter = verduraBolsonAdapter
+
+        val stateHandle: SavedStateHandle =
+            findNavController().currentBackStackEntry?.savedStateHandle!!
+
+        stateHandle.getLiveData<List<Verdura>>("verdurasQuinta")
+            .observe(viewLifecycleOwner) { data ->
+                verdurasQuinta = data
+                verdurasTotales.clear()
+                verdurasTotales.addAll(verdurasQuinta + verdurasNoQuinta)
+            }
+
+        stateHandle.getLiveData<List<Verdura>>("verdurasNoQuinta")
+            .observe(viewLifecycleOwner) { data ->
+                verdurasNoQuinta = data
+                verdurasTotales.clear()
+                verdurasTotales.addAll(verdurasQuinta + verdurasNoQuinta)
+            }
+    }
+
+    private fun setClickListeners() {
+        binding.bGuardar.setOnClickListener{
+            val cantidad = binding.etCantidad.text.toString()
+
+            if(cantidad.isNullOrEmpty()) {
+                shortToast("Debe escribir una cantidad")
+                return@setOnClickListener
+            }
+
+            if(verduras.size < 7) {
+                shortToast("Deben ser al menos 7 verduras")
+                return@setOnClickListener
+            }
+
+            returnSimpleApiCall({
+                BolsonApi().postBolson(Bolson(
+                    0, cantidad.toInt(),
+                    familias.find {
+                        it.nombre == binding.sFamilia.selectedItem.toString()
+                    }!!.id_fp,
+                    rondas.find {
+                        it.id_ronda ==
+                                binding.sRonda.selectedItem
+                                    .toString().split("#")[0].toInt()
+                    }!!.id_ronda,
+                    verduras
+                ) )
+            }, "Hubo un error. El bolsón no pudo ser creado.")
+        }
+
+        binding.bCancelar.setOnClickListener{ activity?.onBackPressed() }
+
+        binding.btnAgregarVerdura.setOnClickListener {
+            val bundle = bundleOf("idFamilia" to familias.find {
+                it.nombre == binding.sFamilia.selectedItem
+            }!!.id_fp)
+            this.findNavController().navigate(R.id.verduraSelectFragment, bundle)
+        }
     }
 
     override fun onDestroy() {

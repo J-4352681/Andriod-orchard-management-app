@@ -84,13 +84,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/verdurasSelectFragment"
-        android:name="app.lajusta.ui.bolson.extra.VerdurasSelectFragment"
-        android:label="Selección de verduras de bolsón"
-        tools:layout="@layout/fragment_verduras_select" >
+        android:id="@+id/verduraSelectFragment"
+        android:name="app.lajusta.ui.bolson.extra.VerduraSelectFragment"
+        android:label="Selección de verduras"
+        tools:layout="@layout/fragment_verdura_select" >
         <argument
-            android:name="verduras"
-            app:argType="app.lajusta.ui.verdura.Verduras"/>
+            android:name="idFamilia"
+            app:argType="integer"
+            app:nullable="false"/>
     </fragment>
 
 
