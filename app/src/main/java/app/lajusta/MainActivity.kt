@@ -27,19 +27,19 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
-        //const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
-        const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
-        var userId:String = ""
-        var userName:String = ""
-        var userType:String = ""
-        var token:String = ""
+        const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
+        //const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
+        var userId: String = ""
+        var userName: String = ""
+        var userType: String = ""
+        var token: String = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //CHECKING LOGIN
-        /* if ( userName.isEmpty() || userType.isEmpty() || userId.isEmpty() ) {
+        /* if ( userName.isEmpty() || userType.isEmpty() || userId.isEmpty() || token.isEmpty() ) {
             goToLogin()
         } */
 
@@ -54,16 +54,23 @@ class MainActivity : AppCompatActivity() {
 
         //TODO Hacer el ABM de usuarios
         if (userType == UserType.ADMIN.toString()) {
-            //MOSTRAR EL ABM DE USUARIOS
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.nav_rondas, R.id.nav_visitas,
+                    R.id.nav_familias, R.id.nav_bolson,
+                    R.id.nav_quintas, R.id.nav_verduras,
+                    R.id.nav_usuarios
+                ), drawerLayout
+            )
+        } else {
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.nav_rondas, R.id.nav_visitas,
+                    R.id.nav_familias, R.id.nav_bolson,
+                    R.id.nav_quintas, R.id.nav_verduras
+                ), drawerLayout
+            )
         }
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_rondas, R.id.nav_visitas,
-                R.id.nav_familias, R.id.nav_bolson,
-                R.id.nav_quintas, R.id.nav_verduras
-            ), drawerLayout
-        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
@@ -80,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(i)
                 true
             }
-            R.id.action_logout ->{
+            R.id.action_logout -> {
                 userId = ""
                 userName = ""
                 userType = ""
@@ -89,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                 finish()
                 return true
             }
-            R.id.action_debug_map ->{
+            R.id.action_debug_map -> {
                 goToGenericMap()
                 return true
             }

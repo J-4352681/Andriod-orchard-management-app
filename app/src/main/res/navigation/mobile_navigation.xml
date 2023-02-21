@@ -228,4 +228,38 @@
         android:name="app.lajusta.ui.verdura.create.VerduraCreateFragment"
         android:label="Crear verdura" />
 
+
+    <!-- USUARIOS -->
+    <fragment
+        android:id="@+id/nav_usuarios"
+        android:name="app.lajusta.ui.usuarios.list.UsuariosListFragment"
+        android:label="@string/menu_usuarios"
+        tools:layout="@layout/fragment_usuarios_list" />
+
+    <fragment
+        android:id="@+id/usuariosFilteredListFragment"
+        android:name="app.lajusta.ui.usuarios.list.UsuariosListFragment"
+        android:label="Usuarios"
+        tools:layout="@layout/fragment_usuarios_list" >
+        <argument
+            android:name="usuarios"
+            app:argType="app.lajusta.ui.usuarios.Usuario"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/usuariosModifyFragment"
+        android:name="app.lajusta.ui.usuarios.modify.UsuariosModifyFragment"
+        android:label="Modificar usuario"
+        tools:layout="@layout/fragment_usuarios_modify" >
+        <argument
+            android:name="usuario"
+            app:argType="app.lajusta.ui.usuarios.Usuario" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/usuariosCreateFragment"
+        android:name="app.lajusta.ui.usuarios.create.UsuariosCreateFragment"
+        android:label="Crear usuario" />
+
 </navigation>
