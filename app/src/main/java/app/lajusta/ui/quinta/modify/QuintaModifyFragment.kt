@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import app.lajusta.R
 import app.lajusta.databinding.FragmentQuintaModifyBinding
 import app.lajusta.ui.familia.Familia
@@ -63,6 +65,11 @@ class QuintaModifyFragment: BaseFragment() {
     }
 
     private fun setClickListeners() {
+        binding.btnGoToMap.setOnClickListener {
+            val bundle = bundleOf("quinta" to quinta)
+            this.findNavController().navigate(R.id.quintaMapaFragment, bundle)
+        }
+
         binding.bBorrar.setOnClickListener {
             returnSimpleApiCall(
                 { QuintaApi().deleteQuinta(quinta.id_quinta) },
