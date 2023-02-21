@@ -121,7 +121,7 @@ class BolsonCreateFragment : BaseFragment() {
                     }
                     .create()
                     .show()
-            }
+            } else commitChange()
         }
 
         binding.bCancelar.setOnClickListener{ activity?.onBackPressed() }
