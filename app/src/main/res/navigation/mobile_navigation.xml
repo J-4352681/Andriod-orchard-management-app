@@ -188,5 +188,10 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/quintaMapaFragment"
+        android:name="app.lajusta.ui.quinta.map.QuintaMapaFragment"
+        android:label="fragment_quinta_mapa"
+        tools:layout="@layout/fragment_quinta_mapa" />
 
 </navigation>
