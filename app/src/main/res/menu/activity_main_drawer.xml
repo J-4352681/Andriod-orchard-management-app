@@ -18,11 +18,15 @@
             android:title="@string/menu_visitas" />
         <item
             android:id="@+id/nav_quintas"
-            android:title="Quintas" />
+            android:title="@string/menu_quintas" />
 
         <item
             android:id="@+id/nav_verduras"
-            android:title="Verduras" />
+            android:title="@string/menu_verduras" />
+
+        <item
+            android:id="@+id/nav_usuarios"
+            android:title="@string/menu_usuarios" />
 
     </group>
 </menu>

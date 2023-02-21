@@ -47,7 +47,6 @@ class FamiliaModifyFragment: BaseFragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
-        setClickListeners()
     }
 
     private fun fillItem() {
@@ -64,6 +63,7 @@ class FamiliaModifyFragment: BaseFragment(){
         }, {
             fillQuintas()
             fillRondas()
+            setClickListeners()
         }, "No se pudieron obtener las quintas y/o bolsones de la familia.")
     }
 
@@ -145,6 +145,13 @@ class FamiliaModifyFragment: BaseFragment(){
             ))
             this.findNavController().navigate(
                 R.id.quintaCreateFragment, bundle
+            )
+        }
+
+        binding.bVerRondas.setOnClickListener {
+            val bundle = bundleOf("rondas" to ArrayList<Ronda>(familia.rondas))
+            this.findNavController().navigate(
+                R.id.rondaFilteredListFragment, bundle
             )
         }
     }

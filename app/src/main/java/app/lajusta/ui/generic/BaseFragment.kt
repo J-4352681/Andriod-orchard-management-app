@@ -3,6 +3,7 @@ package app.lajusta.ui.generic
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import app.lajusta.data.model.UserType
 import kotlinx.coroutines.*
 import retrofit2.Response
 

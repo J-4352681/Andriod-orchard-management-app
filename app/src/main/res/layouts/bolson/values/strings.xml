@@ -83,4 +83,22 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="mapa_quinta">Mapa de una quinta</string>
     <string name="mostrar_mapa">Ver quinta en mapa</string>
+    <string name="menu_usuarios">Usuarios</string>
+    <string name="menu_quintas">Quintas</string>
+    <string name="menu_verduras">Verduras</string>
+    <string name="tv_name">Nombre</string>
+    <string name="et_name">Ingrese nombre</string>
+    <string name="et_emaill">Ingrese email</string>
+    <string name="tv_emaill">Email</string>
+    <string name="tv_rol">Rol</string>
+    <string name="tv_surname">Apellido</string>
+    <string name="et_surname">Ingrese apellido</string>
+    <string name="tv_user_name">Nombre de usuario</string>
+    <string name="et_user_name">Ingrese nombre de usuario</string>
+    <string name="tv_password">Contraseña</string>
+    <string name="et_password">Ingrese contraseña</string>
+    <string name="et_password_repeat">Repita contraseña</string>
+    <string name="cd_sRol_users">Ingrese rol del usuario</string>
+    <string name="tv_directión">Dirección</string>
+    <string name="et_direction">Ingrese dirección</string>
 </resources>

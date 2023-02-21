@@ -46,6 +46,7 @@ android {
                 'src/main/res/layouts/verdura',
                 'src/main/res/layouts/parcela',
                 'src/main/res/layouts/quinta',
+                'src/main/res/layouts/usuario',
                 'src/main/res/layouts',
                 'src/main/res'
             ]

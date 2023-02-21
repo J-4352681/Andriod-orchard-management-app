@@ -6,6 +6,7 @@ import app.lajusta.data.model.UserType
 import app.lajusta.ui.login.api.LoginApi
 import app.lajusta.ui.login.api.UsuarioLogin
 import app.lajusta.ui.login.api.UsuarioLoginResponse
+import app.lajusta.ui.usuarios.Usuario
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.io.IOException
@@ -39,10 +40,10 @@ class LoginDataSource {
                         Log.i("token", result.body()?.token.orEmpty())
 
                         val tec = LoggedInUser(
-                            result.body()?.id_user,
+                            result.body()!!.id_user,
                             username,
-                            intToUserType(result.body()?.rol),
-                            result.body()?.token
+                            Usuario.rolNumberToUserType(result.body()!!.rol)!!,
+                            result.body()!!.token
                         )
                         return@runBlocking Result.Success(tec)
                     } else {

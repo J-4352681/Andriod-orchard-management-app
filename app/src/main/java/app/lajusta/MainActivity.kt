@@ -18,6 +18,7 @@ import app.lajusta.data.model.UserType
 import app.lajusta.databinding.ActivityMainBinding
 import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.login.LoginActivity
+import app.lajusta.ui.usuarios.Usuario
 import com.google.android.material.navigation.NavigationView
 
 
@@ -29,17 +30,17 @@ class MainActivity : AppCompatActivity() {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
         //const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
         const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
-        var userId:String = ""
-        var userName:String = ""
-        var userType:String = ""
-        var token:String = ""
+        var userId: String = ""
+        var userName: String = ""
+        var userType: String = ""
+        var token: String = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //CHECKING LOGIN
-        /* if ( userName.isEmpty() || userType.isEmpty() || userId.isEmpty() ) {
+        /* if ( userName.isEmpty() || userType.isEmpty() || userId.isEmpty() || token.isEmpty() ) {
             goToLogin()
         } */
 
@@ -53,17 +54,24 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         //TODO Hacer el ABM de usuarios
-        if (userType == UserType.ADMIN.toString()) {
-            //MOSTRAR EL ABM DE USUARIOS
-        }
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_rondas, R.id.nav_visitas,
-                R.id.nav_familias, R.id.nav_bolson,
-                R.id.nav_quintas, R.id.nav_verduras
-            ), drawerLayout
-        )
+        //if (Usuario.isAdmin(userType)) {
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.nav_rondas, R.id.nav_visitas,
+                    R.id.nav_familias, R.id.nav_bolson,
+                    R.id.nav_quintas, R.id.nav_verduras,
+                    R.id.nav_usuarios
+                ), drawerLayout
+            )
+        /*} else {
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.nav_rondas, R.id.nav_visitas,
+                    R.id.nav_familias, R.id.nav_bolson,
+                    R.id.nav_quintas, R.id.nav_verduras
+                ), drawerLayout
+            )
+        }*/
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
@@ -80,17 +88,13 @@ class MainActivity : AppCompatActivity() {
                 startActivity(i)
                 true
             }
-            R.id.action_logout ->{
+            R.id.action_logout -> {
                 userId = ""
                 userName = ""
                 userType = ""
                 token = ""
                 goToLogin()
                 finish()
-                return true
-            }
-            R.id.action_debug_map ->{
-                goToGenericMap()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
