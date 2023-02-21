@@ -111,17 +111,12 @@
 
     <fragment
         android:id="@+id/verduraSelectFragment"
-        android:name="app.lajusta.ui.bolson.extra.VerduraSelectFragment"
+        android:name="app.lajusta.ui.bolson.selector.VerduraSelectFragment"
         android:label="Selección de verduras"
         tools:layout="@layout/fragment_verdura_select" >
         <argument
-            android:name="idFamilia"
-            app:argType="integer"
-            app:nullable="false"/>
-        <argument
-            android:name="verdurasPreseleccionadas"
-            app:argType="integer[]"
-            app:nullable="false"/>
+            android:name="bolson"
+            app:argType="app.lajusta.ui.bolson.Bolson" />
     </fragment>
 
 

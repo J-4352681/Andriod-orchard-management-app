@@ -8,4 +8,6 @@ data class Familia(
     var id_fp: Int,
     var nombre: String,
     var fecha_afiliacion: List<Int>
-): Parcelable
+): Parcelable {
+    override fun toString(): String = nombre
+}

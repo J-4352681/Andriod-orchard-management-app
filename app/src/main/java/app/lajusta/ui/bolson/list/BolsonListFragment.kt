@@ -62,7 +62,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initRecyclerView() {
-        bolsonAdapter = BolsonAdapter(bolsonesCompletos) { bolson: BolsonCompleto ->
+        bolsonAdapter = BolsonAdapter(bolsonesCompletos) { bolson: Bolson ->
             val bundle = bundleOf("bolson" to bolson)
             this.findNavController().navigate(R.id.bolsonModifyFragment, bundle)
         }

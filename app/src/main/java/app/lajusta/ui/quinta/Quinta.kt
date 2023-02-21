@@ -10,4 +10,6 @@ data class Quinta(
     var direccion: String?,
     var geoImg: String?,
     var fpId: Int,
-): Parcelable
+): Parcelable {
+    override fun toString(): String = nombre
+}

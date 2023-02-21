@@ -13,6 +13,8 @@ data class Verdura(
     var nombre: String,
     var descripcion: String?,
 ): Parcelable {
+    override fun toString(): String = nombre
+
     companion object {
         fun filter(
             verduras: MutableList<Verdura>,

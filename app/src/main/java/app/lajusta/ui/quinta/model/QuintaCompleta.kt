@@ -15,6 +15,8 @@ data class QuintaCompleta(
 ): Parcelable {
     fun toQuinta(): Quinta = Quinta(id_quinta, nombre, direccion, geoImg, familia.id_fp)
 
+    override fun toString(): String = nombre
+
     companion object {
         fun toQuintaCompleta(quinta: Quinta, familia: Familia): QuintaCompleta =
             QuintaCompleta(quinta.id_quinta, quinta.nombre,

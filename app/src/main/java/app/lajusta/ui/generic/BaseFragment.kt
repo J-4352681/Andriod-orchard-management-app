@@ -22,6 +22,7 @@ open class BaseFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = apiEffectiveCall()
+                println(response.code())
                 if(!response.isSuccessful) throw Exception(response.code().toString())
             }
             catch(e: Exception) { activity!!.runOnUiThread {

@@ -1,14 +1,14 @@
-package app.lajusta.ui.bolson.extra
+package app.lajusta.ui.bolson.selector
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.databinding.FragmentVerduraSelectBinding
+import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.Quinta
@@ -17,29 +17,28 @@ import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.verdura.api.VerduraApi
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
-import kotlinx.parcelize.Parcelize
 
 class VerduraSelectFragment : BaseFragment() {
     private var _binding: FragmentVerduraSelectBinding? = null
     private val binding get() = _binding!!
-    private var idFamilia: Int = -1
+    private lateinit var bolson: Bolson
+
     private var quintas = listOf<Quinta>()
     private var visitas = listOf<Visita>()
     private var verduras = listOf<Verdura>()
+
     private val verdurasQuinta = mutableListOf<Verdura>()
-    private val verdurasNoQuinta = mutableListOf<Verdura>()
-    private val verdurasQuintaSeleccionadas = mutableListOf<String>()
-    private val verdurasNoQuintaSeleccionadas = mutableListOf<String>()
+    private val verdurasQuintaSeleccionadas = mutableListOf<Verdura>()
     private lateinit var verdurasQuintaAdapter: VerduraSelectAdapter
+
+    private val verdurasNoQuinta = mutableListOf<Verdura>()
+    private val verdurasNoQuintaSeleccionadas = mutableListOf<Verdura>()
     private lateinit var verdurasNoQuintaAdapter: VerduraSelectAdapter
-    private val preseleccionadas = mutableListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
-            idFamilia = bundle.getInt("idFamilia")
-            val data = bundle.getIntegerArrayList("preseleccionadas")
-            if(data != null) preseleccionadas.addAll(data.toMutableList())
+            bolson = bundle.getParcelable("bolson")!!
         }
     }
 
@@ -54,44 +53,10 @@ class VerduraSelectFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listInit()
-        initRecyclerView()
+        fillItem()
         setClickListeners()
     }
 
-    private fun initRecyclerView() {
-        verdurasQuintaAdapter =
-            VerduraSelectAdapter(verdurasQuinta, preseleccionadas) { cb: CheckBox ->
-            if (!cb.isChecked) {
-                if (verdurasQuintaSeleccionadas.size == 5)
-                    shortToast("Deberían elegirse al menos 5 verduras de la quinta.")
-
-                if (verdurasQuintaSeleccionadas.size + verdurasNoQuintaSeleccionadas.size == 7)
-                    shortToast("Deberían elegirse al menos 7 verduras en total.")
-
-                verdurasQuintaSeleccionadas.remove(cb.text.toString())
-            } else verdurasQuintaSeleccionadas.add(cb.text.toString())
-        }
-        binding.rvQuinta.layoutManager = LinearLayoutManager(activity)
-        binding.rvQuinta.adapter = verdurasQuintaAdapter
-
-        verdurasNoQuintaAdapter =
-            VerduraSelectAdapter(verdurasNoQuinta, preseleccionadas) { cb ->
-            if (!cb.isChecked) {
-                if (verdurasQuintaSeleccionadas.size + verdurasNoQuintaSeleccionadas.size == 7)
-                    shortToast("Deberían elegirse al menos 7 verduras en total.")
-
-                verdurasNoQuintaSeleccionadas.remove(cb.text.toString())
-            } else {
-                verdurasNoQuintaSeleccionadas.add(cb.text.toString())
-
-                if (verdurasNoQuintaSeleccionadas.size == 2)
-                    shortToast("Deberían elegirse a lo sumo 2 verduras que no sea de la quinta.")
-            }
-        }
-        binding.rvNoQuinta.layoutManager = LinearLayoutManager(activity)
-        binding.rvNoQuinta.adapter = verdurasNoQuintaAdapter
-    }
 
     private fun setClickListeners() {
         binding.bAceptar.setOnClickListener {
@@ -99,25 +64,22 @@ class VerduraSelectFragment : BaseFragment() {
 
             val stateHandler: SavedStateHandle =
                 navController.previousBackStackEntry?.savedStateHandle!!
-            stateHandler["verdurasQuinta"] = verdurasQuinta.filter {
-                verdurasQuintaSeleccionadas.contains(it.nombre)
-            }
-            stateHandler["verdurasNoQuinta"] = verdurasNoQuinta.filter {
-                verdurasNoQuintaSeleccionadas.contains(it.nombre)
-            }
+            bolson.verduras = verdurasQuintaSeleccionadas + verdurasNoQuintaSeleccionadas
+            stateHandler["bolson"] = bolson
 
             navController.popBackStack()
         }
     }
 
-    private fun listInit() {
+
+    private fun fillItem() {
         apiCall(
             {
                 verduras = VerduraApi().getVerduras().body()!!
                 quintas = QuintaApi().getQuintas().body()!!
                 visitas = VisitaApi().getVisitas().body()!!
             }, {
-                quintas = quintas.filter { it.fpId == idFamilia }
+                quintas = quintas.filter { it.fpId == bolson.idFp }
                 visitas = visitas
                     .filter { quintas.map { it.id_quinta }.contains(it.id_quinta) }
                     .map { visita ->
@@ -141,16 +103,58 @@ class VerduraSelectFragment : BaseFragment() {
                 verdurasQuintaSeleccionadas.addAll(
                     verdurasQuinta
                         .filter {
-                            preseleccionadas.contains(it.id_verdura)
-                        }.map { it.nombre }
+                            bolson.verduras.map { it.id_verdura }.contains(it.id_verdura)
+                        }
                 )
                 verdurasNoQuintaSeleccionadas.addAll(
                     verdurasNoQuinta.filter {
-                        preseleccionadas.contains(it.id_verdura)
-                    }.map { it.nombre }
+                        bolson.verduras.map { it.id_verdura }.contains(it.id_verdura)
+                    }
                 )
             }, "Hubo un problema obteniendo las verduras"
         )
+
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        verdurasQuintaAdapter =
+            VerduraSelectAdapter(verdurasQuinta, bolson.verduras.map { it.id_verdura }, { cb ->
+                if (verdurasQuintaSeleccionadas.size == 5)
+                    shortToast("Deberían elegirse al menos 5 verduras de la quinta.")
+
+                if (verdurasQuintaSeleccionadas.size + verdurasNoQuintaSeleccionadas.size == 7)
+                    shortToast("Deberían elegirse al menos 7 verduras en total.")
+
+                verdurasQuintaSeleccionadas.remove(
+                    verdurasQuinta.find { it.nombre == cb.text.toString() }
+                )
+            }, { cb ->
+                verdurasQuintaSeleccionadas.add(
+                    verdurasQuinta.find { it.nombre == cb.text.toString() }!!
+                )
+            })
+        binding.rvQuinta.layoutManager = LinearLayoutManager(activity)
+        binding.rvQuinta.adapter = verdurasQuintaAdapter
+
+        verdurasNoQuintaAdapter =
+            VerduraSelectAdapter(verdurasNoQuinta, bolson.verduras.map { it.id_verdura }, { cb ->
+                if (verdurasQuintaSeleccionadas.size + verdurasNoQuintaSeleccionadas.size == 7)
+                    shortToast("Deberían elegirse al menos 7 verduras en total.")
+
+                verdurasNoQuintaSeleccionadas.remove(
+                    verdurasNoQuinta.find { it.nombre == cb.text.toString() }
+                )
+            }, { cb ->
+                verdurasNoQuintaSeleccionadas.add(
+                    verdurasNoQuinta.find { it.nombre == cb.text.toString() }!!
+                )
+
+                if (verdurasNoQuintaSeleccionadas.size == 2)
+                    shortToast("Deberían elegirse a lo sumo 2 verduras que no sea de la quinta.")
+            })
+        binding.rvNoQuinta.layoutManager = LinearLayoutManager(activity)
+        binding.rvNoQuinta.adapter = verdurasNoQuintaAdapter
     }
 
     override fun onDestroyView() {

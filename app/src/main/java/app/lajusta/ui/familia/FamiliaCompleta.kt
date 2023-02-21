@@ -20,6 +20,8 @@ data class FamiliaCompleta(
         return Familia(id_fp, nombre, fecha_afiliacion)
     }
 
+    override fun toString(): String = nombre
+
     companion object {
         fun toFamiliaCompleta(
             familia: Familia,

@@ -11,6 +11,9 @@ data class Ronda(
     var fecha_inicio: List<Int>,
     //var verdura: Verdura  //Tiene una verdura pero esta en null en las api...
 ): Parcelable {
+    override fun toString(): String =
+        ArrayedDate.toString(fecha_inicio) + " - " + ArrayedDate.toString(fecha_fin!!)
+
     companion object {
         fun filter(
             rondas: MutableList<Ronda>,
