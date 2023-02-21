@@ -9,6 +9,7 @@ import app.lajusta.ui.verdura.Verdura
 
 class VerduraSelectAdapter(
     private val verdurasList: List<Verdura>,
+    private val preseleccionadas: List<Int>,
     private val clickListener: (CheckBox) -> Unit
 ) : Adapter<VerduraSelectViewHolder>() {
 
@@ -20,7 +21,8 @@ class VerduraSelectAdapter(
     }
 
     override fun onBindViewHolder(holder: VerduraSelectViewHolder, position: Int) {
-        holder.bind(verdurasList[position], clickListener)
+        val verdura = verdurasList[position]
+        holder.bind(verdura, preseleccionadas.contains(verdura.id_verdura), clickListener)
     }
 
     override fun getItemCount(): Int = verdurasList.size

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.verdura.api.VerduraApi
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
+import kotlinx.parcelize.Parcelize
 
 class VerduraSelectFragment : BaseFragment() {
     private var _binding: FragmentVerduraSelectBinding? = null
@@ -30,17 +32,22 @@ class VerduraSelectFragment : BaseFragment() {
     private val verdurasNoQuintaSeleccionadas = mutableListOf<String>()
     private lateinit var verdurasQuintaAdapter: VerduraSelectAdapter
     private lateinit var verdurasNoQuintaAdapter: VerduraSelectAdapter
+    private val preseleccionadas = mutableListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        idFamilia = arguments?.getInt("idFamilia")!!
+        arguments?.let { bundle ->
+            idFamilia = bundle.getInt("idFamilia")
+            val data = bundle.getIntegerArrayList("preseleccionadas")
+            if(data != null) preseleccionadas.addAll(data.toMutableList())
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentVerduraSelectBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -53,8 +60,9 @@ class VerduraSelectFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        verdurasQuintaAdapter = VerduraSelectAdapter(verdurasQuinta) { cb ->
-            if (cb.isChecked) {
+        verdurasQuintaAdapter =
+            VerduraSelectAdapter(verdurasQuinta, preseleccionadas) { cb: CheckBox ->
+            if (!cb.isChecked) {
                 if (verdurasQuintaSeleccionadas.size == 5)
                     shortToast("Deberían elegirse al menos 5 verduras de la quinta.")
 
@@ -63,14 +71,13 @@ class VerduraSelectFragment : BaseFragment() {
 
                 verdurasQuintaSeleccionadas.remove(cb.text.toString())
             } else verdurasQuintaSeleccionadas.add(cb.text.toString())
-
-            cb.isChecked = !cb.isChecked
         }
         binding.rvQuinta.layoutManager = LinearLayoutManager(activity)
         binding.rvQuinta.adapter = verdurasQuintaAdapter
 
-        verdurasNoQuintaAdapter = VerduraSelectAdapter(verdurasNoQuinta) { cb ->
-            if (cb.isChecked) {
+        verdurasNoQuintaAdapter =
+            VerduraSelectAdapter(verdurasNoQuinta, preseleccionadas) { cb ->
+            if (!cb.isChecked) {
                 if (verdurasQuintaSeleccionadas.size + verdurasNoQuintaSeleccionadas.size == 7)
                     shortToast("Deberían elegirse al menos 7 verduras en total.")
 
@@ -81,19 +88,13 @@ class VerduraSelectFragment : BaseFragment() {
                 if (verdurasNoQuintaSeleccionadas.size == 2)
                     shortToast("Deberían elegirse a lo sumo 2 verduras que no sea de la quinta.")
             }
-
-            cb.isChecked = !cb.isChecked
         }
         binding.rvNoQuinta.layoutManager = LinearLayoutManager(activity)
         binding.rvNoQuinta.adapter = verdurasNoQuintaAdapter
-
-        println("J")
     }
 
     private fun setClickListeners() {
         binding.bAceptar.setOnClickListener {
-            println(verdurasQuintaSeleccionadas)
-            println(verdurasNoQuintaSeleccionadas)
             val navController = this.findNavController()
 
             val stateHandler: SavedStateHandle =
@@ -104,7 +105,6 @@ class VerduraSelectFragment : BaseFragment() {
             stateHandler["verdurasNoQuinta"] = verdurasNoQuinta.filter {
                 verdurasNoQuintaSeleccionadas.contains(it.nombre)
             }
-            println(verdurasQuintaSeleccionadas)
 
             navController.popBackStack()
         }
@@ -128,17 +128,27 @@ class VerduraSelectFragment : BaseFragment() {
 
                 // TODO filtrar visitas anteriores a hace 6 meses
 
-                verdurasQuinta.clear()
                 verdurasQuinta.addAll(verduras.filter {
                     visitas.map {
                         it.parcelas.map { it.verdura.id_verdura }
                     }.flatten().contains(it.id_verdura)
                 })
-                verdurasNoQuinta.clear()
                 verdurasNoQuinta.addAll(verduras - verdurasQuinta.toSet())
 
                 verdurasQuintaAdapter.notifyDataSetChanged()
                 verdurasNoQuintaAdapter.notifyDataSetChanged()
+
+                verdurasQuintaSeleccionadas.addAll(
+                    verdurasQuinta
+                        .filter {
+                            preseleccionadas.contains(it.id_verdura)
+                        }.map { it.nombre }
+                )
+                verdurasNoQuintaSeleccionadas.addAll(
+                    verdurasNoQuinta.filter {
+                        preseleccionadas.contains(it.id_verdura)
+                    }.map { it.nombre }
+                )
             }, "Hubo un problema obteniendo las verduras"
         )
     }
