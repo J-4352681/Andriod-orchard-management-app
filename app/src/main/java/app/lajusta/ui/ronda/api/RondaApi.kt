@@ -1,8 +1,7 @@
-package app.lajusta.ui.rondas.api
+package app.lajusta.ui.ronda.api
 
-import app.lajusta.MainActivity.Companion.baseUrl
-import app.lajusta.ui.rondas.Ronda
-import okhttp3.RequestBody
+import app.lajusta.MainActivity
+import app.lajusta.ui.ronda.Ronda
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -19,15 +18,15 @@ interface RondaApi {
     suspend fun deleteRonda(@Path("id") id: Int): Response<Unit>
 
     @POST("rondas")
-    suspend fun postRonda(@Body requestBody: RequestBody): Response<RequestBody>
+    suspend fun postRonda(@Body ronda: Ronda): Response<Unit>
 
-    @PUT("rondas/{id}")
-    suspend fun putRonda(@Path("id") id: Int, @Body ronda: Ronda): Response<Unit>
+    @PUT("rondas")
+    suspend fun putRonda(@Body ronda: Ronda): Response<Unit>
 
     companion object {
         operator fun invoke() : RondaApi {
             return Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl(MainActivity.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(RondaApi::class.java)

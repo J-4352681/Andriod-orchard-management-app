@@ -15,8 +15,8 @@ import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.model.QuintaCompleta
 import app.lajusta.ui.quinta.model.QuintaCompletaPrefill
-import app.lajusta.ui.rondas.Ronda
-import app.lajusta.ui.rondas.api.RondaApi
+import app.lajusta.ui.ronda.Ronda
+import app.lajusta.ui.ronda.api.RondaApi
 
 class FamiliaModifyFragment: BaseFragment(){
 

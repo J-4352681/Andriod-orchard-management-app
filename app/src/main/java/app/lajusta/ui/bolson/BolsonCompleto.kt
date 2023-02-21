@@ -3,7 +3,7 @@ package app.lajusta.ui.bolson
 import android.os.Parcelable
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.generic.ArrayedDate
-import app.lajusta.ui.rondas.Ronda
+import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.verdura.Verdura
 import kotlinx.parcelize.Parcelize
 

@@ -16,8 +16,8 @@ import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.model.QuintaCompleta
-import app.lajusta.ui.rondas.Ronda
-import app.lajusta.ui.rondas.api.RondaApi
+import app.lajusta.ui.ronda.Ronda
+import app.lajusta.ui.ronda.api.RondaApi
 
 class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentQuintaListBinding? = null
@@ -34,7 +34,7 @@ class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
             val data = bundle.getParcelableArrayList<QuintaCompleta>("quintas")
-            if(data != null) quintasCompletasArg = data?.toMutableList()!!
+            if(data != null) quintasCompletasArg = data.toMutableList()
         }
     }
 
