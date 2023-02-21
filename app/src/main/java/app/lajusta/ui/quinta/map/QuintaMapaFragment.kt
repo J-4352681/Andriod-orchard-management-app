@@ -1,5 +1,6 @@
 package app.lajusta.ui.quinta.map
 
+import android.content.pm.PackageManager
 import android.graphics.Camera
 import android.location.Address
 import android.location.Geocoder
@@ -10,6 +11,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import app.lajusta.R
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.generic.BaseFragment
@@ -23,10 +26,16 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import java.io.IOError
 import java.io.IOException
+import java.util.jar.Manifest
 
 class QuintaMapaFragment : BaseFragment() {
 
     private lateinit var quinta: QuintaCompleta
+    private lateinit var map: GoogleMap
+
+    companion object {
+        const val REQUEST_CODE_LOCATION = 0
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +45,10 @@ class QuintaMapaFragment : BaseFragment() {
     }
 
     private val callback = OnMapReadyCallback { googleMap ->
+
+        map = googleMap
+        enableLocation()
+
         /**
          * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
@@ -45,8 +58,6 @@ class QuintaMapaFragment : BaseFragment() {
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
-
-        //val laPlata = LatLng(-34.933333333333, -57.95)
 
         if (quinta != null) {
             val geocoder: Geocoder = Geocoder(activity)
@@ -59,10 +70,10 @@ class QuintaMapaFragment : BaseFragment() {
                     val lat = addressList.get(0).latitude
                     val long = addressList.get(0).longitude
                     val quintaMarker = LatLng(lat, long)
-                    googleMap.addMarker(
+                    map.addMarker(
                         MarkerOptions().position(quintaMarker).title("Marcador en una quinta")
                     )
-                    googleMap.animateCamera(
+                    map.animateCamera(
                         CameraUpdateFactory.newLatLngZoom(quintaMarker, 12f),
                         4000,
                         null
@@ -73,10 +84,11 @@ class QuintaMapaFragment : BaseFragment() {
                 Log.e("Error con geocoder", e.message!!)
                 longToast("Hubo un error al encontrar la direccion de la quinta, la direccio no existe.")
             }
+
         } else {
             shortToast("Hubo un error al mostrar la direccion de la quinta.")
             val laPlata = LatLng(-34.933333333333, -57.95)
-            googleMap.animateCamera(
+            map.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(laPlata, 12f),
                 4000,
                 null
@@ -97,5 +109,60 @@ class QuintaMapaFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+    }
+
+    private fun isLocationPermissionGranted() =
+        ContextCompat.checkSelfPermission(
+            activity!!,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+    private fun enableLocation() {
+        //Asummos que el mapa existe porque no se deberia llamar si no
+        if (isLocationPermissionGranted()) {
+            try {
+                map.isMyLocationEnabled = true
+            } catch (e: SecurityException) {
+                Log.e("SECURITY EXCEPTION", e.message!!)
+            }
+
+        } else {
+            requestLocationPermission()
+        }
+    }
+
+    private fun requestLocationPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                activity!!,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        ) {
+            longToast("Para ver su localizacion vaya a ajustes y acepte los permisos.")
+        } else {
+            ActivityCompat.requestPermissions(
+                activity!!,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_CODE_LOCATION
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode){
+            REQUEST_CODE_LOCATION -> if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+                try {
+                    map.isMyLocationEnabled = true
+                } catch (e: SecurityException) {
+                    Log.e("SECURITY EXCEPTION", e.message!!)
+                }
+            } else {
+                shortToast("Para activar la localizacion vaya a ajustes y acepte los permisos")
+            }
+            else -> {}
+        }
     }
 }
