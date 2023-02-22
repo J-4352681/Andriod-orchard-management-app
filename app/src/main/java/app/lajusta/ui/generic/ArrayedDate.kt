@@ -1,6 +1,7 @@
 package app.lajusta.ui.generic
 
 import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.view.View
 import android.widget.TextView
@@ -10,9 +11,6 @@ import java.util.*
 class ArrayedDate() {
     companion object{
         private val c = Calendar.getInstance()
-        private val year = c.get(Calendar.YEAR)
-        private val month = c.get(Calendar.MONTH)
-        private val day = c.get(Calendar.DAY_OF_MONTH)
         private const val delimiter = "/"
         private val sdf = SimpleDateFormat("dd/mm/yyyy")
 
@@ -37,9 +35,13 @@ class ArrayedDate() {
             c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)
         )
 
-        fun datePickerListener(context: Context, tv: TextView): (View) -> Unit {
+        fun datePickerListener(
+            context: Context,
+            tv: TextView,
+            dateSetListener: OnDateSetListener
+        ): (View) -> Unit {
             return {
-                var arrayedDate = toArray(tv.text.toString())
+                val arrayedDate = toArray(tv.text.toString())
                 DatePickerDialog(
                     context,
                     { _, year, monthOfYear, dayOfMonth ->
@@ -48,12 +50,15 @@ class ArrayedDate() {
                             + (monthOfYear + 1) + delimiter + year
                         )
                     }, arrayedDate[0], arrayedDate[1] - 1, arrayedDate[2]
-                ).show()
+                ).also {
+                    it.setOnDateSetListener(dateSetListener)
+                    it.show()
+                }
             }
         }
 
         fun laterThanToday(date: String): Boolean {
-            return sdf.parse(date) > sdf.parse(todayStringed())
+            return sdf.parse(date)!! > sdf.parse(todayStringed())
         }
     }
 }

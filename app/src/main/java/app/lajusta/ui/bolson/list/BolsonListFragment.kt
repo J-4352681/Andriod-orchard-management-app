@@ -52,10 +52,6 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
         listInit()
 
-        binding.fabCrearBolson.setOnClickListener {
-            this.findNavController().navigate(R.id.bolsonCreateFragment)
-        }
-
         binding.svBolsones.setOnQueryTextListener(this)
 
         initRecyclerView()
@@ -90,7 +86,15 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             bolsonesCompletosOriginal.addAll(bolsonesCompletos)
 
             bolsonAdapter.notifyDataSetChanged()
+
+            setClickListeners()
         }, "Hubo un error al actualizar la lista de bolsones.")
+    }
+
+    private fun setClickListeners() {
+        binding.fabCrearBolson.setOnClickListener {
+            this.findNavController().navigate(R.id.bolsonCreateFragment)
+        }
     }
 
     private fun filter(query: String?) {

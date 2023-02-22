@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import app.lajusta.databinding.FragmentVerduraCreateBinding
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.login.afterTextChanged
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.verdura.api.VerduraApi
 
@@ -14,15 +15,17 @@ class VerduraCreateFragment : BaseFragment() {
     private var _binding: FragmentVerduraCreateBinding? = null
     private val binding get() = _binding!!
     private var verdura = Verdura(
-        0, ArrayedDate.todayArrayed(),
-        ArrayedDate.todayArrayed(), "", "", ""
+        0,
+        ArrayedDate.todayArrayed().toMutableList().also { it[1]+=1 },
+        ArrayedDate.todayArrayed().toMutableList().also { it[1]+=1 },
+        "", "", ""
     )
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentVerduraCreateBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -31,6 +34,11 @@ class VerduraCreateFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
         setClickListeners()
+
+        binding.etNombre.afterTextChanged { nombre -> verdura.nombre = nombre.trim() }
+        binding.etDescripcion.afterTextChanged {
+                descripcion -> verdura.descripcion = descripcion.trim()
+        }
     }
 
 
@@ -39,27 +47,28 @@ class VerduraCreateFragment : BaseFragment() {
         binding.bFechaCosecha.setOnClickListener(
             ArrayedDate.datePickerListener(
                 activity!!, binding.tvFechaCosechaSeleccionada
-            ) )
+            ) { _, i, i2, i3 ->
+                verdura.tiempo_cosecha = listOf(i, i2+1, i3)
+                binding.tvFechaCosechaSeleccionada.text =
+                    ArrayedDate.toString(verdura.tiempo_cosecha!!)
+            }
+        )
 
         binding.bFechaSiembra.setOnClickListener(
             ArrayedDate.datePickerListener(
                 activity!!, binding.tvFechaSiembraSeleccionada
-            ) )
+            ) { _, i, i2, i3 ->
+                verdura.mes_siembra = listOf(i, i2+1, i3)
+                binding.tvFechaSiembraSeleccionada.text =
+                    ArrayedDate.toString(verdura.mes_siembra!!)
+            }
+        )
 
         binding.bGuardar.setOnClickListener {
-            if(binding.etNombre.text.isEmpty()) {
+            if(verdura.nombre.isEmpty()) {
                 shortToast("La verdura debe tener nombre")
                 return@setOnClickListener
             }
-
-            verdura.nombre = binding.etNombre.text.toString()
-            verdura.descripcion = binding.etDescripcion.text.toString()
-
-            verdura.tiempo_cosecha =
-                ArrayedDate.toArray(binding.tvFechaCosechaSeleccionada.text.toString())
-
-            verdura.mes_siembra =
-                ArrayedDate.toArray(binding.tvFechaSiembraSeleccionada.text.toString())
 
             returnSimpleApiCall(
                 { VerduraApi().postVerdura(verdura) },
@@ -73,13 +82,8 @@ class VerduraCreateFragment : BaseFragment() {
 
 
     private fun fillItem() {
-        val fechaCosecha = verdura.tiempo_cosecha!!.toMutableList()
-        fechaCosecha[1] += 1
-        binding.tvFechaCosechaSeleccionada.text = ArrayedDate.toString(fechaCosecha)
-
-        val fechaSiembra = verdura.mes_siembra!!.toMutableList()
-        fechaSiembra[1] += 1
-        binding.tvFechaSiembraSeleccionada.text = ArrayedDate.toString(fechaSiembra)
+        binding.tvFechaCosechaSeleccionada.text = ArrayedDate.toString(verdura.tiempo_cosecha!!)
+        binding.tvFechaSiembraSeleccionada.text = ArrayedDate.toString(verdura.mes_siembra!!)
     }
 
     override fun onDestroyView() {

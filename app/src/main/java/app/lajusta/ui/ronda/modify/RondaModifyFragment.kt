@@ -26,7 +26,7 @@ class RondaModifyFragment: BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRondaModifyBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,20 +43,22 @@ class RondaModifyFragment: BaseFragment() {
         binding.bFechaInicio.setOnClickListener(
             ArrayedDate.datePickerListener(
                 activity!!, binding.tvFechaInicioSeleccionada
-            ) )
+            ) { _, i, i2, i3 ->
+                ronda.fecha_inicio = listOf(i, i2+1, i3)
+                binding.tvFechaInicioSeleccionada.text = ArrayedDate.toString(ronda.fecha_inicio)
+            }
+        )
 
         binding.bFechaFin.setOnClickListener(
             ArrayedDate.datePickerListener(
                 activity!!, binding.tvFechaFinSeleccionada
-            ) )
+            ) { _, i, i2, i3 ->
+                ronda.fecha_fin = listOf(i, i2+1, i3)
+                binding.tvFechaFinSeleccionada.text = ArrayedDate.toString(ronda.fecha_fin!!)
+            }
+        )
 
         binding.bGuardar.setOnClickListener {
-            ronda.fecha_inicio =
-                ArrayedDate.toArray(binding.tvFechaInicioSeleccionada.text.toString())
-
-            ronda.fecha_fin =
-                ArrayedDate.toArray(binding.tvFechaFinSeleccionada.text.toString())
-
             returnSimpleApiCall(
                 { RondaApi().putRonda(ronda) },
                 "Hubo un error. La ronda no pudo ser creada."

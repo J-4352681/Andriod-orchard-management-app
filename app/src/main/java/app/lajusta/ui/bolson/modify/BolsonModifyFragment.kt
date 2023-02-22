@@ -146,10 +146,10 @@ class BolsonModifyFragment: BaseFragment() {
                 AlertDialog.Builder(activity!!)
                     .setMessage("¿Seguro desea proceder con menos de 7 verduras?")
                     .setCancelable(false)
-                    .setPositiveButton("Si") { dialog, id ->
+                    .setPositiveButton("Si") { _, _ ->
                         commitChange()
                     }
-                    .setNegativeButton("No") { dialog, id ->
+                    .setNegativeButton("No") { dialog, _ ->
                         dialog.dismiss()
                     }
                     .create()

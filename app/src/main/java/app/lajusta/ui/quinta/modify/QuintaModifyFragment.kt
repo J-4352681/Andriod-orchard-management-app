@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.login.afterTextChanged
 import app.lajusta.ui.quinta.model.QuintaCompleta
 
 class QuintaModifyFragment: BaseFragment() {
@@ -20,7 +22,9 @@ class QuintaModifyFragment: BaseFragment() {
     private var _binding: FragmentQuintaModifyBinding? = null
     private val binding get() = _binding!!
     private lateinit var quinta: QuintaCompleta
+
     private var familias = listOf<Familia>()
+    private lateinit var familiasAdapter: ArrayAdapter<Familia>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +36,7 @@ class QuintaModifyFragment: BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentQuintaModifyBinding.inflate(
             inflater, container, false
         )
@@ -42,23 +46,39 @@ class QuintaModifyFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
-        setClickListeners()
+
+        binding.etDireccion.afterTextChanged { direccion -> quinta.direccion = direccion.trim() }
+        binding.etImagen.afterTextChanged { url -> quinta.geoImg = url.trim() }
+        binding.etNombre.afterTextChanged { nombre -> quinta.nombre = nombre.trim() }
     }
 
     private fun fillItem() {
         binding.etNombre.setText(quinta.nombre)
-        binding.etDireccion.setText(quinta.direccion.toString())
-        binding.etImagen.setText(quinta.geoImg.toString())
+        binding.etDireccion.setText(quinta.direccion)
+        binding.etImagen.setText(quinta.geoImg)
+
         apiCall(
             { familias = FamiliaApi().getFamilias().body()!! },
             {
-                val familiasAdapter = ArrayAdapter(
-                    activity!!, R.layout.spinner_item, familias.map { it.nombre }
-                )
+                familiasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, familias)
                 binding.sFamilia.adapter = familiasAdapter
+                binding.sFamilia.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
+                        ) {
+                            val familiaSeleccionada = binding.sFamilia.selectedItem as Familia
+                            quinta.familia = familiaSeleccionada
+                        }
+
+                        override fun onNothingSelected(p0: AdapterView<*>?) {}
+                    }
+
                 binding.sFamilia.setSelection(
-                    familiasAdapter.getPosition(quinta.familia.nombre)
+                    familiasAdapter.getPosition(quinta.familia)
                 )
+
+                setClickListeners()
             },
             "Hubo un error al obtener las familias."
         )
@@ -78,21 +98,10 @@ class QuintaModifyFragment: BaseFragment() {
         }
 
         binding.bGuardar.setOnClickListener {
-            quinta.nombre = binding.etNombre.text.toString().trim()
-            quinta.direccion = binding.etDireccion.text.toString().trim()
-            quinta.geoImg = binding.etImagen.text.toString().trim()
-            val familia = familias.find {
-                it.nombre == binding.sFamilia.selectedItem.toString()
-            }
-
-            if(familia == null) {
-                shortToast("Deben elegir una familia.")
+            if(quinta.nombre.isEmpty()) {
+                shortToast("El nombre no puede ser vacío.")
                 return@setOnClickListener
             }
-
-            quinta.familia = familia
-
-            // TODO verificar validez de campos
 
             returnSimpleApiCall(
                 { QuintaApi().putQuinta(quinta.id_quinta, quinta.toQuinta()) },

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import app.lajusta.databinding.FragmentVerduraModifyBinding
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.login.afterTextChanged
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.verdura.api.VerduraApi
 
@@ -26,7 +27,7 @@ class VerduraModifyFragment: BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentVerduraModifyBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,6 +36,11 @@ class VerduraModifyFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
         setClickListeners()
+
+        binding.etNombre.afterTextChanged { nombre -> verdura.nombre = nombre.trim() }
+        binding.etDescripcion.afterTextChanged {
+                descripcion -> verdura.descripcion = descripcion.trim()
+        }
     }
 
 
@@ -43,27 +49,28 @@ class VerduraModifyFragment: BaseFragment() {
         binding.bFechaCosecha.setOnClickListener(
             ArrayedDate.datePickerListener(
                 activity!!, binding.tvFechaCosechaSeleccionada
-            ) )
+            ) { _, i, i2, i3 ->
+                verdura.tiempo_cosecha = listOf(i, i2+1, i3)
+                binding.tvFechaCosechaSeleccionada.text =
+                    ArrayedDate.toString(verdura.tiempo_cosecha!!)
+            }
+        )
 
         binding.bFechaSiembra.setOnClickListener(
             ArrayedDate.datePickerListener(
                 activity!!, binding.tvFechaSiembraSeleccionada
-            ) )
+            ) { _, i, i2, i3 ->
+                verdura.mes_siembra = listOf(i, i2+1, i3)
+                binding.tvFechaSiembraSeleccionada.text =
+                    ArrayedDate.toString(verdura.mes_siembra!!)
+            }
+        )
 
         binding.bGuardar.setOnClickListener {
-            if(binding.etNombre.text.isEmpty()) {
+            if(verdura.nombre.isEmpty()) {
                 shortToast("La verdura debe tener nombre")
                 return@setOnClickListener
             }
-
-            verdura.nombre = binding.etNombre.text.toString()
-            verdura.descripcion = binding.etDescripcion.text.toString()
-
-            verdura.tiempo_cosecha =
-                ArrayedDate.toArray(binding.tvFechaCosechaSeleccionada.text.toString())
-
-            verdura.mes_siembra =
-                ArrayedDate.toArray(binding.tvFechaSiembraSeleccionada.text.toString())
 
             returnSimpleApiCall(
                 { VerduraApi().putVerdura(verdura) },

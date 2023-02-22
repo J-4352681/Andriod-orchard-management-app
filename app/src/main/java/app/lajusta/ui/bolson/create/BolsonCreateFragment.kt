@@ -20,6 +20,7 @@ import app.lajusta.ui.bolson.modify.VerduraBolsonAdapter
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.login.afterTextChanged
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.ronda.api.RondaApi
 
@@ -50,6 +51,10 @@ class BolsonCreateFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
+
+        binding.etCantidad.afterTextChanged { cantidad ->
+            bolson.cantidad = if (cantidad != "") cantidad.toInt() else 0
+        }
     }
 
     private fun fillItem() {
@@ -118,22 +123,20 @@ class BolsonCreateFragment : BaseFragment() {
             }
 
         binding.bGuardar.setOnClickListener {
-            val cantidadtxt = binding.etCantidad.text.toString()
-
-            if(cantidadtxt.isEmpty()) {
+            if(binding.etCantidad.text.toString().isEmpty() || bolson.cantidad == 0) {
                 shortToast("Debe escribir una cantidad")
                 return@setOnClickListener
-            } else bolson.cantidad = cantidadtxt.toInt()
+            }
 
             if(bolson.verduras.size < 7) {
                 shortToast("Deberían ser al menos 7 verduras")
                 AlertDialog.Builder(activity!!)
                     .setMessage("¿Seguro desea proceder con menos de 7 verduras?")
                     .setCancelable(false)
-                    .setPositiveButton("Si") { dialog, id ->
+                    .setPositiveButton("Si") { _, _ ->
                         commitChange()
                     }
-                    .setNegativeButton("No") { dialog, id ->
+                    .setNegativeButton("No") { dialog, _ ->
                         dialog.dismiss()
                     }
                     .create()

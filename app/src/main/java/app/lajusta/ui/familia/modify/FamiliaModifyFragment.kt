@@ -13,6 +13,7 @@ import app.lajusta.ui.familia.FamiliaCompleta
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.login.afterTextChanged
 import app.lajusta.ui.quinta.model.QuintaCompleta
 import app.lajusta.ui.quinta.model.QuintaCompletaPrefill
 import app.lajusta.ui.ronda.Ronda
@@ -37,7 +38,7 @@ class FamiliaModifyFragment: BaseFragment(){
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentFamiliaModifyBinding.inflate(
             inflater, container, false
         )
@@ -47,6 +48,8 @@ class FamiliaModifyFragment: BaseFragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
+
+        binding.etNombre.afterTextChanged { nombre -> familia.nombre = nombre }
     }
 
     private fun fillItem() {
@@ -93,9 +96,14 @@ class FamiliaModifyFragment: BaseFragment(){
     }
 
     private fun setClickListeners() {
-        binding.bFecha.setOnClickListener(ArrayedDate.datePickerListener(
-            activity!!, binding.tvFechaSeleccionada
-        ) )
+        binding.bFecha.setOnClickListener(
+            ArrayedDate.datePickerListener(
+                activity!!, binding.tvFechaSeleccionada
+            ) { _, i, i2, i3 ->
+                familia.fecha_afiliacion = listOf(i, i2+1, i3)
+                binding.tvFechaSeleccionada.text = ArrayedDate.toString(familia.fecha_afiliacion)
+            }
+        )
 
         binding.bBorrar.setOnClickListener {
             returnSimpleApiCall(
@@ -105,16 +113,12 @@ class FamiliaModifyFragment: BaseFragment(){
         }
 
         binding.bGuardar.setOnClickListener {
-            familia.nombre = binding.etNombre.text.toString()
-            familia.fecha_afiliacion =
-                ArrayedDate.toArray(binding.tvFechaSeleccionada.text.toString())
-
             if(ArrayedDate.laterThanToday(ArrayedDate.toString(familia.fecha_afiliacion))) {
                 shortToast("La fecha de afiliación no puede ser posterior a la actual")
                 return@setOnClickListener
             }
 
-            if(familia.nombre.isNullOrEmpty()) {
+            if(familia.nombre.isEmpty()) {
                 shortToast("El nombre de la familia no puede quedar vacío")
                 return@setOnClickListener
             }

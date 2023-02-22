@@ -15,9 +15,6 @@ import app.lajusta.ui.usuarios.Usuario
 import app.lajusta.ui.usuarios.api.UsuariosApi
 import app.lajusta.ui.visita.api.VisitaApi
 import app.lajusta.ui.visita.model.VisitaCompleta
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class VisitaModifyFragment() : BaseFragment() {
     private var _binding: FragmentVisitaModifyBinding? = null
@@ -35,7 +32,7 @@ class VisitaModifyFragment() : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentVisitaModifyBinding.inflate(
             inflater, container, false
         )
@@ -52,7 +49,7 @@ class VisitaModifyFragment() : BaseFragment() {
         binding.bFecha.setOnClickListener(
             ArrayedDate.datePickerListener(
                 activity!!, binding.tvFechaSeleccionada
-            )
+            ) { _, i, i2, i3 -> visita.fecha_visita = listOf(i, i2+1, i3) }
         )
 
         binding.bBorrar.setOnClickListener {
@@ -63,7 +60,7 @@ class VisitaModifyFragment() : BaseFragment() {
 
         binding.bGuardar.setOnClickListener {
 
-            if (quintasList.isNullOrEmpty() && tecnicosList.isNullOrEmpty()) {
+            if (quintasList.isEmpty() && tecnicosList.isEmpty()) {
                 shortToast("Hubo problemas recuperando los datos de la base de datos. Intente mas tarde.")
                 return@setOnClickListener
             }
@@ -77,17 +74,17 @@ class VisitaModifyFragment() : BaseFragment() {
             val desc = binding.etDesc.text.toString().trim()
             val listaParcelas = parcelaVisitaAdapter.getParcelas()
 
-            if (fecha.isNullOrEmpty()) {
+            if (fecha.isEmpty()) {
                 shortToast("Debe seleccionar una fecha")
                 return@setOnClickListener
             }
 
-            if (tecnicoNom.isNullOrEmpty() && tecnicoId != null) {
+            if (tecnicoNom.isEmpty() && tecnicoId != null) {
                 shortToast("Debe seleccionar un tecnico")
                 return@setOnClickListener
             }
 
-            if (quintaNom.isNullOrEmpty() && quintaId != null) {
+            if (quintaNom.isEmpty() && quintaId != null) {
                 shortToast("Debe escribir una quinta")
                 return@setOnClickListener
             }
