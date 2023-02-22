@@ -86,7 +86,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun changeUsername(newUsername:String){
 
-        if (MainActivity.userId.isEmpty()|| newUsername.isEmpty()){
+        if (MainActivity.userId == null|| newUsername.isEmpty()){
             Toast.makeText(applicationContext,
                 "Ningun usuario logeado", Toast.LENGTH_LONG).show()
         } else{
@@ -125,7 +125,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun changePassword(oldPassword:String, newPassword:String){
 
-        if (MainActivity.userId.isEmpty() || newPassword.isEmpty() || oldPassword.isEmpty()){
+        if (MainActivity.userId == null || newPassword.isEmpty() || oldPassword.isEmpty()){
             Toast.makeText(applicationContext,
                 "Ningun usuario logeado", Toast.LENGTH_LONG).show()
         } else{

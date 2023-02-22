@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Nombre"
+                android:text="@string/tv_name"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,8 +35,8 @@
             <EditText
                 android:id="@+id/etNombre"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ingrese nombre"
+                android:layout_height="48dp"
+                android:hint="@string/et_name"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Dirección"
+                android:text="@string/tv_directión"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
                 android:id="@+id/etDireccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingrese dirección"
+                android:hint="@string/et_direction"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDireccion"
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Imagen"
+                android:text="@string/tv_geoimage"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -82,9 +82,9 @@
             <EditText
                 android:id="@+id/etImagen"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:autofillHints="name"
-                android:hint="Ingrese imagen"
+                android:hint="@string/et_geoimage"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvImagen"
@@ -108,9 +108,9 @@
                 android:layout_width="390dp"
                 android:layout_height="48dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFamilia" />
-                <!-- android:contentDescription="Seleccione familia"
-                android:prompt="Selecciones familia" -->
+                app:layout_constraintTop_toBottomOf="@+id/tvFamilia"
+                android:contentDescription="@string/cd_s_familia"
+                android:prompt="@string/cd_s_familia"/>
 
             <Button
                 android:id="@+id/btnGoToMap"
@@ -118,8 +118,16 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/mostrar_mapa"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sFamilia" />
+
+            <Button
+                android:id="@+id/btnAddVisita"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/btn_add_visita"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sFamilia" />
 
 

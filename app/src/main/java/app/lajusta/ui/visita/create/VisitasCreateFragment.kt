@@ -1,20 +1,14 @@
 package app.lajusta.ui.visita.create
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasCreateBinding
-import app.lajusta.ui.bolson.Bolson
-import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.parcela.Parcela
 import app.lajusta.ui.parcela.ParcelaVisita
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
@@ -23,12 +17,6 @@ import app.lajusta.ui.usuarios.api.UsuariosApi
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import kotlinx.coroutines.*
-import okhttp3.MediaType
-import okhttp3.RequestBody
-import org.json.JSONObject
 import kotlin.random.Random
 
 

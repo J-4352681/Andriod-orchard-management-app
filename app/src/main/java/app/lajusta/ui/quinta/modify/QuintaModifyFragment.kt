@@ -11,9 +11,12 @@ import app.lajusta.R
 import app.lajusta.databinding.FragmentQuintaModifyBinding
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
+import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.model.QuintaCompleta
+import app.lajusta.ui.visita.Visita
+import app.lajusta.ui.visita.model.VisitaCompleta
 
 class QuintaModifyFragment: BaseFragment() {
 
@@ -68,6 +71,12 @@ class QuintaModifyFragment: BaseFragment() {
         binding.btnGoToMap.setOnClickListener {
             val bundle = bundleOf("quinta" to quinta)
             this.findNavController().navigate(R.id.quintaMapaFragment, bundle)
+        }
+
+        binding.btnAddVisita.setOnClickListener {
+            //val visita = VisitaCompleta(0, ArrayedDate.todayArrayed(), "", null, )
+            val bundle = bundleOf("quinta" to quinta)
+            this.findNavController().navigate(R.id.visitasForQuintaCreateFragment, bundle)
         }
 
         binding.bBorrar.setOnClickListener {

@@ -23,12 +23,12 @@ class LoginDataSource {
             // TODO: handle loggedInUser authentication
 
             if (username == "administrador" && password == "administrador") {
-                val admin = LoggedInUser(38, "administrador", UserType.ADMIN, "TOKEN")
+                val admin = LoggedInUser(38, "administrador", 0, "TOKEN")
                 return Result.Success(admin)
             }
 
             if (username == "tecnico" && password == "tecnico") {
-                val tec = LoggedInUser(44, "tecnico", UserType.TECNICO, "token")
+                val tec = LoggedInUser(44, "tecnico", 1, "token")
                 return Result.Success(tec)
             }
 
@@ -42,7 +42,7 @@ class LoginDataSource {
                         val tec = LoggedInUser(
                             result.body()!!.id_user,
                             username,
-                            Usuario.rolNumberToUserType(result.body()!!.rol)!!,
+                            result.body()!!.rol,
                             result.body()!!.token
                         )
                         return@runBlocking Result.Success(tec)

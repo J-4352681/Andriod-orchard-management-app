@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/VisitasCreateFragment"
+    android:id="@+id/VisitasForQuintaCreateFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context=".ui.visita.create.VisitasCreateFragment">
+    tools:context=".ui.visita.create.VisitasForQuintaCreateFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,6 +19,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/example_quintas"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+
+
             <TextView
                 android:id="@+id/tvFecha"
                 android:layout_width="wrap_content"
@@ -28,6 +44,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
                 tools:ignore="MissingConstraints" />
 
             <LinearLayout
@@ -105,26 +122,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTecnico" />
 
-            <TextView
-                android:id="@+id/tvQuinta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/tv_quinta"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerTecnico"
-                tools:ignore="MissingConstraints" />
-
-            <Spinner
-                android:id="@+id/spinnerQuinta"
-                android:layout_width="390dp"
-                android:layout_height="48dp"
-                android:contentDescription="@string/sp_Quinta"
-                android:prompt="@string/sp_Quinta"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvQuinta" />
 
             <TextView
                 android:id="@+id/tvParcelas"
@@ -144,7 +141,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/btn_agregarParcela"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerQuinta" />
+                app:layout_constraintTop_toBottomOf="@+id/spinnerTecnico" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvParcelas"

@@ -17,6 +17,7 @@ import app.lajusta.MainActivity
 import app.lajusta.databinding.ActivityLoginBinding
 
 import app.lajusta.R
+import app.lajusta.ui.usuarios.Usuario
 
 class LoginActivity : AppCompatActivity() {
 
@@ -64,8 +65,8 @@ class LoginActivity : AppCompatActivity() {
                 setResult(Activity.RESULT_OK)
                 //finish()
                 MainActivity.userName = loginResult.success.displayName.orEmpty()
-                MainActivity.userType = loginResult.success.userType.toString()
-                MainActivity.userId = loginResult.success.id.toString()
+                MainActivity.userType = loginResult.success.userType
+                MainActivity.userId = loginResult.success.id
                 //MainActivity.token = loginResult.success
 
                 val i = Intent(applicationContext, MainActivity::class.java)

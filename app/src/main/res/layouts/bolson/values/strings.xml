@@ -101,4 +101,10 @@
     <string name="cd_sRol_users">Ingrese rol del usuario</string>
     <string name="tv_directión">Dirección</string>
     <string name="et_direction">Ingrese dirección</string>
+    <string name="example_quintas">nombre quinta</string>
+    <string name="btn_add_visita">Agregar visita</string>
+    <string name="tv_image">Imagen</string>
+    <string name="tv_geoimage">Geoimagen</string>
+    <string name="et_geoimage">Ingrese geoimagen</string>
+    <string name="cd_s_familia">Seleccione familia</string>
 </resources>

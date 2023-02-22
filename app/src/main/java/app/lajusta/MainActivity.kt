@@ -28,11 +28,11 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
-        //const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
-        const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
-        var userId: String = ""
-        var userName: String = ""
-        var userType: String = ""
+        const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
+        //const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
+        var userId: Int? = 1
+        var userName: String = "juanPerez"
+        var userType: Int? = 1
         var token: String = ""
     }
 
@@ -89,9 +89,9 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.action_logout -> {
-                userId = ""
+                userId = null
                 userName = ""
-                userType = ""
+                userType = null
                 token = ""
                 goToLogin()
                 finish()
