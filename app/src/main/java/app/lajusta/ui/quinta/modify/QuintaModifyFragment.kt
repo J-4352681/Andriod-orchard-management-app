@@ -90,6 +90,12 @@ class QuintaModifyFragment: BaseFragment() {
             this.findNavController().navigate(R.id.quintaMapaFragment, bundle)
         }
 
+        binding.btnAddVisita.setOnClickListener {
+            //val visita = VisitaCompleta(0, ArrayedDate.todayArrayed(), "", null, )
+            val bundle = bundleOf("quinta" to quinta)
+            this.findNavController().navigate(R.id.visitasForQuintaCreateFragment, bundle)
+        }
+
         binding.bBorrar.setOnClickListener {
             returnSimpleApiCall(
                 { QuintaApi().deleteQuinta(quinta.id_quinta) },

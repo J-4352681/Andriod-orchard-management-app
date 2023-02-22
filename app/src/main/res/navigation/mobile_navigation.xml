@@ -143,6 +143,15 @@
         android:name="app.lajusta.ui.visita.create.VisitasCreateFragment"
         android:label="Crear visita" />
 
+    <fragment
+        android:id="@+id/visitasForQuintaCreateFragment"
+        android:name="app.lajusta.ui.visita.create.VisitasForQuintaCreateFragment"
+        android:label="Crear visita con quinta predefinida" >
+        <argument
+            android:name="visita"
+            app:argType="app.lajusta.ui.visita.Visita"/>
+    </fragment>
+
 
     <!-- QUINTA -->
     <fragment

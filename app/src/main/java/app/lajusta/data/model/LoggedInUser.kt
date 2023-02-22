@@ -6,6 +6,6 @@ package app.lajusta.data.model
 data class LoggedInUser(
     val userId: Int,
     val displayName: String,
-    val userType: UserType,
+    val userType: Int,
     val token: String
 )

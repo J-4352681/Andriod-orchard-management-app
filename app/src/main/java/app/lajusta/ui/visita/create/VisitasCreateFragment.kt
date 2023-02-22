@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.widget.doOnTextChanged
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasCreateBinding
 import app.lajusta.ui.generic.ArrayedDate
@@ -55,7 +54,10 @@ class VisitasCreateFragment : BaseFragment() {
         binding.bFecha.setOnClickListener(
             ArrayedDate.datePickerListener(
                 activity!!, binding.tvFechaSeleccionada
-            ) { _, i, i2, i3 -> visita.fecha_visita = listOf(i, i2+1, i3) }
+            ) { _, i, i2, i3 ->
+                visita.fecha_visita = listOf(i, i2+1, i3)
+                binding.tvFechaSeleccionada.text = ArrayedDate.toString(visita.fecha_visita)
+            }
         )
 
         binding.bGuardar.setOnClickListener {

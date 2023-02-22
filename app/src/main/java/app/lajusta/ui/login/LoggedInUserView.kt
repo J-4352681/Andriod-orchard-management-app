@@ -7,7 +7,7 @@ import app.lajusta.data.model.UserType
  */
 data class LoggedInUserView(
 val displayName: String?,
-val userType: UserType?,
+val userType: Int?,
     val id: Int?,
     val token: String?,
     //... other data fields that may be accessible to the UI
