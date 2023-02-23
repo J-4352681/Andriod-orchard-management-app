@@ -54,4 +54,5 @@ data class VisitaCompleta(
             )
             return visitasCompletas
         }
-    }}
+    }
+}

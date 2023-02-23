@@ -21,6 +21,8 @@ data class Usuario(
     val roles: Int,
 ) : Parcelable {
 
+    override fun toString(): String = nombre
+
     companion object {
 
         val adminName = "Administrador/a"

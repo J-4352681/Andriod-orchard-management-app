@@ -12,10 +12,13 @@ import app.lajusta.R
 import app.lajusta.databinding.FragmentQuintaModifyBinding
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
+import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.login.afterTextChanged
 import app.lajusta.ui.quinta.model.QuintaCompleta
+import app.lajusta.ui.visita.Visita
+import app.lajusta.ui.visita.api.VisitaApi
 
 class QuintaModifyFragment: BaseFragment() {
 
@@ -25,6 +28,8 @@ class QuintaModifyFragment: BaseFragment() {
 
     private var familias = listOf<Familia>()
     private lateinit var familiasAdapter: ArrayAdapter<Familia>
+    private var visitas = listOf<Visita>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +63,10 @@ class QuintaModifyFragment: BaseFragment() {
         binding.etImagen.setText(quinta.geoImg)
 
         apiCall(
-            { familias = FamiliaApi().getFamilias().body()!! },
             {
+                familias = FamiliaApi().getFamilias().body()!!
+                visitas = VisitaApi().getVisitas().body()!!
+            }, {
                 familiasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, familias)
                 binding.sFamilia.adapter = familiasAdapter
                 binding.sFamilia.onItemSelectedListener =
@@ -91,9 +98,15 @@ class QuintaModifyFragment: BaseFragment() {
         }
 
         binding.btnAddVisita.setOnClickListener {
-            //val visita = VisitaCompleta(0, ArrayedDate.todayArrayed(), "", null, )
-            val bundle = bundleOf("quinta" to quinta)
-            this.findNavController().navigate(R.id.visitasForQuintaCreateFragment, bundle)
+            if (!visitas.isEmpty()) {
+                val prefilledVisita = visitas
+                    .filter { it.id_quinta == quinta.id_quinta }
+                    .maxBy { ArrayedDate.toDate(it.fecha_visita) }
+                    .toPrefilledVisita()
+                println(prefilledVisita)
+                val bundle = bundleOf("prefilledVisita" to prefilledVisita)
+                this.findNavController().navigate(R.id.visitasCreateFragment, bundle)
+            }
         }
 
         binding.bBorrar.setOnClickListener {

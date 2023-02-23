@@ -4,20 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasCreateBinding
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.parcela.ParcelaVisita
+import app.lajusta.ui.login.afterTextChanged
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.usuarios.Usuario
 import app.lajusta.ui.usuarios.api.UsuariosApi
-import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.visita.Visita
+import app.lajusta.ui.visita.PrefilledVisita
 import app.lajusta.ui.visita.api.VisitaApi
-import kotlin.random.Random
 
 
 class VisitasCreateFragment : BaseFragment() {
@@ -28,8 +28,20 @@ class VisitasCreateFragment : BaseFragment() {
         0, ArrayedDate.todayArrayed().toMutableList().also { it[1]+=1 },
         "", -1, -1, listOf()
     )
-    private val quintasList = mutableListOf<Quinta>()
-    private val tecnicosList = mutableListOf<Usuario>()
+    private var prefilledVisita: PrefilledVisita? = null
+
+    private var quintas = listOf<Quinta>()
+    private lateinit var quintasAdapter: ArrayAdapter<Quinta>
+    private var tecnicos = listOf<Usuario>()
+    private lateinit var usuariosAdapter: ArrayAdapter<Usuario>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let { bundle ->
+            val data = bundle.getParcelable<PrefilledVisita>("prefilledVisita")
+            if(data != null) prefilledVisita = data
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +59,11 @@ class VisitasCreateFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        apiCallGet()
+        fillItem()
+    }
+
+    fun fillItem() {
+        binding.etDesc.afterTextChanged { descripcion -> visita.descripcion = descripcion.trim() }
 
         binding.tvFechaSeleccionada.text = ArrayedDate.toString(visita.fecha_visita)
 
@@ -60,43 +76,65 @@ class VisitasCreateFragment : BaseFragment() {
             }
         )
 
+        apiCall(suspend {
+            quintas = QuintaApi().getQuintas().body()!!
+            tecnicos = UsuariosApi().getUsuarios().body()!!
+        }, {
+            initQuintaSpinner()
+            initTecnicoSpinner()
+            setClickListeners()
+            prefillFields()
+        }, "Hubo un error al actualizar la lista de visitas.")
+    }
+
+    private fun initQuintaSpinner() {
+        quintasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, quintas)
+        binding.spinnerQuinta.adapter = quintasAdapter
+        binding.spinnerQuinta.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
+                ) {
+                    val quintaSeleccionada = binding.spinnerQuinta.selectedItem as Quinta
+                    visita.id_quinta = quintaSeleccionada.id_quinta
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            }
+    }
+
+    private fun initTecnicoSpinner() {
+        usuariosAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, tecnicos)
+        binding.spinnerTecnico.adapter = usuariosAdapter
+        binding.spinnerTecnico.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
+                ) {
+                    val tecnicoSeleccionado = binding.spinnerTecnico.selectedItem as Usuario
+                    visita.id_tecnico = tecnicoSeleccionado.id_user
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            }
+    }
+
+    private fun setClickListeners() {
         binding.bGuardar.setOnClickListener {
-
-            if(quintasList.isEmpty() && tecnicosList.isEmpty()) {
-                shortToast("Hubo problemas recuperando los datos de la base de datos. Intente mas tarde.")
-                return@setOnClickListener
-            }
-
-            val fecha = ArrayedDate.toArray(binding.tvFechaSeleccionada.text.toString())
-            val tecnicoNom = binding.spinnerTecnico.selectedItem.toString().trim()
-            val quintaNom = binding.spinnerQuinta.selectedItem.toString().trim()
-            val quintaId = getQuintaIdByName(quintaNom)
-            val tecnicoId = getTecnicoIdByName(tecnicoNom)
-
-            val desc = binding.etDesc.text.toString().trim()
-            val listaParcelas = listOf<ParcelaVisita>() /** CAMBIAR */
-
-            if(fecha.isEmpty()) {
-                shortToast("Debe seleccionar una fecha")
-                return@setOnClickListener
-            }
-
-            if(tecnicoNom.isEmpty() && tecnicoId != null) {
+            if(visita.id_tecnico == -1) {
                 shortToast("Debe seleccionar un tecnico")
                 return@setOnClickListener
             }
 
-            if(quintaNom.isNullOrEmpty() && quintaId != null) {
+            if(visita.id_quinta == -1) {
                 shortToast("Debe escribir una quinta")
                 return@setOnClickListener
             }
 
-
-            returnSimpleApiCall({
-                VisitaApi().postVisita(
-                    Visita(0,fecha,desc,tecnicoId!!,quintaId!!,listaParcelas)
-                )
-            }, "Hubo un error. La visita no pudo ser creada.")
+            returnSimpleApiCall(
+                { VisitaApi().postVisita(visita) },
+                "Hubo un error. La visita no pudo ser creada."
+            )
 
         }
 
@@ -105,92 +143,45 @@ class VisitasCreateFragment : BaseFragment() {
         }
     }
 
+    private fun prefillFields() {
+        if(prefilledVisita != null) {
+            if (!prefilledVisita!!.descripcion.isNullOrEmpty()) {
+                // visita.descripcion = prefilledVisita?.descripcion
+                binding.etDesc.setText(prefilledVisita?.descripcion)
+                if (prefilledVisita!!._blocked) binding.etDesc.isEnabled = false
+            }
+            if (!prefilledVisita!!.fecha_visita.isNullOrEmpty()) {
+                visita.fecha_visita = prefilledVisita?.fecha_visita!!
+                binding.tvFechaSeleccionada.text = ArrayedDate.toString(visita.fecha_visita)
+                if (prefilledVisita!!._blocked) binding.bFecha.isEnabled = false
+            }
+            if (prefilledVisita!!.id_quinta != null) {
+                // visita.id_quinta = prefilledVisita?.quinta!!.id_quinta
+                binding.spinnerQuinta.setSelection(
+                    quintasAdapter.getPosition(quintas.find {
+                        it.id_quinta == prefilledVisita?.id_quinta
+                    })
+                )
+                if (prefilledVisita!!._blocked) binding.spinnerQuinta.isEnabled = false
+            }
+            if (prefilledVisita!!.id_tecnico != null) {
+                // visita.id_tecnico = prefilledVisita?.tecnico!!.id_user
+                binding.spinnerTecnico.setSelection(
+                    usuariosAdapter.getPosition(tecnicos.find {
+                        it.id_user == prefilledVisita?.id_tecnico
+                    })
+                )
+                if (prefilledVisita!!._blocked) binding.spinnerTecnico.isEnabled = false
+            }
+            if (!prefilledVisita!!.parcelas.isNullOrEmpty()) {
+                // visita.id_quinta = prefilledVisita?.quinta!!.id_quinta
+                // TODO llenar parcelas
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
-    fun apiCallGet() {
-        lateinit var quintas: List<Quinta>
-        lateinit var tecnicos: List<Usuario>
-
-        apiCall(suspend {
-            quintas = QuintaApi().getQuintas().body()!!
-            tecnicos = UsuariosApi().getUsuarios().body()!!
-        }, {
-            quintasList.clear()
-            quintasList.addAll(quintas)
-
-            tecnicosList.clear()
-            tecnicosList.addAll(tecnicos)
-
-            fillSpinners()
-        }, "Hubo un error al actualizar la lista de visitas.")
-    }
-
-    private fun fillSpinners(){
-        // access the items of the list
-        val nombresQuintas: Array<String> = getNombreQuintas(quintasList)
-        val nombresTecnicos: Array<String> = getNombreTecnicos(tecnicosList)
-
-        // access the spinner
-        val spinnerQuintas = binding.spinnerQuinta
-        val adapterQuintas: ArrayAdapter<String>? = (activity?.let {
-            ArrayAdapter<String>(
-                it,
-                R.layout.spinner_item, nombresQuintas
-            )
-        })
-
-        val spinnerTecnicos = binding.spinnerTecnico
-        val adapterTecnicos: ArrayAdapter<String>? = (activity?.let {
-            ArrayAdapter<String>(
-                it,
-                R.layout.spinner_item, nombresTecnicos
-            )
-        })
-
-        // bind
-        spinnerQuintas.adapter = adapterQuintas
-        spinnerTecnicos.adapter = adapterTecnicos
-    }
-
-    private fun getNombreQuintas(quintas: List<Quinta>): Array<String> {
-        return quintas.map { it.nombre.orEmpty() }.toTypedArray()
-    }
-
-    private fun getNombreTecnicos(tecnicos: List<Usuario>): Array<String> {
-        return tecnicos.map { it.nombre.orEmpty() }.toTypedArray()
-    }
-
-    private fun getQuintaByName(name: String): Quinta? {
-        return quintasList?.find { it.nombre == name }
-    }
-
-    private fun getQuintaIdByName(name: String): Int? {
-        return getQuintaByName(name)?.id_quinta
-    }
-
-    private fun getTecnicoByName(name: String): Usuario? {
-        return tecnicosList?.find { it.nombre == name }
-    }
-
-    private fun getTecnicoIdByName(name: String): Int? {
-        return getTecnicoByName(name)?.id_user
-    }
-
-    fun getListaDeParcelasVisita(): List<ParcelaVisita> {
-        /** Funcionalidad provisoria */
-        val verdura: Verdura =
-            Verdura(1, listOf(2, 3, 4), listOf(1, 2, 4), "dsadfs", "Tomate", "fssd")
-        val par = ParcelaVisita(1, 2, true, true, verdura)
-        val par1 = ParcelaVisita(2, 3, false, true, verdura)
-        return listOf(par, par1)
-    }
-
-    fun createId(): Int {
-        /** Este ID sera reemplazado en el backend */
-        return Random.nextInt(0, 1000)
-    }
-
 }

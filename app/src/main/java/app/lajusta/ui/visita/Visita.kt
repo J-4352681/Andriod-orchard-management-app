@@ -2,10 +2,8 @@ package app.lajusta.ui.visita
 
 import android.os.Parcelable
 import app.lajusta.ui.generic.ArrayedDate
-import app.lajusta.ui.parcela.Parcela
 import app.lajusta.ui.parcela.ParcelaVisita
 import kotlinx.parcelize.Parcelize
-import java.util.Date
 
 @Parcelize
 data class Visita(
@@ -19,4 +17,17 @@ data class Visita(
     override fun compareTo(other: Visita): Int {
         return ArrayedDate.toDate(fecha_visita).compareTo(ArrayedDate.toDate(other.fecha_visita))
     }
+
+    fun toPrefilledVisita() =
+        PrefilledVisita(fecha_visita, descripcion, id_tecnico, id_quinta, parcelas)
 }
+
+@Parcelize
+data class PrefilledVisita(
+    var fecha_visita: List<Int>? = null,
+    var descripcion: String? = null,
+    var id_tecnico: Int? = null,
+    var id_quinta: Int? = null,
+    var parcelas: List<ParcelaVisita>? = null,
+    var _blocked: Boolean = false
+): Parcelable
