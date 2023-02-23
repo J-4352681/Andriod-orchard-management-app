@@ -3,7 +3,6 @@ package app.lajusta.ui.visita.modify
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import app.lajusta.databinding.ItemParcelaVisitaBinding
-import app.lajusta.ui.parcela.Parcela
 import app.lajusta.ui.parcela.ParcelaVisita
 
 class ParcelaVisitaViewHolder(
@@ -12,11 +11,11 @@ class ParcelaVisitaViewHolder(
 
     private val binding = ItemParcelaVisitaBinding.bind(itemView)
 
-    fun bind(parcelaItem: ParcelaVisita, clickListener: () -> Unit) {
+    fun bind(parcelaItem: ParcelaVisita, clickListener: (ParcelaVisita) -> Unit) {
         binding.tvVerdura.text = parcelaItem.verdura.nombre + " | Surcos: " + parcelaItem.cantidad_surcos.toString()
         if(parcelaItem.cosecha) binding.cbCosecha.isChecked = true
         if(parcelaItem.cubierta) binding.cbCubierto.isChecked = true
 
-        binding.bEliminar.setOnClickListener { clickListener() }
+        binding.bEliminar.setOnClickListener { clickListener(parcelaItem) }
     }
 }

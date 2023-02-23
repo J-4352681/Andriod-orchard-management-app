@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -8,12 +9,10 @@
     android:layout_marginHorizontal="5dp"
     xmlns:tools="http://schemas.android.com/tools" >
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/llContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
         android:layout_margin="10dp"
         android:paddingVertical="8dp" >
 
@@ -23,42 +22,40 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
             android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="@string/tv_verdura" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <CheckBox
-                android:id="@+id/cbCubierto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:text="@string/tv_cubierto" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <CheckBox
-                android:id="@+id/cbCosecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp"
-                android:text="@string/tv_Cosecha" />
-        </LinearLayout>
-
 
         <Button
             android:id="@+id/bEliminar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
             android:backgroundTint="@color/design_default_color_error"
             android:text="Eliminar"/>
 
-    </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cbCubierto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            app:layout_constraintWidth_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bEliminar"
+            android:text="@string/tv_cubierto" />
+
+
+        <CheckBox
+            android:id="@+id/cbCosecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            app:layout_constraintWidth_percent="0.5"
+            app:layout_constraintStart_toEndOf="@+id/cbCubierto"
+            app:layout_constraintTop_toBottomOf="@+id/bEliminar"
+            android:text="@string/tv_Cosecha" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

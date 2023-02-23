@@ -4,6 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.lajusta.databinding.ItemVisitaBinding
 import app.lajusta.ui.generic.ArrayedDate
+import app.lajusta.ui.parcela.ParcelaVisita
 import app.lajusta.ui.visita.model.VisitaCompleta
 
 class VisitaViewHolder(
@@ -20,7 +21,7 @@ class VisitaViewHolder(
         var verdurasParcela = visitaItem.parcelas.map { it.verdura.nombre }.toSet().toString()
         verdurasParcela = verdurasParcela.substring(1, verdurasParcela.length - 1)
         if(verdurasParcela.isNotEmpty())
-            binding.tvSPACE .text = "Parcelas con: " + verdurasParcela
+            binding.tvSPACE .text = "Parcelas con: $verdurasParcela"
         else binding.tvSPACE .text = "Parcela sin verduras."
 
         itemView.setOnClickListener { clickListener(visitaItem) }

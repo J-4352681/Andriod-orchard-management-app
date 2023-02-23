@@ -2,12 +2,7 @@ package app.lajusta.ui.usuarios
 
 import android.os.Parcelable
 import app.lajusta.data.model.UserType
-import app.lajusta.ui.generic.ArrayedDate
-import app.lajusta.ui.parcela.Parcela
-import app.lajusta.ui.parcela.ParcelaVisita
-import app.lajusta.ui.ronda.Ronda
 import kotlinx.parcelize.Parcelize
-import java.util.Date
 
 @Parcelize
 data class Usuario(

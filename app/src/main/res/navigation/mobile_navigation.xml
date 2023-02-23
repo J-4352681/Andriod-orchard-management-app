@@ -154,6 +154,16 @@
             android:defaultValue="@null"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/parcelaVisitaCreateFragment"
+        android:name="app.lajusta.ui.visita.parcela.ParcelaVisitaCreateFragment"
+        android:label="Nueva parcela"
+        tools:layout="@layout/fragment_parcela_visita_create" >
+        <argument
+            android:name="visita"
+            app:argType="app.lajusta.ui.visita.Visita" />
+    </fragment>
+
 
     <!-- QUINTA -->
     <fragment

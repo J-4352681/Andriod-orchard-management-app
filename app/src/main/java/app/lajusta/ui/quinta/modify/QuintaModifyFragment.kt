@@ -112,7 +112,7 @@ class QuintaModifyFragment: BaseFragment() {
         binding.bBorrar.setOnClickListener {
             returnSimpleApiCall(
                 { QuintaApi().deleteQuinta(quinta.id_quinta) },
-                "Hubo un error. El bolsón no pudo ser eliminado."
+                "Hubo un error. La quinta no pudo ser eliminada."
             )
         }
 
@@ -124,7 +124,7 @@ class QuintaModifyFragment: BaseFragment() {
 
             returnSimpleApiCall(
                 { QuintaApi().putQuinta(quinta.id_quinta, quinta.toQuinta()) },
-                "Hubo un error. El quinta no pudo ser modificado."
+                "Hubo un error. La quinta no pudo ser modificada."
             )
         }
     }

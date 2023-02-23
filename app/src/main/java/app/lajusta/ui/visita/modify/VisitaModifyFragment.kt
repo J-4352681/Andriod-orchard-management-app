@@ -200,7 +200,10 @@ class VisitaModifyFragment() : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        parcelaVisitaAdapter = ParcelaVisitaAdapter(visita.parcelas)
+        parcelaVisitaAdapter = ParcelaVisitaAdapter(visita.parcelas) { parcela ->
+            visita.parcelas -= parcela
+            parcelaVisitaAdapter.notifyDataSetChanged()
+        }
         binding.rvParcelas.layoutManager = LinearLayoutManager(activity)
         binding.rvParcelas.adapter = parcelaVisitaAdapter
     }

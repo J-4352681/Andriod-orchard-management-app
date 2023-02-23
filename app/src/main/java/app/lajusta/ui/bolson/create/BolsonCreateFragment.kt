@@ -63,39 +63,45 @@ class BolsonCreateFragment : BaseFragment() {
                 familias = FamiliaApi().getFamilias().body()!!
                 rondas = RondaApi().getRondas().body()!!
             }, {
-                familiasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, familias)
-                binding.sFamilia.adapter = familiasAdapter
-                binding.sFamilia.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
-                        ) {
-                            val familiaSeleccionada = binding.sFamilia.selectedItem as Familia
-                            bolson.idFp = familiaSeleccionada.id_fp
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
-                    }
-
-                rondasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, rondas)
-                binding.sRonda.adapter = rondasAdapter
-                binding.sRonda.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
-                        ) {
-                            val rondaSeleccionada = binding.sRonda.selectedItem as Ronda
-                            bolson.idRonda = rondaSeleccionada.id_ronda
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
-                    }
-
+                initFamiliasAdapter()
+                initRondasAdapter()
                 setClickListeners()
             }, "No se pudieron obtener las familias."
         )
 
         initRecyclerView()
+    }
+
+    private fun initFamiliasAdapter() {
+        familiasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, familias)
+        binding.sFamilia.adapter = familiasAdapter
+        binding.sFamilia.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
+                ) {
+                    val familiaSeleccionada = binding.sFamilia.selectedItem as Familia
+                    bolson.idFp = familiaSeleccionada.id_fp
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            }
+    }
+
+    private fun initRondasAdapter() {
+        rondasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, rondas)
+        binding.sRonda.adapter = rondasAdapter
+        binding.sRonda.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
+                ) {
+                    val rondaSeleccionada = binding.sRonda.selectedItem as Ronda
+                    bolson.idRonda = rondaSeleccionada.id_ronda
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            }
     }
 
     private fun initRecyclerView() {

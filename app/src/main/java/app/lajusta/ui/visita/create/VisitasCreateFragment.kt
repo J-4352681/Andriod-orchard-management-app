@@ -6,11 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentVisitasCreateBinding
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.login.afterTextChanged
+import app.lajusta.ui.parcela.ParcelaVisita
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.usuarios.Usuario
@@ -18,13 +23,14 @@ import app.lajusta.ui.usuarios.api.UsuariosApi
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.PrefilledVisita
 import app.lajusta.ui.visita.api.VisitaApi
+import app.lajusta.ui.visita.modify.ParcelaVisitaAdapter
 
 
 class VisitasCreateFragment : BaseFragment() {
 
     private var _binding: FragmentVisitasCreateBinding? = null
     private val binding get() = _binding!!
-    private val visita = Visita(
+    private var visita = Visita(
         0, ArrayedDate.todayArrayed().toMutableList().also { it[1]+=1 },
         "", -1, -1, listOf()
     )
@@ -34,6 +40,11 @@ class VisitasCreateFragment : BaseFragment() {
     private lateinit var quintasAdapter: ArrayAdapter<Quinta>
     private var tecnicos = listOf<Usuario>()
     private lateinit var usuariosAdapter: ArrayAdapter<Usuario>
+
+    private val parcelas = mutableListOf<ParcelaVisita>()
+    private lateinit var parcelasAdapter: ParcelaVisitaAdapter
+
+    private val newParcelas = mutableListOf<ParcelaVisita>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +93,7 @@ class VisitasCreateFragment : BaseFragment() {
         }, {
             initQuintaSpinner()
             initTecnicoSpinner()
+            initRecyclerView()
             setClickListeners()
             prefillFields()
         }, "Hubo un error al actualizar la lista de visitas.")
@@ -120,6 +132,29 @@ class VisitasCreateFragment : BaseFragment() {
     }
 
     private fun setClickListeners() {
+        val stateHandle: SavedStateHandle =
+            findNavController().currentBackStackEntry?.savedStateHandle!!
+
+        stateHandle.getLiveData<Visita>("visita")
+            .observe(viewLifecycleOwner) { filledVisita ->
+                visita = filledVisita
+                parcelas.clear()
+                parcelas.addAll(visita.parcelas)
+                binding.etDesc.setText(visita.descripcion)
+                binding.spinnerTecnico.setSelection(usuariosAdapter.getPosition(
+                    tecnicos.find { it.id_user == visita.id_tecnico }
+                ))
+                binding.spinnerQuinta.setSelection(quintasAdapter.getPosition(
+                    quintas.find { it.id_quinta == visita.id_quinta }
+                ))
+                binding.tvFechaSeleccionada.text = ArrayedDate.toString(visita.fecha_visita)
+            }
+
+        binding.btnAddParcela.setOnClickListener {
+            val bundle = bundleOf("visita" to visita)
+            findNavController().navigate(R.id.parcelaVisitaCreateFragment, bundle)
+        }
+
         binding.bGuardar.setOnClickListener {
             if(visita.id_tecnico == -1) {
                 shortToast("Debe seleccionar un tecnico")
@@ -135,12 +170,21 @@ class VisitasCreateFragment : BaseFragment() {
                 { VisitaApi().postVisita(visita) },
                 "Hubo un error. La visita no pudo ser creada."
             )
-
         }
 
         binding.bCancelar.setOnClickListener {
             activity?.onBackPressed()
         }
+    }
+
+    private fun initRecyclerView() {
+        parcelasAdapter = ParcelaVisitaAdapter(parcelas) { parcela ->
+            visita.parcelas -= parcela
+            parcelas.remove(parcela)
+            parcelasAdapter.notifyDataSetChanged()
+        }
+        binding.rvParcelas.layoutManager = LinearLayoutManager(activity)
+        binding.rvParcelas.adapter = parcelasAdapter
     }
 
     private fun prefillFields() {

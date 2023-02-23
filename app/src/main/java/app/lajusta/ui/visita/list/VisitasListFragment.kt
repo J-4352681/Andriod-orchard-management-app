@@ -37,7 +37,7 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
             val data = bundle.getParcelableArrayList<VisitaCompleta>("visitas")
-            if(data != null) visitasCompletasArg = data?.toMutableList()!!
+            if(data != null) visitasCompletasArg = data.toMutableList()!!
         }
     }
 

@@ -114,10 +114,11 @@ class VerduraSelectFragment : BaseFragment() {
             }, "Hubo un problema obteniendo las verduras"
         )
 
-        initRecyclerView()
+        initRecyclerViewQuinta()
+        initRecyclerViewNoQuinta()
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerViewQuinta() {
         verdurasQuintaAdapter =
             VerduraSelectAdapter(verdurasQuinta, bolson.verduras.map { it.id_verdura }, { cb ->
                 if (verdurasQuintaSeleccionadas.size == 5)
@@ -136,7 +137,9 @@ class VerduraSelectFragment : BaseFragment() {
             })
         binding.rvQuinta.layoutManager = LinearLayoutManager(activity)
         binding.rvQuinta.adapter = verdurasQuintaAdapter
+    }
 
+    private fun initRecyclerViewNoQuinta() {
         verdurasNoQuintaAdapter =
             VerduraSelectAdapter(verdurasNoQuinta, bolson.verduras.map { it.id_verdura }, { cb ->
                 if (verdurasQuintaSeleccionadas.size + verdurasNoQuintaSeleccionadas.size == 7)
