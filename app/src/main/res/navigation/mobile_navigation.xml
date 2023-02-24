@@ -132,7 +132,7 @@
         android:id="@+id/visitaModifyFragment"
         android:name="app.lajusta.ui.visita.modify.VisitaModifyFragment"
         android:label="Modificar visita"
-        tools:layout="@layout/fragment_visita_modify" >
+        tools:layout="@layout/fragment_visita_base_edition" >
         <argument
             android:name="visita"
             app:argType="app.lajusta.ui.visita.Visita" />
@@ -141,12 +141,14 @@
     <fragment
         android:id="@+id/visitasCreateFragment"
         android:name="app.lajusta.ui.visita.create.VisitasCreateFragment"
-        android:label="Crear visita" />
+        android:label="Crear visita"
+        tools:layout="@layout/fragment_visita_base_edition" />
 
     <fragment
         android:id="@+id/visitasForQuintaCreateFragment"
         android:name="app.lajusta.ui.visita.create.VisitasCreateFragment"
-        android:label="Crear visita a quinta" >
+        android:label="Crear visita a quinta"
+        tools:layout="@layout/fragment_visita_base_edition" >
         <argument
             android:name="prefilledVisita"
             app:argType="app.lajusta.ui.visita.PrefilledVisita"
