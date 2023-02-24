@@ -1,4 +1,4 @@
-package app.lajusta.ui.bolson.modify
+package app.lajusta.ui.bolson.edition
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ViewHolder

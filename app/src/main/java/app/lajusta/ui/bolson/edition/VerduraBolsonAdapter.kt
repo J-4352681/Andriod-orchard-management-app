@@ -1,4 +1,4 @@
-package app.lajusta.ui.bolson.modify
+package app.lajusta.ui.bolson.edition
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
