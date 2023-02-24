@@ -20,7 +20,7 @@ import app.lajusta.ui.login.afterTextChanged
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.ronda.api.RondaApi
 
-abstract class BaseEditionFragment: BaseFragment() {
+abstract class BolsonBaseEditionFragment: BaseFragment() {
     private var _binding: FragmentBolsonBaseEditionBinding? = null
     protected val binding get() = _binding!!
     protected var bolson = Bolson(0, 0, -1, -1, mutableListOf())
@@ -51,14 +51,11 @@ abstract class BaseEditionFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.etCantidad.afterTextChanged { cantidad ->
-            bolson.cantidad = if (cantidad != "") cantidad.toInt() else 0
-        }
-
         startFragment()
     }
 
     private fun startFragment() {
+        initCantidad()
         apiCall(
             {
                 familias = FamiliaApi().getFamilias().body()!!
@@ -71,6 +68,12 @@ abstract class BaseEditionFragment: BaseFragment() {
         )
         binding.etCantidad.setText(bolson.cantidad.toString())
         initRecyclerView()
+    }
+
+    private fun initCantidad() {
+        binding.etCantidad.afterTextChanged { cantidad ->
+            bolson.cantidad = if (cantidad != "") cantidad.toInt() else 0
+        }
     }
 
     private fun initFamiliasSpinner() {
@@ -113,23 +116,22 @@ abstract class BaseEditionFragment: BaseFragment() {
         )
     }
 
-    private fun initRecyclerView() {
-        verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras)
-        binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
-        binding.rvVerduras.adapter = verduraBolsonAdapter
-    }
-
     private fun setClickListeners() {
         findNavController().currentBackStackEntry?.savedStateHandle!!
             .getLiveData<Bolson>("bolson").observe(viewLifecycleOwner) { bolson = it }
 
-        binding.bDenyAction.setOnClickListener { denyActionListener() }
+        binding.btnAgregarVerdura.setOnClickListener {
+            val bundle = bundleOf("bolson" to bolson)
+            this.findNavController().navigate(R.id.verduraSelectFragment, bundle)
+        }
+
+        binding.bDenyAction.setOnClickListener { denyAction() }
 
         binding.bSubmitAction.setOnClickListener {
             val cantidadtxt = binding.etCantidad.text.toString()
 
-            if(cantidadtxt.isEmpty()) {
-                shortToast("Debe escribir una cantidad")
+            if(cantidadtxt.isEmpty() || bolson.cantidad == 0) {
+                shortToast("Debe escribir una cantidad igual o mayor a 1")
                 return@setOnClickListener
             } else bolson.cantidad = cantidadtxt.toInt()
 
@@ -151,14 +153,20 @@ abstract class BaseEditionFragment: BaseFragment() {
 
             commitChange()
         }
-
-        binding.btnAgregarVerdura.setOnClickListener {
-            val bundle = bundleOf("bolson" to bolson)
-            this.findNavController().navigate(R.id.verduraSelectFragment, bundle)
-        }
     }
 
-    protected abstract fun denyActionListener()
+    private fun initRecyclerView() {
+        verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras)
+        binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
+        binding.rvVerduras.adapter = verduraBolsonAdapter
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    protected abstract fun denyAction()
 
     protected abstract fun commitChange()
 }

@@ -1,9 +1,15 @@
 package app.lajusta.ui.bolson.modify
 
+import android.os.Bundle
+import android.view.View
 import app.lajusta.ui.bolson.api.BolsonApi
-import app.lajusta.ui.bolson.edition.BaseEditionFragment
+import app.lajusta.ui.bolson.edition.BolsonBaseEditionFragment
 
-class BolsonModifyFragment: BaseEditionFragment() {
+class BolsonModifyFragmentBolson: BolsonBaseEditionFragment() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.bDenyAction.text = "Borrar"
+    }
 
     override fun commitChange() =
         returnSimpleApiCall(
@@ -11,7 +17,7 @@ class BolsonModifyFragment: BaseEditionFragment() {
             "Hubo un error. El bolsón no pudo ser creado."
         )
 
-    override fun denyActionListener() {
+    override fun denyAction() {
         if(binding.etCantidad.text.toString().isEmpty() || bolson.cantidad == 0) {
             shortToast("Debe escribir una cantidad")
             return

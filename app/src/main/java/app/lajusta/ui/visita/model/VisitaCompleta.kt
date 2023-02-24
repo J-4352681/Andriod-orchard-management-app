@@ -15,12 +15,13 @@ data class VisitaCompleta(
     var descripcion: String?,
     var tecnico: Usuario,
     var quinta: Quinta,
-    var parcelas: List<ParcelaVisita>
+    val parcelas: MutableList<ParcelaVisita>
 ): Parcelable {
 
-    fun toVisita(): Visita {
-        return Visita(id_visita, fecha_visita, descripcion, tecnico.id_user, quinta.id_quinta, parcelas)
-    }
+    fun toVisita(): Visita = Visita(
+        id_visita, fecha_visita, descripcion,
+        tecnico.id_user, quinta.id_quinta, parcelas
+    )
 
     companion object {
         fun toVisitaCompleta(visita: Visita, tecnico: Usuario, quinta: Quinta): VisitaCompleta {

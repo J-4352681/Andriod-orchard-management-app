@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context=".ui.bolson.modify.BolsonModifyFragment">
+    tools:context=".ui.bolson.modify.BolsonModifyFragmentBolson">
 
     <ScrollView
         android:id="@+id/svBolsones"
@@ -135,7 +135,7 @@
         android:id="@+id/bDenyAction"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="@string/erase"
+        android:text="Cancelar"
         android:backgroundTint="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -12,7 +12,7 @@ data class Visita(
     var descripcion: String?,
     var id_tecnico: Int,
     var id_quinta: Int,
-    var parcelas: List<ParcelaVisita>
+    val parcelas: MutableList<ParcelaVisita>
 ): Parcelable, Comparable<Visita> {
     override fun compareTo(other: Visita): Int {
         return ArrayedDate.toDate(fecha_visita).compareTo(ArrayedDate.toDate(other.fecha_visita))
@@ -28,6 +28,6 @@ data class PrefilledVisita(
     var descripcion: String? = null,
     var id_tecnico: Int? = null,
     var id_quinta: Int? = null,
-    var parcelas: List<ParcelaVisita>? = null,
+    val parcelas: MutableList<ParcelaVisita>? = null,
     var _blocked: Boolean = false
 ): Parcelable

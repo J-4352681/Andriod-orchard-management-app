@@ -94,9 +94,9 @@
 
     <fragment
         android:id="@+id/bolsonModifyFragment"
-        android:name="app.lajusta.ui.bolson.modify.BolsonModifyFragment"
+        android:name="app.lajusta.ui.bolson.modify.BolsonModifyFragmentBolson"
         android:label="Modificar bolsón"
-        tools:layout="@layout/fragment_bolson_modify" >
+        tools:layout="@layout/fragment_bolson_base_edition" >
         <argument
             android:name="bolson"
             app:argType="app.lajusta.ui.bolson.Bolson" />
@@ -104,9 +104,9 @@
 
     <fragment
         android:id="@+id/bolsonCreateFragment"
-        android:name="app.lajusta.ui.bolson.create.BolsonCreateFragment"
+        android:name="app.lajusta.ui.bolson.create.BolsonCreateFragmentBolson"
         android:label="Crear bolsón"
-        tools:layout="@layout/fragment_bolson_create" >
+        tools:layout="@layout/fragment_bolson_base_edition" >
     </fragment>
 
     <fragment
@@ -148,7 +148,7 @@
         android:name="app.lajusta.ui.visita.create.VisitasCreateFragment"
         android:label="Crear visita a quinta" >
         <argument
-            android:name="visita"
+            android:name="prefilledVisita"
             app:argType="app.lajusta.ui.visita.PrefilledVisita"
             app:nullable="true"
             android:defaultValue="@null"/>

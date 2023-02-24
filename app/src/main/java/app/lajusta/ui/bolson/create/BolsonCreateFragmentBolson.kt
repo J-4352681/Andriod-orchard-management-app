@@ -1,9 +1,9 @@
 package app.lajusta.ui.bolson.create
 
 import app.lajusta.ui.bolson.api.BolsonApi
-import app.lajusta.ui.bolson.edition.BaseEditionFragment
+import app.lajusta.ui.bolson.edition.BolsonBaseEditionFragment
 
-class BolsonCreateFragment : BaseEditionFragment() {
+class BolsonCreateFragmentBolson : BolsonBaseEditionFragment() {
 
     override fun commitChange() =
         returnSimpleApiCall(
@@ -11,7 +11,7 @@ class BolsonCreateFragment : BaseEditionFragment() {
             "Hubo un error. El bolsón no pudo ser creado."
         )
 
-    override fun denyActionListener() {
+    override fun denyAction() {
         activity?.onBackPressed()
     }
 }

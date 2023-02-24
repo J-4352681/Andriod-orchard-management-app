@@ -1,4 +1,4 @@
-package app.lajusta.ui.visita.modify
+package app.lajusta.ui.visita.edition
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

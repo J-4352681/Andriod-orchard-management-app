@@ -18,7 +18,7 @@ class VerduraBolsonAdapter(
 
     override fun onBindViewHolder(holder: VerduraBolsonViewHolder, position: Int) {
         holder.bind(verduras[position]) {
-            verduras -= verduras[position]
+            verduras -= it
             notifyDataSetChanged()
         }
     }
