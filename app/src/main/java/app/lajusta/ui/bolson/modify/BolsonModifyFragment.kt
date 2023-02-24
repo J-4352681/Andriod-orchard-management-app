@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
@@ -18,12 +17,11 @@ import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.login.afterTextChanged
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.ronda.api.RondaApi
-import app.lajusta.ui.verdura.Verdura
 
 class BolsonModifyFragment: BaseFragment() {
-
     private var _binding: FragmentBolsonModifyBinding? = null
     private val binding get() = _binding!!
     private lateinit var bolson: Bolson
@@ -33,7 +31,6 @@ class BolsonModifyFragment: BaseFragment() {
     private var rondas = listOf<Ronda>()
     private lateinit var rondasAdapter: ArrayAdapter<Ronda>
 
-    private val verdurasTotales = mutableListOf<Verdura>()
     private lateinit var verduraBolsonAdapter: VerduraBolsonAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,78 +52,84 @@ class BolsonModifyFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.etCantidad.afterTextChanged { cantidad ->
+            bolson.cantidad = if (cantidad != "") cantidad.toInt() else 0
+        }
+
         fillItem()
     }
 
     private fun fillItem() {
-        verdurasTotales.addAll(bolson.verduras)
-
         apiCall(
             {
                 familias = FamiliaApi().getFamilias().body()!!
                 rondas = RondaApi().getRondas().body()!!
             }, {
-                familiasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, familias)
-                binding.sFamilia.adapter = familiasAdapter
-                binding.sFamilia.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
-                        ) {
-                            val familiaSeleccionada = binding.sFamilia.selectedItem as Familia
-                            bolson.idFp = familiaSeleccionada.id_fp
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
-                    }
-
-                rondasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, rondas)
-                binding.sRonda.adapter = rondasAdapter
-                binding.sRonda.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
-                        ) {
-                            val rondaSeleccionada = binding.sRonda.selectedItem as Ronda
-                            bolson.idRonda = rondaSeleccionada.id_ronda
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
-                    }
-
+                initFamiliasSpinner()
+                initRondasSpinner()
                 setClickListeners()
-            }, "No se pudieron obtener las familias."
+            }, "No se pudieron obtener las familias o rondas."
         )
         binding.etCantidad.setText(bolson.cantidad.toString())
-
         initRecyclerView()
     }
 
+    private fun initFamiliasSpinner() {
+        val idFamiliaSeleccionada = bolson.idFp
+        familiasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, familias)
+        binding.sFamilia.adapter = familiasAdapter
+        binding.sFamilia.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
+                ) {
+                    val familiaSeleccionada = binding.sFamilia.selectedItem as Familia
+                    bolson.idFp = familiaSeleccionada.id_fp
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            }
+        binding.sFamilia.setSelection(
+            familiasAdapter.getPosition(familias.find { it.id_fp == idFamiliaSeleccionada })
+        )
+    }
+
+    private fun initRondasSpinner() {
+        val idRondaSeleccionada = bolson.idRonda
+        rondasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, rondas)
+        binding.sRonda.adapter = rondasAdapter
+        binding.sRonda.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
+                ) {
+                    val rondaSeleccionada = binding.sRonda.selectedItem as Ronda
+                    bolson.idRonda = rondaSeleccionada.id_ronda
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            }
+        binding.sRonda.setSelection(
+            rondasAdapter.getPosition(rondas.find { it.id_ronda == idRondaSeleccionada })
+        )
+    }
+
     private fun initRecyclerView() {
-        verduraBolsonAdapter = VerduraBolsonAdapter(verdurasTotales, bolson)
+        verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras)
         binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
         binding.rvVerduras.adapter = verduraBolsonAdapter
     }
 
     private fun setClickListeners() {
-        val stateHandle: SavedStateHandle =
-            findNavController().currentBackStackEntry?.savedStateHandle!!
-
-        stateHandle.getLiveData<Bolson>("bolson")
-            .observe(viewLifecycleOwner) { data ->
-                bolson = data
-                binding.sFamilia.setSelection(
-                    familiasAdapter.getPosition(familias.find { it.id_fp == bolson.idFp })
-                )
-                binding.sRonda.setSelection(
-                    rondasAdapter.getPosition(rondas.find { it.id_ronda == bolson.idRonda })
-                )
-                verdurasTotales.clear()
-                verdurasTotales.addAll(bolson.verduras)
-                verduraBolsonAdapter.notifyDataSetChanged()
-            }
+        findNavController().currentBackStackEntry?.savedStateHandle!!
+            .getLiveData<Bolson>("bolson").observe(viewLifecycleOwner) { bolson = it }
 
         binding.bBorrar.setOnClickListener {
+            if(binding.etCantidad.text.toString().isEmpty() || bolson.cantidad == 0) {
+                shortToast("Debe escribir una cantidad")
+                return@setOnClickListener
+            }
+
             returnSimpleApiCall(
                 { BolsonApi().deleteBolson(bolson.id_bolson) },
                 "Hubo un error. El bolsón no pudo ser eliminado."

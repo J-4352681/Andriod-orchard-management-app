@@ -1,11 +1,26 @@
 package app.lajusta.ui.generic
 
+import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.*
 import retrofit2.Response
 
 open class BaseFragment : Fragment() {
+    private val jobs = mutableListOf<Job>()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity!!.onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            runBlocking { jobs.forEach { it.cancel() } }
+            findNavController().popBackStack()
+        }
+    }
+
     protected fun shortToast(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
@@ -18,10 +33,9 @@ open class BaseFragment : Fragment() {
         apiEffectiveCall: suspend () -> Response<out Any>,
         failureMessage: String
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        jobs += CoroutineScope(Dispatchers.Main).launch {
             try {
                 val response = apiEffectiveCall()
-                println(response.code())
                 if(!response.isSuccessful) throw Exception(response.code().toString())
             }
             catch(e: Exception) { activity!!.runOnUiThread {
@@ -35,10 +49,10 @@ open class BaseFragment : Fragment() {
         apiCallUIBlock: () -> Unit,
         failureMessage: String
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        jobs += CoroutineScope(Dispatchers.Main).launch {
             try {
                 apiEffectiveCall()
-                GlobalScope.launch(Dispatchers.Main) {
+                activity!!.runOnUiThread {
                     apiCallUIBlock()
                 }
             }

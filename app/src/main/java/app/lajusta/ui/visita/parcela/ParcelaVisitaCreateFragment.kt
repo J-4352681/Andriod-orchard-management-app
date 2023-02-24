@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.navigation.fragment.findNavController
 import app.lajusta.R
 import app.lajusta.databinding.FragmentParcelaVisitaCreateBinding
@@ -15,6 +17,8 @@ import app.lajusta.ui.parcela.ParcelaVisita
 import app.lajusta.ui.verdura.Verdura
 import app.lajusta.ui.verdura.api.VerduraApi
 import app.lajusta.ui.visita.Visita
+import app.lajusta.ui.visita.model.VisitaCompleta
+import kotlinx.coroutines.*
 
 class ParcelaVisitaCreateFragment : BaseFragment() {
     private var _binding: FragmentParcelaVisitaCreateBinding? = null

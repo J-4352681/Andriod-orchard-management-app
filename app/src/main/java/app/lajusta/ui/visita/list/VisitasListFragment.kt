@@ -64,7 +64,7 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private fun initRecyclerView() {
         visitaAdapter= VisitaAdapter(visitasCompletas) { visita: VisitaCompleta ->
-            val bundle = bundleOf("visita" to visita)
+            val bundle = bundleOf("visita" to visita.toVisita())
             this.findNavController().navigate(R.id.visitaModifyFragment, bundle)
         }
         binding.rvVisitas.layoutManager = LinearLayoutManager(activity)

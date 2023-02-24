@@ -13,7 +13,7 @@ data class BolsonCompleto(
     var cantidad: Int,
     var familia: Familia,
     var ronda: Ronda,
-    var verduras: List<Verdura>
+    val verduras: MutableList<Verdura>
 ): Parcelable {
     fun toBolson(): Bolson {
         return Bolson(id_bolson,cantidad,familia.id_fp,ronda.id_ronda,verduras)

@@ -64,7 +64,8 @@ class VerduraSelectFragment : BaseFragment() {
 
             val stateHandler: SavedStateHandle =
                 navController.previousBackStackEntry?.savedStateHandle!!
-            bolson.verduras = verdurasQuintaSeleccionadas + verdurasNoQuintaSeleccionadas
+            bolson.verduras.clear()
+            bolson.verduras.addAll(verdurasQuintaSeleccionadas + verdurasNoQuintaSeleccionadas)
             stateHandler["bolson"] = bolson
 
             navController.popBackStack()

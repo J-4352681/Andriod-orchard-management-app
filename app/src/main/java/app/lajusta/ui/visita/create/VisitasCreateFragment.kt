@@ -44,8 +44,6 @@ class VisitasCreateFragment : BaseFragment() {
     private val parcelas = mutableListOf<ParcelaVisita>()
     private lateinit var parcelasAdapter: ParcelaVisitaAdapter
 
-    private val newParcelas = mutableListOf<ParcelaVisita>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
