@@ -13,12 +13,14 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import app.lajusta.databinding.ActivityMainBinding
 import app.lajusta.ui.login.LoginActivity
+import app.lajusta.ui.login.api.UsuarioLoginResponse
+import app.lajusta.ui.usuarios.Usuario
 import com.google.android.material.navigation.NavigationView
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var usuario: Usuario
 
     companion object {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
@@ -34,13 +36,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //CHECKING LOGIN
-        /* if ( userName.isEmpty() || userType.isEmpty() || userId.isEmpty() || token.isEmpty() ) {
-            goToLogin()
-        } */
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        usuario = intent.extras?.getParcelable("usuario")!!
+        println("se recibió el usuario$usuario")
+
+        //CHECKING LOGIN
+        /* if (
+            userName.isEmpty()
+            || userType.isEmpty()
+            || userId.isEmpty()
+            || token.isEmpty()
+        ) {
+            goToLogin()
+        } */
 
         setSupportActionBar(binding.appBarMain.toolbar)
 

@@ -34,7 +34,7 @@ data class Usuario(
             else usuarios.addAll(
                 usuariosOriginales.filter { usuarios ->
                     usuarios.nombre.contains(query)
-                            || usuarios.apellido.contains(query)
+                    || usuarios.apellido.contains(query)
                 }
             )
             return usuarios

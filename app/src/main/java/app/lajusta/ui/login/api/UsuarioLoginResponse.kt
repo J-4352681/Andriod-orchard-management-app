@@ -8,5 +8,4 @@ class UsuarioLoginResponse (
     val id_user:Int,
     val rol:Int,
     val token:String
-
 ): Parcelable

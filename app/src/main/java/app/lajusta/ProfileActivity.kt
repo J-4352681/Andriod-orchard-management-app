@@ -30,9 +30,13 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         //CHECKING LOGIN
-        /*if ( MainActivity.userName.isEmpty() || MainActivity.userType.isEmpty() || MainActivity.userId.isEmpty() ) {
+        /* if (
+            MainActivity.userName.isEmpty()
+            || MainActivity.userType.isEmpty()
+            || MainActivity.userId.isEmpty()
+        ) {
             goToLogin()
-        }*/
+        } */
 
         //actionbar
         val actionbar = supportActionBar
@@ -48,17 +52,12 @@ class ProfileActivity : AppCompatActivity() {
 
         val btnUsername = findViewById<Button>(R.id.btn_ch_userneme)
         btnUsername.setOnClickListener {
-            val newUsername = editText.text.toString().orEmpty()
+            val newUsername = editText.text.toString()
             if (editText.text.toString().isNotEmpty()) {
                 showAlertUsername(newUsername)
-            } else {
-                Toast.makeText(
-                    this@ProfileActivity,
-                    "Primero debe escribir un nuevo nombre de usuario.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
+            } else Toast.makeText(
+                this, "Primero debe escribir un nuevo nombre de usuario.", Toast.LENGTH_SHORT
+            ).show()
         }
 
         val oldPassword = findViewById<EditText>(R.id.et_ch_password_old)
@@ -69,37 +68,23 @@ class ProfileActivity : AppCompatActivity() {
             val oldPassText = oldPassword.text.toString()
             val newPassText = newPassword.text.toString()
             val newPassRepText = newPasswordRepeat.text.toString()
-            if (oldPassText.isEmpty()) {
-                Toast.makeText(
-                    applicationContext,
-                    "Ingresar contraseña antigua",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else
-                if (newPassText.isEmpty()) {
-                    Toast.makeText(
-                        applicationContext,
-                        "Ingresar contraseña nueva",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else
-                    if (newPassRepText.isEmpty()) {
-                        Toast.makeText(
-                            applicationContext,
-                            "Repetir contraseña nueva",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else
-                        if (newPassText != newPassRepText) {
-                            Toast.makeText(
-                                applicationContext,
-                                "Repetir contraseña nueva correctamente",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            showAlertPasswordChange(oldPassText, newPassText)
-                        }
+            if (oldPassText.isEmpty()) Toast.makeText(
+                this, "Ingresar contraseña antigua", Toast.LENGTH_SHORT
+            ).show()
 
+            if (newPassText.isEmpty()) Toast.makeText(
+                this, "Ingresar contraseña nueva", Toast.LENGTH_SHORT
+            ).show()
+
+            if (newPassRepText.isEmpty()) Toast.makeText(
+                this, "Repetir contraseña nueva", Toast.LENGTH_SHORT
+            ).show()
+
+            if (newPassText != newPassRepText) Toast.makeText(
+                this, "Repetir contraseña nueva correctamente", Toast.LENGTH_SHORT
+            ).show()
+
+            showAlertPasswordChange(oldPassText, newPassText)
         }
 
     }

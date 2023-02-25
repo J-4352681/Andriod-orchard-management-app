@@ -5,7 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class UsuarioLogin (
-    val username:String,
-    val password:String
-
-        ): Parcelable
+    var username:String,
+    var password:String
+): Parcelable {
+    override fun toString(): String = "$username - $password"
+}
