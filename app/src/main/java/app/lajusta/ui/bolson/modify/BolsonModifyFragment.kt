@@ -5,7 +5,7 @@ import android.view.View
 import app.lajusta.ui.bolson.api.BolsonApi
 import app.lajusta.ui.bolson.edition.BolsonBaseEditionFragment
 
-class BolsonModifyFragmentBolson: BolsonBaseEditionFragment() {
+class BolsonModifyFragment: BolsonBaseEditionFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.bDenyAction.text = "Borrar"

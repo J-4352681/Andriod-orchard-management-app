@@ -1,85 +1,25 @@
 package app.lajusta.ui.ronda.modify
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import app.lajusta.databinding.FragmentRondaModifyBinding
-import app.lajusta.ui.generic.ArrayedDate
-import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.ronda.api.RondaApi
+import app.lajusta.ui.ronda.edition.RondaBaseEditionFragment
 
-class RondaModifyFragment: BaseFragment() {
-    private var _binding: FragmentRondaModifyBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var ronda: Ronda
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let { bundle ->
-            ronda = bundle.getParcelable("ronda")!!
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentRondaModifyBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
+class RondaModifyFragment: RondaBaseEditionFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fillItem()
-        setClickListeners()
+        binding.bDenyAction.text = "Borrar"
     }
 
-
-
-    private fun setClickListeners() {
-        binding.bFechaInicio.setOnClickListener(
-            ArrayedDate.datePickerListener(
-                activity!!, binding.tvFechaInicioSeleccionada
-            ) { _, i, i2, i3 ->
-                ronda.fecha_inicio = listOf(i, i2+1, i3)
-                binding.tvFechaInicioSeleccionada.text = ArrayedDate.toString(ronda.fecha_inicio)
-            }
+    override fun commitChange() =
+        returnSimpleApiCall(
+            { RondaApi().putRonda(ronda) },
+            "Hubo un error. La ronda no pudo ser creada."
         )
 
-        binding.bFechaFin.setOnClickListener(
-            ArrayedDate.datePickerListener(
-                activity!!, binding.tvFechaFinSeleccionada
-            ) { _, i, i2, i3 ->
-                ronda.fecha_fin = listOf(i, i2+1, i3)
-                binding.tvFechaFinSeleccionada.text = ArrayedDate.toString(ronda.fecha_fin!!)
-            }
-        )
-
-        binding.bGuardar.setOnClickListener {
-            returnSimpleApiCall(
-                { RondaApi().putRonda(ronda) },
-                "Hubo un error. La ronda no pudo ser creada."
-            )
-        }
-
-        binding.bEliminar.setOnClickListener { returnSimpleApiCall(
+    override fun denyAction() =
+        returnSimpleApiCall(
             { RondaApi().deleteRonda(ronda.id_ronda) },
             "Hubo un error. La ronda no pudo ser eliminada."
-        ) }
-    }
-
-
-
-    private fun fillItem() {
-        binding.tvFechaInicioSeleccionada.text = ArrayedDate.toString(ronda.fecha_inicio)
-        binding.tvFechaFinSeleccionada.text = ArrayedDate.toString(ronda.fecha_fin!!)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+        )
 }

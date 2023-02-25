@@ -1,21 +1,15 @@
 package app.lajusta.ui.usuarios.create
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import app.lajusta.R
-import app.lajusta.data.model.UserType
-import app.lajusta.databinding.FragmentRondaCreateBinding
 import app.lajusta.databinding.FragmentUsuariosCreateBinding
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.usuarios.Usuario
 import app.lajusta.ui.usuarios.api.UsuariosApi
-import app.lajusta.ui.visita.Visita
-import app.lajusta.ui.visita.api.VisitaApi
 
 class UsuariosCreateFragment : BaseFragment() {
     private var _binding: FragmentUsuariosCreateBinding? = null

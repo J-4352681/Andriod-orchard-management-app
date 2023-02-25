@@ -106,7 +106,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/bGuardar"
+        android:id="@+id/bSubmitAction"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="@string/save"
@@ -114,10 +114,10 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/bEliminar"
+        android:id="@+id/bDenyAction"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="Eliminar"
+        android:text="Cancelar"
         android:backgroundTint="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
