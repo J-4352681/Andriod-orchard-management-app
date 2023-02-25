@@ -1,6 +1,10 @@
 package app.lajusta.ui.usuarios
 
+import android.content.Context
 import android.os.Parcelable
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.ui.AppBarConfiguration
+import app.lajusta.R
 import app.lajusta.data.model.UserType
 import kotlinx.parcelize.Parcelize
 
@@ -34,17 +38,17 @@ data class Usuario(
             else usuarios.addAll(
                 usuariosOriginales.filter { usuarios ->
                     usuarios.nombre.contains(query)
-                    || usuarios.apellido.contains(query)
+                            || usuarios.apellido.contains(query)
                 }
             )
             return usuarios
         }
 
-        fun getRolNames():Array<String> {
-            return arrayOf(adminName,tecName)
+        fun getRolNames(): Array<String> {
+            return arrayOf(adminName, tecName)
         }
 
-        fun rolNameToNumber( name:String ):Int {
+        fun rolNameToNumber(name: String): Int {
             if (name == adminName) return adminNumber
             else if (name == tecName) return tecNumber
             return -1 //UNKNOWN
@@ -62,11 +66,42 @@ data class Usuario(
             return "UNKNOWN"
         }
 
-        fun isAdmin(num:Int): Boolean {
+        fun isAdmin(num: Int): Boolean {
             return num == adminNumber
         }
-        fun isAdmin(name:String): Boolean {
+
+        fun isAdmin(name: String): Boolean {
             return name == adminName
+        }
+
+        fun getAppBarConfiguration(num: Int, drawerLayout: DrawerLayout): AppBarConfiguration {
+            //TODO: NO BASTA CON SACAR EL R.id.nav_usuarios PARA EVITAR QUE APAREZCA EL COSO DE USUARIOS
+            when (num) {
+                adminNumber -> {
+                    return AppBarConfiguration(
+                        setOf(
+                            R.id.nav_rondas, R.id.nav_visitas,
+                            R.id.nav_familias, R.id.nav_bolson,
+                            R.id.nav_quintas, R.id.nav_verduras,
+                            R.id.nav_usuarios
+                        ), drawerLayout
+                    )
+                }
+                tecNumber -> {
+                    return AppBarConfiguration(
+                        setOf(
+                            R.id.nav_rondas, R.id.nav_visitas,
+                            R.id.nav_familias, R.id.nav_bolson,
+                            R.id.nav_quintas, R.id.nav_verduras
+                        ), drawerLayout
+                    )
+                }
+                else -> {
+                    return AppBarConfiguration(
+                        setOf(), drawerLayout
+                    )
+                }
+            }
         }
     }
 }

@@ -140,4 +140,7 @@
     <string name="btn_fecha_cosecha">Seleccionar fecha de cosecha</string>
     <string name="tv_fecha_siembra">Fecha de siembra</string>
     <string name="btn_fecha_siembra">Seleccionar fecha de siembra</string>
+    <string name="btn_login">Ingresar</string>
+    <string name="et_contraseña">Ingrese su contraseña</string>
+    <string name="tv_login_title">Iniciar sesión</string>
 </resources>

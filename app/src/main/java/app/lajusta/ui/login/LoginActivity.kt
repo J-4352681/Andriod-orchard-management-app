@@ -1,10 +1,13 @@
 package app.lajusta.ui.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
@@ -17,18 +20,29 @@ import app.lajusta.MainActivity
 import app.lajusta.databinding.ActivityLoginBinding
 
 import app.lajusta.R
-import app.lajusta.ui.usuarios.Usuario
+import app.lajusta.data.Preferences.PreferenceHelper
+import app.lajusta.data.Preferences.PreferenceHelper.loggedIn
+import app.lajusta.data.Preferences.PreferenceHelper.token
+import app.lajusta.data.Preferences.PreferenceHelper.userId
+import app.lajusta.data.Preferences.PreferenceHelper.userType
+import app.lajusta.data.Preferences.PreferenceHelper.username
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
+    val CUSTOM_PREF_NAME = "User_data"
+    lateinit var prefs:SharedPreferences
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        prefs = applicationContext.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
 
         val username = binding.username
         val password = binding.password
@@ -61,22 +75,21 @@ class LoginActivity : AppCompatActivity() {
 
             }
             if (loginResult.success != null) {
+
+                //Guardar informacion del usuario loggeado
+                prefs.userId = loginResult.success.id!!
+                prefs.username = loginResult.success.displayName.orEmpty()
+                prefs.userType = loginResult.success.userType!!
+                prefs.token = loginResult.success.token!!
+                prefs.loggedIn = true
+
+                //Update UI
                 updateUiWithUser(loginResult.success)
                 setResult(Activity.RESULT_OK)
-                //finish()
-                MainActivity.userName = loginResult.success.displayName.orEmpty()
-                MainActivity.userType = loginResult.success.userType
-                MainActivity.userId = loginResult.success.id
-                //MainActivity.token = loginResult.success
 
-                val i = Intent(applicationContext, MainActivity::class.java)
-                startActivity(i)
-                finish()
+
+
             }
-            //setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            //finish()
         })
 
         username.afterTextChanged {
@@ -115,12 +128,17 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
-        // TODO : initiate successful logged in experience
+
+        //initiate successful logged in experience
         Toast.makeText(
             applicationContext,
             "$welcome $displayName",
-            Toast.LENGTH_LONG
+            Toast.LENGTH_SHORT
         ).show()
+
+        val i = Intent(applicationContext, MainActivity::class.java)
+        startActivity(i)
+        finish()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

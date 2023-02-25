@@ -2,16 +2,22 @@ package app.lajusta
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import app.lajusta.data.Preferences.PreferenceHelper.loggedIn
+import app.lajusta.data.Preferences.PreferenceHelper.userId
+import app.lajusta.data.Preferences.PreferenceHelper.username
 import app.lajusta.data.Result
 import app.lajusta.data.model.LoggedInUser
+import app.lajusta.ui.login.LoginActivity
 import app.lajusta.ui.login.api.LoginApi
 import app.lajusta.ui.login.api.UsuarioLogin
 import app.lajusta.ui.usuarios.Usuario
@@ -25,18 +31,22 @@ import java.io.IOException
 import java.lang.Exception
 
 class ProfileActivity : AppCompatActivity() {
+
+    val CUSTOM_PREF_NAME = "User_data"
+    lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+        prefs = applicationContext.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
+
         //CHECKING LOGIN
-        /* if (
-            MainActivity.userName.isEmpty()
-            || MainActivity.userType.isEmpty()
-            || MainActivity.userId.isEmpty()
+        if (
+            !prefs.loggedIn
         ) {
             goToLogin()
-        } */
+        }
 
         //actionbar
         val actionbar = supportActionBar
@@ -48,7 +58,7 @@ class ProfileActivity : AppCompatActivity() {
 
         //Username
         val editText = findViewById<EditText>(R.id.et_ch_username)
-        editText.hint = MainActivity.userName
+        editText.hint = prefs.username
 
         val btnUsername = findViewById<Button>(R.id.btn_ch_userneme)
         btnUsername.setOnClickListener {
@@ -113,18 +123,19 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun changeUsername(newUsername: String) {
 
-        if (MainActivity.userId == null || newUsername.isEmpty()) {
+        if (prefs.userId == null || newUsername.isEmpty()) {
             Toast.makeText(
                 applicationContext,
                 "Ningun usuario logeado", Toast.LENGTH_LONG
             ).show()
+            goToLogin()
             return
         }
 
         runBlocking {
             var usuario: Usuario
             try {
-                val result = UsuariosApi().getUsuario(MainActivity.userId!!)
+                val result = UsuariosApi().getUsuario(prefs.userId)
                 if (result.isSuccessful) {
                     usuario = result.body()!!
 
@@ -181,12 +192,12 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun changePassword(oldPassword: String, newPassword: String) {
 
-        if (MainActivity.userId == null || newPassword.isEmpty() || oldPassword.isEmpty()) {
+        if (prefs.userId == null || newPassword.isEmpty() || oldPassword.isEmpty()) {
             Toast.makeText(
                 applicationContext,
                 "Ningun usuario logeado", Toast.LENGTH_LONG
             ).show()
-            //goToLogin()
+            goToLogin()
             return
         }
 
@@ -195,7 +206,7 @@ class ProfileActivity : AppCompatActivity() {
         runBlocking {
             var usuario: Usuario
             try {
-                val result = UsuariosApi().getUsuario(MainActivity.userId!!)
+                val result = UsuariosApi().getUsuario(prefs.userId)
                 if (result.isSuccessful) {
                     usuario = result.body()!!
                     if (usuario.password != oldPassword) {
@@ -256,4 +267,9 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun goToLogin() {
+        val i = Intent(applicationContext, LoginActivity::class.java)
+        startActivity(i)
+        finish()
+    }
 }

@@ -42,5 +42,12 @@ class LoginRepository(val dataSource: LoginDataSource) {
         this.user = loggedInUser
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
+
+        /*val CUSTOM_PREF_NAME = "User_data"
+        val prefs = PreferenceHelper.customPreference(activity!!, CUSTOM_PREF_NAME)
+        prefs.userId = loggedInUser.userId
+        prefs.username = loggedInUser.displayName
+        prefs.userType = loggedInUser.userType
+        prefs.token = loggedInUser.token*/
     }
 }

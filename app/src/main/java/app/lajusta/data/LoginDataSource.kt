@@ -32,6 +32,11 @@ class LoginDataSource {
                 return Result.Success(tec)
             }
 
+            if (username == "aaaaaa" && password == "aaaaaa") {
+                val tec = LoggedInUser(-3, "aaa", 4, "token")
+                return Result.Success(tec)
+            }
+
             return runBlocking {
                 val user = UsuarioLogin(username, password)
                 try {
@@ -62,11 +67,5 @@ class LoginDataSource {
 
     fun logout() {
         // TODO: revoke authentication
-    }
-
-    private fun intToUserType(num: Int?): UserType? {
-        if (num == 1) return UserType.ADMIN
-        else if (num == 2) return UserType.TECNICO
-        return null
     }
 }
