@@ -35,12 +35,12 @@
 
             <EditText
                 android:id="@+id/etNombre"
-                android:layout_width="match_parent"
+                android:layout_width="488dp"
                 android:layout_height="48dp"
+                android:autofillHints="name"
                 android:hint="@string/et_name"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
-                android:autofillHints="name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvNombre"
                 tools:ignore="MissingConstraints" />
@@ -60,12 +60,12 @@
 
             <EditText
                 android:id="@+id/etApellido"
-                android:layout_width="match_parent"
+                android:layout_width="488dp"
                 android:layout_height="48dp"
+                android:autofillHints="name"
                 android:hint="@string/et_surname"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
-                android:autofillHints="name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvApellido"
                 tools:ignore="MissingConstraints" />
@@ -85,12 +85,12 @@
 
             <EditText
                 android:id="@+id/etDireccion"
-                android:layout_width="match_parent"
+                android:layout_width="488dp"
                 android:layout_height="48dp"
+                android:autofillHints="text"
                 android:hint="@string/et_direction"
                 android:inputType="textMultiLine"
                 android:selectAllOnFocus="true"
-                android:autofillHints="text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDireccion"
                 tools:ignore="MissingConstraints" />
@@ -110,12 +110,12 @@
 
             <EditText
                 android:id="@+id/etEmail"
-                android:layout_width="match_parent"
+                android:layout_width="488dp"
                 android:layout_height="48dp"
                 android:autofillHints="name"
                 android:hint="@string/et_emaill"
-                android:selectAllOnFocus="true"
                 android:inputType="textEmailAddress"
+                android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvEmail"
                 tools:ignore="MissingConstraints" />

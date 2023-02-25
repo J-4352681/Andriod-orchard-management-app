@@ -28,7 +28,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
 
             <LinearLayout
@@ -57,7 +57,7 @@
                     android:id="@+id/bFecha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Seleccionar fecha"
+                    android:text="@string/btn_select_fecha"
                     app:layout_constraintTop_toBottomOf="@id/etFamilia"/>
             </LinearLayout>
 
@@ -76,11 +76,12 @@
 
             <EditText
                 android:id="@+id/etDesc"
-                android:layout_width="match_parent"
+                android:layout_width="488dp"
                 android:layout_height="48dp"
                 android:hint="@string/et_hint_desc_visita"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
+                android:autofillHints=""
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDesc"
                 tools:ignore="MissingConstraints" />
@@ -173,7 +174,7 @@
         android:id="@+id/bDenyAction"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="Cancelar"
+        android:text="@string/cancel"
         android:backgroundTint="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

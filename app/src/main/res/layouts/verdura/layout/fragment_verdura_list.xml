@@ -30,7 +30,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCrearVerdura"
-        android:contentDescription="Botón para crear nueva verdura"
+        android:contentDescription="@string/fab_crear_verdura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

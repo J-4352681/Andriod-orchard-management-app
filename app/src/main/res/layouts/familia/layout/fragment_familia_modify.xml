@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Nombre de la familia"
+                android:text="@string/tv_family_name"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,9 +46,10 @@
 
             <EditText
                 android:id="@+id/etNombre"
-                android:layout_width="match_parent"
+                android:layout_width="488dp"
                 android:layout_height="48dp"
-                android:hint="Ingrese nombre"
+                android:autofillHints="name"
+                android:hint="@string/et_name"
                 android:inputType="number"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +65,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/etNombre"
-                android:text="Fecha de afiliación" />
+                android:text="@string/tv_fecha_afiliacion" />
 
 
             <LinearLayout
@@ -93,7 +94,7 @@
                     android:id="@+id/bFecha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Seleccionar fecha"
+                    android:text="@string/btn_select_fecha"
                     app:layout_constraintTop_toBottomOf="@id/etFamilia"/>
             </LinearLayout>
 
@@ -107,7 +108,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/llFecha"
-                android:text="Quintas" />
+                android:text="@string/tv_quintas" />
 
             <TextView
                 android:id="@+id/tvQuintasList"
@@ -124,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Ver quintas"
+                android:text="@string/btn_ver_quintas"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvQuintasList"
                 tools:ignore="MissingConstraints" />
@@ -134,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Nueva quinta"
+                android:text="@string/btn_add_quinta"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvQuintasList"
                 tools:ignore="MissingConstraints" />
@@ -149,7 +150,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/bVerQuintas"
-                android:text="Bolsones aportados a rondas" />
+                android:text="@string/tv_bolsones_rondas" />
 
             <TextView
                 android:id="@+id/tvUltimoBolson"
@@ -166,7 +167,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Ver bolsones"
+                android:text="@string/btn_ver_bolsones"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvUltimoBolson"
                 tools:ignore="MissingConstraints" />
@@ -176,7 +177,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Ver rondas"
+                android:text="@string/btn_ver_rondas"
                 app:layout_constraintTop_toBottomOf="@+id/tvUltimoBolson"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="MissingConstraints" />

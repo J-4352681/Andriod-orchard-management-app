@@ -34,8 +34,9 @@
 
             <EditText
                 android:id="@+id/etCantidad"
-                android:layout_width="match_parent"
+                android:layout_width="488dp"
                 android:layout_height="48dp"
+                android:autofillHints=""
                 android:hint="@string/et_hint_modify_cantidad"
                 android:inputType="number"
                 android:selectAllOnFocus="true"
@@ -60,6 +61,7 @@
                 android:id="@+id/sRonda"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:contentDescription="@string/cd_s_ronda"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvRonda" />
 
@@ -81,7 +83,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFamilia" />
+                app:layout_constraintTop_toBottomOf="@+id/tvFamilia"
+                android:contentDescription="@string/cd_s_familia"/>
 
 
             <TextView
@@ -89,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Verduras"
+                android:text="@string/verduras"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:paddingVertical="8dp"
@@ -135,7 +138,7 @@
         android:id="@+id/bDenyAction"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="Cancelar"
+        android:text="@string/cancel"
         android:backgroundTint="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
