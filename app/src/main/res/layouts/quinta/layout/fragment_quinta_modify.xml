@@ -34,8 +34,9 @@
 
             <EditText
                 android:id="@+id/etNombre"
-                android:layout_width="match_parent"
+                android:layout_width="488dp"
                 android:layout_height="48dp"
+                android:autofillHints="name"
                 android:hint="@string/et_name"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
@@ -58,9 +59,11 @@
 
             <EditText
                 android:id="@+id/etDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="488dp"
+                android:layout_height="48dp"
+                android:autofillHints=""
                 android:hint="@string/et_direction"
+                android:inputType="text"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDireccion"
@@ -81,10 +84,11 @@
 
             <EditText
                 android:id="@+id/etImagen"
-                android:layout_width="match_parent"
+                android:layout_width="488dp"
                 android:layout_height="48dp"
                 android:autofillHints="name"
                 android:hint="@string/et_geoimage"
+                android:inputType="textLongMessage"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvImagen"

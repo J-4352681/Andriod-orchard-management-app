@@ -8,14 +8,14 @@ import app.lajusta.ui.ronda.Ronda
 
 class RondaViewHolder(
     itemView: View
-): RecyclerView.ViewHolder(itemView) {
+) : RecyclerView.ViewHolder(itemView) {
 
     private val binding = ItemRondaBinding.bind(itemView)
 
     fun bind(rondaItem: Ronda, clickListener: (Ronda) -> Unit) {
-        binding.tvTitle.text =
-            (ArrayedDate.toString(rondaItem.fecha_inicio) + "  -  "
-            + ArrayedDate.toString(rondaItem.fecha_fin!!))
+        binding.tvTitle.text = "Ronda del  " +
+                (ArrayedDate.toString(rondaItem.fecha_inicio) + "  al  "
+                        + ArrayedDate.toString(rondaItem.fecha_fin!!))
 
         itemView.setOnClickListener { clickListener(rondaItem) }
     }

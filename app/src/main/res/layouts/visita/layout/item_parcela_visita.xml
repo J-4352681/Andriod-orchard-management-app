@@ -23,38 +23,39 @@
             android:layout_marginVertical="5dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/tv_verdura" />
 
         <Button
             android:id="@+id/bEliminar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
             android:backgroundTint="@color/design_default_color_error"
-            android:text="Eliminar"/>
+            android:text="@string/eliminate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <CheckBox
             android:id="@+id/cbCubierto"
-            android:layout_width="0dp"
+            android:layout_width="184dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
-            app:layout_constraintWidth_percent="0.5"
+            android:text="@string/tv_cubierto"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bEliminar"
-            android:text="@string/tv_cubierto" />
+            app:layout_constraintWidth_percent="0.5" />
 
 
         <CheckBox
             android:id="@+id/cbCosecha"
-            android:layout_width="0dp"
+            android:layout_width="184dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
-            app:layout_constraintWidth_percent="0.5"
+            android:text="@string/tv_Cosecha"
             app:layout_constraintStart_toEndOf="@+id/cbCubierto"
             app:layout_constraintTop_toBottomOf="@+id/bEliminar"
-            android:text="@string/tv_Cosecha" />
+            app:layout_constraintWidth_percent="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

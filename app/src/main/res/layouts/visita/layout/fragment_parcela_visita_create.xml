@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Cantidad de surcos"
+                android:text="@string/tv_cantidad_surcos"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,32 +34,33 @@
 
             <EditText
                 android:id="@+id/etSurcos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ingrese cantidad de surcos"
+                android:layout_width="488dp"
+                android:layout_height="48dp"
+                android:hint="@string/et_cantidad_surcos"
                 android:inputType="number"
+                android:autofillHints=""
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvSurcos"
                 tools:ignore="MissingConstraints" />
 
             <CheckBox
                 android:id="@+id/cbCubierto"
-                android:layout_width="0dp"
+                android:layout_width="192dp"
                 android:layout_height="wrap_content"
-                android:text="Cubierta"
-                app:layout_constraintWidth_percent="0.5"
+                android:text="@string/covered"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etSurcos"
+                app:layout_constraintWidth_percent="0.5"
                 tools:ignore="MissingConstraints" />
 
             <CheckBox
                 android:id="@+id/cbCosecha"
-                android:layout_width="0dp"
+                android:layout_width="192dp"
                 android:layout_height="wrap_content"
-                android:text="Cosecha"
-                app:layout_constraintWidth_percent="0.5"
+                android:text="@string/harvest"
                 app:layout_constraintStart_toEndOf="@id/cbCubierto"
                 app:layout_constraintTop_toBottomOf="@+id/etSurcos"
+                app:layout_constraintWidth_percent="0.5"
                 tools:ignore="MissingConstraints" />
 
 
@@ -67,6 +68,7 @@
                 android:id="@+id/sVerdura"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:contentDescription="@string/cd_s_verduras"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cbCubierto" />
 

@@ -27,10 +27,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/tv_fecha_inicio"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="Fecha de inicio" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/llechaInicio"
@@ -47,7 +48,7 @@
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="15/12/3" />
+                    android:text="@string/fecha_ej" />
 
                 <View
                     android:layout_width="0dp"
@@ -58,7 +59,7 @@
                     android:id="@+id/bFechaInicio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Seleccionar fecha de inicio"/>
+                    android:text="@string/btn_fecha_inicio"/>
             </LinearLayout>
 
 
@@ -71,7 +72,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/llechaInicio"
-                android:text="Fecha de fin" />
+                android:text="@string/tv_fecha_fin" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -87,7 +88,7 @@
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="15/12/3" />
+                    android:text="@string/fecha_ej" />
 
                 <View
                     android:layout_width="0dp"
@@ -98,7 +99,7 @@
                     android:id="@+id/bFechaFin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Seleccionar fecha de fin"/>
+                    android:text="@string/btn_fecha_fin"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -117,7 +118,7 @@
         android:id="@+id/bEliminar"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="Eliminar"
+        android:text="@string/erase"
         android:backgroundTint="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

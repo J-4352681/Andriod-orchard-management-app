@@ -30,7 +30,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCrearFamilia"
-        android:contentDescription="Botón para crear nueva familia"
+        android:contentDescription="@string/btn_add_familia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
