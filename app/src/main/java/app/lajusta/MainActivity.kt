@@ -17,7 +17,7 @@ import app.lajusta.data.Preferences.PreferenceHelper.clearValues
 import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.databinding.ActivityMainBinding
 import app.lajusta.ui.login.LoginActivity
-import app.lajusta.ui.usuarios.UserRol
+import app.lajusta.ui.usuarios.UserRole
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -50,10 +50,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         appBarConfiguration =
-            UserRol.getUserRolByRolId(prefs.userType)!!.getAppBarConfiguration(drawerLayout)
+            UserRole.getByRoleId(prefs.userType).getAppBarConfiguration(drawerLayout)
 
         binding.navView.menu.clear()
-        binding.navView.inflateMenu(UserRol.getUserRolByRolId(prefs.userType)!!.getMainDrawerMenu())
+        binding.navView.inflateMenu(UserRole.getByRoleId(prefs.userType).getMainDrawerMenu())
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
