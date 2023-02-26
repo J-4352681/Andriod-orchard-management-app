@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -14,12 +13,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import app.lajusta.data.Preferences.PreferenceHelper
 import app.lajusta.data.Preferences.PreferenceHelper.clearValues
 import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.databinding.ActivityMainBinding
 import app.lajusta.ui.login.LoginActivity
-import app.lajusta.ui.usuarios.Usuario
+import app.lajusta.ui.usuarios.UserRol
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -27,13 +25,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     val CUSTOM_PREF_NAME = "User_data"
-    lateinit var prefs:SharedPreferences
+    lateinit var prefs: SharedPreferences
 
 
     companion object {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
-        const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
-        //const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
+        //const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
+        const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
         //const val baseUrl: String = "http://192.168.0.254:80/api/" // JERE
     }
 
@@ -45,32 +43,17 @@ class MainActivity : AppCompatActivity() {
 
         prefs = applicationContext.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
 
-        //usuario = intent.extras?.getParcelable("usuario")!!
-        //println("se recibió el usuario$usuario")
-
-        //CHECKING LOGIN
-        /* if (
-            userName.isEmpty()
-            || userType.isEmpty()
-            || userId.isEmpty()
-            || token.isEmpty()
-        ) {
-            goToLogin()
-        } */
-
         setSupportActionBar(binding.appBarMain.toolbar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        Toast.makeText(
-            applicationContext,
-            "ROL DEL USUARIO ACTUAL: " + Usuario.rolNumberToName(prefs.userType),
-            Toast.LENGTH_SHORT
-        ).show()
+        appBarConfiguration =
+            UserRol.getUserRolByRolId(prefs.userType)!!.getAppBarConfiguration(drawerLayout)
 
-        appBarConfiguration = Usuario.getAppBarConfiguration(prefs.userType, drawerLayout)
+        binding.navView.menu.clear()
+        binding.navView.inflateMenu(UserRol.getUserRolByRolId(prefs.userType)!!.getMainDrawerMenu())
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)

@@ -1,21 +1,29 @@
 package app.lajusta.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import app.lajusta.MainActivity
+import app.lajusta.data.Preferences.PreferenceHelper.loggedIn
+import app.lajusta.data.Preferences.PreferenceHelper.token
+import app.lajusta.data.Preferences.PreferenceHelper.userId
+import app.lajusta.data.Preferences.PreferenceHelper.userType
+import app.lajusta.data.Preferences.PreferenceHelper.username
 import app.lajusta.databinding.ActivityLoginMainBinding
 import app.lajusta.ui.login.api.LoginApi
 import app.lajusta.ui.login.api.UsuarioLogin
-import app.lajusta.ui.usuarios.api.UsuariosApi
+import app.lajusta.ui.login.api.UsuarioLoginResponse
 import kotlinx.coroutines.*
 
 class LoginMainActiviy : AppCompatActivity() {
     private lateinit var binding: ActivityLoginMainBinding
     private val usuarioLogin = UsuarioLogin("", "")
+
+    private val CUSTOM_PREF_NAME = "User_data"
+    private val prefs =
+        applicationContext.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,27 +36,26 @@ class LoginMainActiviy : AppCompatActivity() {
 
         binding.login.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                var success = false
-
                 val loginResponse = LoginApi().login(usuarioLogin)
                 if (loginResponse.isSuccessful) {
-                    val userResponse = UsuariosApi().getUsuario(loginResponse.body()!!.id_user)
-                    if (userResponse.isSuccessful) runOnUiThread {
-                        val bundle = bundleOf("usuario" to userResponse.body())
-                        val mainActivity = Intent(
-                            this@LoginMainActiviy, MainActivity::class.java
-                        ).also { it.putExtras(bundle) }
-                        success = true
-                        startActivity(mainActivity)
-                    }
-                }
-
-                if(!success) runOnUiThread { Toast.makeText(
+                    setSharedPreferences(loginResponse.body()!!)
+                    val mainActivity =
+                        Intent(this@LoginMainActiviy, MainActivity::class.java)
+                    startActivity(mainActivity)
+                } else runOnUiThread { Toast.makeText(
                     this@LoginMainActiviy,
                     "Hubo un error. Intente luego nuevamente.",
                     Toast.LENGTH_SHORT
                 ).show() }
             }
         }
+    }
+
+    private fun setSharedPreferences(ulr: UsuarioLoginResponse) {
+        prefs.userId = ulr.id_user
+        prefs.username = usuarioLogin.username
+        prefs.userType = ulr.rol
+        prefs.token = ulr.token
+        prefs.loggedIn = true
     }
 }
