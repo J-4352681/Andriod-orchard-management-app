@@ -33,7 +33,7 @@ open class BaseFragment : Fragment() {
         apiEffectiveCall: suspend () -> Response<out Any>,
         failureMessage: String
     ) {
-        jobs += CoroutineScope(Dispatchers.Main).launch {
+        jobs += CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = apiEffectiveCall()
                 if(!response.isSuccessful) throw Exception(response.code().toString())
@@ -49,10 +49,10 @@ open class BaseFragment : Fragment() {
         apiCallUIBlock: () -> Unit,
         failureMessage: String
     ) {
-        jobs += CoroutineScope(Dispatchers.Main).launch {
+        jobs += CoroutineScope(Dispatchers.IO).launch {
             try {
                 apiEffectiveCall()
-                activity!!.runOnUiThread {
+                activity?.runOnUiThread {
                     apiCallUIBlock()
                 }
             }

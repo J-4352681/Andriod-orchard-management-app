@@ -29,9 +29,11 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
-        //const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
+        const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI
         //const val baseUrl: String = "http://192.168.0.120:80/api/" // JERE
-        const val baseUrl: String = "http://192.168.0.254:80/api/" // JERE
+        //const val baseUrl: String = "http://192.168.0.254:80/api/" // JERE
+
+        const val LOGIN_DEBUG = true //Permite usuarios "Administrador Administrador", "Tecnico Tecnico" y "aaaaaa aaaaaa" para entrar por defecto a la app
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,6 +1,7 @@
 package app.lajusta.data
 
 import android.util.Log
+import app.lajusta.MainActivity.Companion.LOGIN_DEBUG
 import app.lajusta.data.model.LoggedInUser
 import app.lajusta.data.model.UserType
 import app.lajusta.ui.login.api.LoginApi
@@ -20,22 +21,24 @@ class LoginDataSource {
 
     fun login(username: String, password: String): Result<LoggedInUser> {
         try {
-            // TODO: handle loggedInUser authentication
 
-            if (username == "administrador" && password == "administrador") {
-                val admin = LoggedInUser(-1, "administrador", 0, "TOKEN")
-                return Result.Success(admin)
+            if (LOGIN_DEBUG) {
+                if (username == "administrador" && password == "administrador") {
+                    val admin = LoggedInUser(-1, "administrador", 0, "TOKEN")
+                    return Result.Success(admin)
+                }
+
+                if (username == "tecnico" && password == "tecnico") {
+                    val tec = LoggedInUser(-2, "tecnico", 1, "token")
+                    return Result.Success(tec)
+                }
+
+                if (username == "aaaaaa" && password == "aaaaaa") {
+                    val tec = LoggedInUser(-3, "aaa", 4, "token")
+                    return Result.Success(tec)
+                }
             }
 
-            if (username == "tecnico" && password == "tecnico") {
-                val tec = LoggedInUser(-2, "tecnico", 1, "token")
-                return Result.Success(tec)
-            }
-
-            if (username == "aaaaaa" && password == "aaaaaa") {
-                val tec = LoggedInUser(-3, "aaa", 4, "token")
-                return Result.Success(tec)
-            }
 
             return runBlocking {
                 val user = UsuarioLogin(username, password)
