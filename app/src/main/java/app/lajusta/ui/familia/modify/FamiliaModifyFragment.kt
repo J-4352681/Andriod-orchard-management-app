@@ -13,6 +13,7 @@ import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.databinding.FragmentFamiliaModifyBinding
 import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.familia.FamiliaCompleta
+import app.lajusta.ui.familia.PrefilledFamilia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
@@ -31,6 +32,7 @@ class FamiliaModifyFragment: BaseFragment(){
     private val bolsonesCompletos = mutableListOf<BolsonCompleto>()
     private val quintasCompletas = mutableListOf<QuintaCompleta>()
     private var rondas = listOf<Ronda>()
+    private var prefilledFamilia: PrefilledFamilia? = null
 
     private val spName = "User_data"
     private lateinit var prefs: SharedPreferences
@@ -39,7 +41,10 @@ class FamiliaModifyFragment: BaseFragment(){
         super.onCreate(savedInstanceState)
         prefs = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
         arguments?.let { bundle ->
-            familia = bundle.getParcelable("familia")!!
+            if(bundle.containsKey("familia"))
+                familia = bundle.getParcelable("familia")!!
+            if(bundle.containsKey("prefilledFamilia"))
+                prefilledFamilia = bundle.getParcelable("prefilledFamilia")!!
         }
     }
 
@@ -75,6 +80,7 @@ class FamiliaModifyFragment: BaseFragment(){
             fillQuintas()
             fillRondas()
             setClickListeners()
+            prefillFamilia()
         }, "No se pudieron obtener las quintas y/o bolsones de la familia.")
     }
 
@@ -164,6 +170,29 @@ class FamiliaModifyFragment: BaseFragment(){
             this.findNavController().navigate(
                 R.id.rondaFilteredListFragment, bundle
             )
+        }
+    }
+
+    private fun prefillFamilia() {
+        if(prefilledFamilia != null) {
+            if(prefilledFamilia?.nombre != null) {
+                familia.nombre = prefilledFamilia?.nombre!!
+                binding.etNombre.setText(familia.nombre)
+                if(prefilledFamilia?._blockFields!!) binding.etNombre.isEnabled = false
+            }
+            if(prefilledFamilia?.fecha_afiliacion != null) {
+                familia.fecha_afiliacion = prefilledFamilia?.fecha_afiliacion!!
+                binding.tvFechaSeleccionada.text = ArrayedDate.toString(familia.fecha_afiliacion)
+                if(prefilledFamilia?._blockFields!!) binding.bFecha.isEnabled = false
+            }
+            if(prefilledFamilia?._blockSubmitAction!!) {
+                binding.bGuardar.isEnabled = false
+                binding.bBorrar.isEnabled = false
+            }
+            if(prefilledFamilia?._blockFields!!) {
+                binding.bNuevaQuinta.isEnabled = false
+                binding.bVerRondas.isEnabled = false
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import app.lajusta.R
 import app.lajusta.ui.bolson.Bolson
+import app.lajusta.ui.familia.FamiliaCompleta
+import app.lajusta.ui.familia.PrefilledFamilia
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.quinta.PrefilledQuinta
 import app.lajusta.ui.quinta.Quinta
@@ -52,6 +54,13 @@ enum class UserRole(
                 ) else null
             )
         }
+
+        // FAMILIAS
+        override fun goToModificationFamilias(
+            navController: NavController, familia: FamiliaCompleta
+        ) = navController.navigate(R.id.familiaModifyFragment, bundleOf("familia" to familia))
+        override fun goToCreationFamilias(navController: NavController) =
+            navController.navigate(R.id.familiaCreateFragment)
     },
 
     TECNICO(1) {
@@ -99,6 +108,19 @@ enum class UserRole(
                 )
             ))
         }
+
+        // FAMILIAS
+        override fun goToModificationFamilias(navController: NavController, familia: FamiliaCompleta) =
+            navController.navigate(R.id.familiaModifyFragment, bundleOf(
+                "prefilledFamilia" to familia.toFamilia().toBlockedPrefilledFamilia(),
+                "familia" to familia
+            ))
+        override fun goToCreationFamilias(navController: NavController) =
+            navController.navigate(R.id.familiaCreateFragment, bundleOf(
+                "prefilledFamilia" to PrefilledFamilia(
+                    "", ArrayedDate.todayArrayed(), true, true
+                )
+            ))
     };
 
     abstract fun getAppBarConfiguration(drawerLayout: DrawerLayout): AppBarConfiguration
@@ -134,6 +156,10 @@ enum class UserRole(
         navController.navigate(R.id.bolsonModifyFragment, bundleOf("bolson" to bolson))
     fun goToCreationBolson(navController: NavController) =
         navController.navigate(R.id.bolsonCreateFragment)
+
+    // FAMILIAS
+    abstract fun goToModificationFamilias(navController: NavController, familia: FamiliaCompleta)
+    abstract fun goToCreationFamilias(navController: NavController)
 
     companion object {
         private val roles = values().associateBy( { it.roleId }, { it } )

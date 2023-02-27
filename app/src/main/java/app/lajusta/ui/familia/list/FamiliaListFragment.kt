@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
+import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.databinding.FragmentFamiliasListBinding
 import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.api.BolsonApi
@@ -23,6 +24,7 @@ import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.ronda.api.RondaApi
+import app.lajusta.ui.usuarios.UserRole
 
 class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentFamiliasListBinding? = null
@@ -43,8 +45,8 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         super.onCreate(savedInstanceState)
         prefs = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
         arguments?.let { bundle ->
-            val data = bundle.getParcelableArrayList<FamiliaCompleta>("familias")
-            if(data != null) familiasCompletasArg = data?.toMutableList()!!
+            if(bundle.containsKey("familias"))
+                familiasCompletasArg = bundle.getParcelableArrayList("familias")
         }
     }
 
@@ -61,7 +63,7 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.fabCrearFamilia.setOnClickListener{
-            view.findNavController().navigate(R.id.familiaCreateFragment)
+            UserRole.getByRoleId(prefs.userType).goToCreationFamilias(findNavController())
         }
 
         binding.svFamilia.setOnQueryTextListener(this)
@@ -71,8 +73,9 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private fun initRecyclerView() {
         familiaAdapter = FamiliaAdapter(familiasCompletas) { familia: FamiliaCompleta ->
-            val bundle = bundleOf("familia" to familia)
-            this.findNavController().navigate(R.id.familiaModifyFragment, bundle)
+            UserRole.getByRoleId(prefs.userType).goToModificationFamilias(
+                findNavController(), familia
+            )
         }
         binding.rvFamilias.layoutManager = LinearLayoutManager(activity)
         binding.rvFamilias.adapter = familiaAdapter
