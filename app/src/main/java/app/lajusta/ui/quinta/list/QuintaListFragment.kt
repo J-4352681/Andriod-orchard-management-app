@@ -1,14 +1,15 @@
 package app.lajusta.ui.quinta.list
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import app.lajusta.R
+import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.databinding.FragmentQuintaListBinding
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.quinta.api.QuintaApi
@@ -18,6 +19,7 @@ import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.model.QuintaCompleta
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.ronda.api.RondaApi
+import app.lajusta.ui.usuarios.UserRole
 
 class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentQuintaListBinding? = null
@@ -30,11 +32,16 @@ class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var quintasCompletasArg: MutableList<QuintaCompleta>? = null
     private lateinit var quintaAdapter: QuintaAdapter
 
+    private val spName = "User_data"
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
         arguments?.let { bundle ->
-            val data = bundle.getParcelableArrayList<QuintaCompleta>("quintas")
-            if(data != null) quintasCompletasArg = data.toMutableList()
+            if (bundle.containsKey("quintas"))
+                quintasCompletasArg =
+                    bundle.getParcelableArrayList<QuintaCompleta>("quintas")!!.toMutableList()
         }
     }
 
@@ -51,7 +58,7 @@ class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.fabCrearQuinta.setOnClickListener {
-            this.findNavController().navigate(R.id.quintaCreateFragment)
+            UserRole.getByRoleId(prefs.userType).goToCreationQuinta(findNavController())
         }
 
         binding.svQuintas.setOnQueryTextListener(this)
@@ -61,8 +68,9 @@ class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private fun initRecyclerView() {
         quintaAdapter = QuintaAdapter(quintasCompletas) { quinta: QuintaCompleta ->
-            val bundle = bundleOf("quinta" to quinta.toQuinta())
-            this.findNavController().navigate(R.id.quintaModifyFragment, bundle)
+            UserRole.getByRoleId(prefs.userType).goToModificationQuinta(
+                findNavController(), quinta.toQuinta()
+            )
         }
         binding.rvQuintas.layoutManager = LinearLayoutManager(activity)
         binding.rvQuintas.adapter = quintaAdapter

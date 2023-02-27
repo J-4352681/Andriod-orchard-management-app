@@ -1,5 +1,7 @@
 package app.lajusta.ui.familia.list
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,8 +36,12 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var familiasCompletasArg: MutableList<FamiliaCompleta>? = null
     private lateinit var familiaAdapter: FamiliaAdapter
 
+    private val spName = "User_data"
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
         arguments?.let { bundle ->
             val data = bundle.getParcelableArrayList<FamiliaCompleta>("familias")
             if(data != null) familiasCompletasArg = data?.toMutableList()!!

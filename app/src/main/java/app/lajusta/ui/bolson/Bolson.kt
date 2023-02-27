@@ -13,19 +13,21 @@ data class Bolson(
     val verduras: MutableList<Verdura>
 ): Parcelable {
     fun toPrefilledBolson() =
-        PrefilledBolson(id_bolson, cantidad, idFp, idRonda, verduras)
+        PrefilledBolson(cantidad, idFp, idRonda, verduras)
 
     fun toBlockedPrefilledBolson() =
-        PrefilledBolson(id_bolson, cantidad, idFp, idRonda, verduras, true)
+        PrefilledBolson(cantidad, idFp, idRonda,
+            verduras, true, true
+        )
 }
 
 
 @Parcelize
 data class PrefilledBolson(
-    val id_bolson: Int? = null,
     var cantidad: Int? = null,
     var idFp: Int? = null,
     var idRonda: Int? = null,
     val verduras: MutableList<Verdura>? = null,
-    val _block: Boolean = false
+    var _blockFields: Boolean = false,
+    var _blockSubmitAction: Boolean = false
 ): Parcelable

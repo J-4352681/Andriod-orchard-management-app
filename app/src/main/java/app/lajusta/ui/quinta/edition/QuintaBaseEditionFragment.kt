@@ -14,6 +14,7 @@ import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.login.afterTextChanged
+import app.lajusta.ui.quinta.PrefilledQuinta
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
@@ -22,6 +23,7 @@ abstract class QuintaBaseEditionFragment: BaseFragment() {
     private var _binding: FragmentQuintaBaseEditionBinding? = null
     protected val binding get() = _binding!!
     protected var quinta = Quinta(0, "", "", "", -1)
+    private var prefilledQuinta: PrefilledQuinta? = null
 
     protected var familias = listOf<Familia>()
     protected lateinit var familiasAdapter: ArrayAdapter<Familia>
@@ -36,6 +38,8 @@ abstract class QuintaBaseEditionFragment: BaseFragment() {
         arguments?.let { bundle ->
             if (bundle.containsKey("quinta"))
                 quinta = bundle.getParcelable("quinta")!!
+            if (bundle.containsKey("prefilledQuinta"))
+                prefilledQuinta = bundle.getParcelable("prefilledQuinta")
         }
     }
 
@@ -67,6 +71,7 @@ abstract class QuintaBaseEditionFragment: BaseFragment() {
                 initFamiliaSpinner()
                 initSubmitAction()
                 initDenyAction()
+                prefillQuinta()
                 withApiData()
             },
             "Hubo un error al obtener las familias."
@@ -120,6 +125,32 @@ abstract class QuintaBaseEditionFragment: BaseFragment() {
             }
 
             commitChange()
+        }
+    }
+
+    private fun prefillQuinta() {
+        if(prefilledQuinta != null) {
+            if(prefilledQuinta!!.geoImg != null) {
+                binding.etImagen.setText(prefilledQuinta!!.geoImg)
+                if (prefilledQuinta!!._blockFields) binding.etImagen.isEnabled = false
+            }
+            if(prefilledQuinta!!.nombre != null) {
+                binding.etNombre.setText(prefilledQuinta!!.nombre)
+                if (prefilledQuinta!!._blockFields) binding.etNombre.isEnabled = false
+            }
+            if(prefilledQuinta!!.direccion != null) {
+                binding.etDireccion.setText(prefilledQuinta!!.direccion)
+                if (prefilledQuinta!!._blockFields) binding.etDireccion.isEnabled = false
+            }
+            if(prefilledQuinta!!.fpId != null) {
+                binding.sFamilia.setSelection(
+                    familiasAdapter.getPosition(
+                        familias.find { it.id_fp == prefilledQuinta!!.fpId!! }
+                    )
+                )
+                if (prefilledQuinta!!._blockFields) binding.sFamilia.isEnabled = false
+            }
+            if(prefilledQuinta!!._blockSubmitAction) binding.bSubmitAction.isEnabled = false
         }
     }
 

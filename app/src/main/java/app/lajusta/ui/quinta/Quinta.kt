@@ -17,7 +17,7 @@ data class Quinta(
         PrefilledQuinta(nombre, direccion, geoImg, fpId)
 
     fun toBlockedPrefilledQuinta() =
-        PrefilledQuinta(nombre, direccion, geoImg, fpId, true)
+        PrefilledQuinta(nombre, direccion, geoImg, fpId, true, true)
 }
 
 @Parcelize
@@ -26,5 +26,6 @@ data class PrefilledQuinta(
     var direccion: String? = null,
     var geoImg: String? = null,
     var fpId: Int? = null,
-    val _block: Boolean = false
+    var _blockFields: Boolean = false,
+    var _blockSubmitAction: Boolean = false
 ): Parcelable

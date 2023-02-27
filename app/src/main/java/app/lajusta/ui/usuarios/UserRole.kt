@@ -5,7 +5,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import app.lajusta.R
+import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.generic.ArrayedDate
+import app.lajusta.ui.quinta.PrefilledQuinta
+import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.ronda.PrefilledRonda
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.visita.PrefilledVisita
@@ -29,11 +32,26 @@ enum class UserRole(
 
         override fun getMainDrawerMenu(): Int = R.menu.activity_main_drawer_admin
 
+        // RONDAS
         override fun goToModificationRonda(navController: NavController, ronda: Ronda) =
             navController.navigate(R.id.rondaModifyFragment, bundleOf("ronda" to ronda))
 
         override fun goToCreationRonda(navController: NavController) =
             navController.navigate(R.id.rondaCreateFragment)
+
+        // QUINTAS
+        override fun goToModificationQuinta(navController: NavController, quinta: Quinta) =
+            navController.navigate(R.id.quintaModifyFragment, bundleOf("quinta" to quinta))
+
+        override fun goToCreationQuinta(
+            navController: NavController, prefilledQuinta: PrefilledQuinta?
+        ) {
+            navController.navigate(R.id.quintaCreateFragment,
+                if(prefilledQuinta != null) bundleOf(
+                    "prefilledQuinta" to prefilledQuinta.also { it._blockFields = true }
+                ) else null
+            )
+        }
     },
 
     TECNICO(1) {
@@ -49,6 +67,7 @@ enum class UserRole(
 
         override fun getMainDrawerMenu(): Int = R.menu.activity_main_drawer_tecnico
 
+        // RONDAS
         override fun goToModificationRonda(navController: NavController, ronda: Ronda) =
             navController.navigate(R.id.rondaModifyFragment, bundleOf(
                 "prefilledRonda" to ronda.toBlockedPrefilledRonda()
@@ -60,14 +79,30 @@ enum class UserRole(
                     ArrayedDate.todayArrayed(), ArrayedDate.todayArrayed(),
                     true, true
                 )))
+
+        // QUINTAS
+        override fun goToModificationQuinta(navController: NavController, quinta: Quinta) =
+            navController.navigate(R.id.quintaModifyFragment, bundleOf(
+                "quinta" to quinta,
+                "prefilledQuinta" to quinta.toBlockedPrefilledQuinta().also {
+                    it._blockFields = true
+                    it._blockSubmitAction = true
+                }
+            ))
+
+        override fun goToCreationQuinta(
+            navController: NavController, prefilledQuinta: PrefilledQuinta?
+        ) {
+            navController.navigate(R.id.quintaCreateFragment, bundleOf(
+                "prefilledQuinta" to PrefilledQuinta(
+                    "", "", "", 0, true, true
+                )
+            ))
+        }
     };
 
     abstract fun getAppBarConfiguration(drawerLayout: DrawerLayout): AppBarConfiguration
     abstract fun getMainDrawerMenu(): Int
-
-    // BOLSONES
-    // abstract fun goToModificationBolson(bolson: Bolson)
-    // abstract fun goToCreationBolson(bolson: Bolson)
 
     // VISITAS
     fun goToModificationVisita(userId: Int, visita: Visita, navController: NavController) {
@@ -87,6 +122,18 @@ enum class UserRole(
     // RONDAS
     abstract fun goToModificationRonda(navController: NavController, ronda: Ronda)
     abstract fun goToCreationRonda(navController: NavController)
+
+    // QUINTAS
+    abstract fun goToModificationQuinta(navController: NavController, quinta: Quinta)
+    abstract fun goToCreationQuinta(
+        navController: NavController, prefilledQuinta: PrefilledQuinta? = null
+    )
+
+    // BOLSONES
+    fun goToModificationBolson(navController: NavController, bolson: Bolson) =
+        navController.navigate(R.id.bolsonModifyFragment, bundleOf("bolson" to bolson))
+    fun goToCreationBolson(navController: NavController) =
+        navController.navigate(R.id.bolsonCreateFragment)
 
     companion object {
         private val roles = values().associateBy( { it.roleId }, { it } )

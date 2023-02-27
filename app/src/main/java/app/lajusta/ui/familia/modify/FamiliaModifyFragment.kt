@@ -1,5 +1,7 @@
 package app.lajusta.ui.familia.modify
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import app.lajusta.R
+import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.databinding.FragmentFamiliaModifyBinding
 import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.familia.FamiliaCompleta
@@ -18,6 +21,7 @@ import app.lajusta.ui.quinta.PrefilledQuinta
 import app.lajusta.ui.quinta.model.QuintaCompleta
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.ronda.api.RondaApi
+import app.lajusta.ui.usuarios.UserRole
 
 class FamiliaModifyFragment: BaseFragment(){
 
@@ -28,8 +32,12 @@ class FamiliaModifyFragment: BaseFragment(){
     private val quintasCompletas = mutableListOf<QuintaCompleta>()
     private var rondas = listOf<Ronda>()
 
+    private val spName = "User_data"
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
         arguments?.let { bundle ->
             familia = bundle.getParcelable("familia")!!
         }
@@ -144,11 +152,10 @@ class FamiliaModifyFragment: BaseFragment(){
         }
 
         binding.bNuevaQuinta.setOnClickListener {
-            val bundle = bundleOf("prefilledQuinta" to PrefilledQuinta(
-                fpId = familia.id_fp, _block = true
-            ))
-            this.findNavController().navigate(
-                R.id.quintaCreateFragment, bundle
+            UserRole.getByRoleId(prefs.userType).goToCreationQuinta(
+                findNavController(), PrefilledQuinta(
+                    fpId = familia.id_fp, _blockFields = true
+                )
             )
         }
 

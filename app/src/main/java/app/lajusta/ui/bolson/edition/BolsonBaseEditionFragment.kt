@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
 import app.lajusta.databinding.FragmentBolsonBaseEditionBinding
 import app.lajusta.ui.bolson.Bolson
+import app.lajusta.ui.bolson.PrefilledBolson
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.BaseFragment
@@ -24,6 +25,7 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
     private var _binding: FragmentBolsonBaseEditionBinding? = null
     protected val binding get() = _binding!!
     protected var bolson = Bolson(0, 0, -1, -1, mutableListOf())
+    private var prefilledBolson: PrefilledBolson? = null
 
     private var familias = listOf<Familia>()
     private lateinit var familiasAdapter: ArrayAdapter<Familia>
@@ -35,7 +37,10 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
-            bolson = bundle.getParcelable("bolson")!!
+            if(bundle.containsKey("bolson"))
+                bolson = bundle.getParcelable("bolson")!!
+            if(bundle.containsKey("prefilledBolson"))
+                prefilledBolson = bundle.getParcelable("prefilledBolson")
         }
     }
 
@@ -64,13 +69,17 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
                 initFamiliasSpinner()
                 initRondasSpinner()
                 setClickListeners()
+                initRecyclerView()
+                try{prefillBolson()}
+                catch (e: Exception) {
+                    println("ERRORRRR: "+e.message)
+                }
             }, "No se pudieron obtener las familias o rondas."
         )
-        binding.etCantidad.setText(bolson.cantidad.toString())
-        initRecyclerView()
     }
 
     private fun initCantidad() {
+        binding.etCantidad.setText(bolson.cantidad.toString())
         binding.etCantidad.afterTextChanged { cantidad ->
             bolson.cantidad = if (cantidad != "") cantidad.toInt() else 0
         }
@@ -156,9 +165,49 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras)
+        verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras, true)
         binding.rvVerduras.layoutManager = LinearLayoutManager(activity)
         binding.rvVerduras.adapter = verduraBolsonAdapter
+    }
+
+    private fun prefillBolson() {
+        if(prefilledBolson != null) {
+            println(prefilledBolson!!.cantidad)
+            if(prefilledBolson!!.cantidad != null) {
+                binding.etCantidad.setText(prefilledBolson!!.cantidad!!)
+                if(prefilledBolson!!._blockFields) binding.etCantidad.isEnabled = false
+            }
+            println("ID RONDA: ${prefilledBolson!!.idRonda}")
+            if(prefilledBolson!!.idRonda != null) {
+                binding.sRonda.setSelection(
+                    rondasAdapter.getPosition(rondas.find {
+                        it.id_ronda == prefilledBolson!!.idRonda
+                    })
+                )
+                if(prefilledBolson!!._blockFields) binding.sRonda.isEnabled = false
+            }
+            println("ID RONDA: ${prefilledBolson!!.idFp}")
+            if(prefilledBolson!!.idFp != null) {
+                binding.sFamilia.setSelection(
+                    familiasAdapter.getPosition(familias.find {
+                        it.id_fp == prefilledBolson!!.idFp
+                    })
+                )
+                if(prefilledBolson!!._blockFields) binding.sFamilia.isEnabled = false
+            }
+            /*if(prefilledBolson!!.verduras != null) {
+                println("ANDFLADNFIALSB")
+                bolson.verduras.clear()
+                bolson.verduras.addAll(prefilledBolson!!.verduras!!)
+                verduraBolsonAdapter.notifyDataSetChanged()
+                if(prefilledBolson!!._blockFields) {
+                    verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras, false)
+                    binding.rvVerduras.adapter = verduraBolsonAdapter
+                    binding.btnAgregarVerdura.isEnabled = false
+                }
+            }*/
+            if(prefilledBolson!!._blockSubmitAction) binding.btnAgregarVerdura.isEnabled = false
+        }
     }
 
     override fun onDestroy() {
