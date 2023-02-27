@@ -68,9 +68,8 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private fun initRecyclerView() {
         bolsonAdapter = BolsonAdapter(bolsonesCompletos) { bolson: Bolson ->
-            UserRole.getByRoleId(prefs.userType).goToModificationBolson(findNavController(), bolson)
-            /* val ronda = rondas.find { it.id_ronda == bolson.idRonda }
-            if ((ronda?.fecha_fin == null) || ArrayedDate.laterThanToday(
+            val ronda = rondas.find { it.id_ronda == bolson.idRonda }
+            if ((ronda?.fecha_fin == null) || !ArrayedDate.laterThanToday(
                     ArrayedDate.toString(ronda.fecha_fin!!)
                 )
             ) UserRole.getByRoleId(prefs.userType).goToModificationBolson(
@@ -78,7 +77,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             ) else {
                 val bundle = bundleOf("prefilledBolson" to bolson.toBlockedPrefilledBolson())
                 findNavController().navigate(R.id.bolsonModifyFragment, bundle)
-            } */
+            }
         }
         binding.rvBolsones.layoutManager = LinearLayoutManager(activity)
         binding.rvBolsones.adapter = bolsonAdapter

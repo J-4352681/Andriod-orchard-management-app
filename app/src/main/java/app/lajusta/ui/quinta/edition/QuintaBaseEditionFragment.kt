@@ -150,7 +150,10 @@ abstract class QuintaBaseEditionFragment: BaseFragment() {
                 )
                 if (prefilledQuinta!!._blockFields) binding.sFamilia.isEnabled = false
             }
-            if(prefilledQuinta!!._blockSubmitAction) binding.bSubmitAction.isEnabled = false
+            if(prefilledQuinta!!._blockSubmitAction) {
+                binding.bSubmitAction.isEnabled = false
+                binding.bDenyAction.isEnabled = false
+            }
         }
     }
 

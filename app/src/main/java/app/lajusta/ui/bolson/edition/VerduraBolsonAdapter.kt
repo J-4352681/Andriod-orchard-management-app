@@ -25,4 +25,9 @@ class VerduraBolsonAdapter(
     }
 
     override fun getItemCount(): Int = verduras.size
+
+    fun setActive(newState: Boolean) {
+        active = newState
+        notifyDataSetChanged()
+    }
 }

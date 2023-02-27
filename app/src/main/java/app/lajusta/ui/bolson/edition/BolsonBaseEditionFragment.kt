@@ -70,10 +70,7 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
                 initRondasSpinner()
                 setClickListeners()
                 initRecyclerView()
-                try{prefillBolson()}
-                catch (e: Exception) {
-                    println("ERRORRRR: "+e.message)
-                }
+                prefillBolson()
             }, "No se pudieron obtener las familias o rondas."
         )
     }
@@ -174,10 +171,9 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
         if(prefilledBolson != null) {
             println(prefilledBolson!!.cantidad)
             if(prefilledBolson!!.cantidad != null) {
-                binding.etCantidad.setText(prefilledBolson!!.cantidad!!)
+                binding.etCantidad.setText(prefilledBolson?.cantidad!!.toString())
                 if(prefilledBolson!!._blockFields) binding.etCantidad.isEnabled = false
             }
-            println("ID RONDA: ${prefilledBolson!!.idRonda}")
             if(prefilledBolson!!.idRonda != null) {
                 binding.sRonda.setSelection(
                     rondasAdapter.getPosition(rondas.find {
@@ -186,7 +182,6 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
                 )
                 if(prefilledBolson!!._blockFields) binding.sRonda.isEnabled = false
             }
-            println("ID RONDA: ${prefilledBolson!!.idFp}")
             if(prefilledBolson!!.idFp != null) {
                 binding.sFamilia.setSelection(
                     familiasAdapter.getPosition(familias.find {
@@ -195,18 +190,19 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
                 )
                 if(prefilledBolson!!._blockFields) binding.sFamilia.isEnabled = false
             }
-            /*if(prefilledBolson!!.verduras != null) {
-                println("ANDFLADNFIALSB")
+            if(prefilledBolson!!.verduras != null) {
                 bolson.verduras.clear()
                 bolson.verduras.addAll(prefilledBolson!!.verduras!!)
                 verduraBolsonAdapter.notifyDataSetChanged()
                 if(prefilledBolson!!._blockFields) {
-                    verduraBolsonAdapter = VerduraBolsonAdapter(bolson.verduras, false)
-                    binding.rvVerduras.adapter = verduraBolsonAdapter
+                    verduraBolsonAdapter.setActive(false)
                     binding.btnAgregarVerdura.isEnabled = false
                 }
-            }*/
-            if(prefilledBolson!!._blockSubmitAction) binding.btnAgregarVerdura.isEnabled = false
+            }
+            if(prefilledBolson!!._blockSubmitAction) {
+                binding.bSubmitAction.isEnabled = false
+                binding.bDenyAction.isEnabled = false
+            }
         }
     }
 

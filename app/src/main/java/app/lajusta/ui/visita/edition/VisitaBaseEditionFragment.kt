@@ -200,7 +200,10 @@ abstract class VisitaBaseEditionFragment : BaseFragment() {
                 visita.parcelas.addAll(prefilledVisita!!.parcelas!!)
                 parcelasAdapter.notifyDataSetChanged()
             }
-            if(prefilledVisita!!._blockSubmitAction) binding.bSubmitAction.isEnabled = false
+            if(prefilledVisita!!._blockSubmitAction) {
+                binding.bSubmitAction.isEnabled = false
+                binding.bDenyAction.isEnabled = false
+            }
         }
     }
 

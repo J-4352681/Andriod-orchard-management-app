@@ -86,7 +86,10 @@ abstract class RondaBaseEditionFragment: BaseFragment() {
                     ArrayedDate.toString(prefilledRonda?.fecha_inicio!!)
                 if (prefilledRonda!!._blockFields) binding.bFechaInicio.isEnabled = false
             }
-            if(prefilledRonda!!._blockSubmitAction) binding.bSubmitAction.isEnabled = false
+            if(prefilledRonda!!._blockSubmitAction) {
+                binding.bSubmitAction.isEnabled = false
+                binding.bDenyAction.isEnabled = false
+            }
         }
     }
 
