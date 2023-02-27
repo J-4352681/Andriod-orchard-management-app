@@ -1,10 +1,8 @@
 package app.lajusta.ui.quinta.map
 
 import android.content.pm.PackageManager
-import android.graphics.Camera
 import android.location.Address
 import android.location.Geocoder
-import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -14,9 +12,8 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import app.lajusta.R
-import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.quinta.model.QuintaCompleta
+import app.lajusta.ui.quinta.Quinta
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,13 +21,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import java.io.IOError
 import java.io.IOException
-import java.util.jar.Manifest
 
 class QuintaMapaFragment : BaseFragment() {
 
-    private lateinit var quinta: QuintaCompleta
+    private lateinit var quinta: Quinta
     private lateinit var map: GoogleMap
 
     companion object {

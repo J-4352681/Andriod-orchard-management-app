@@ -14,6 +14,12 @@ data class Ronda(
     override fun toString(): String =
         ArrayedDate.toString(fecha_inicio) + " - " + ArrayedDate.toString(fecha_fin!!)
 
+    fun toPrefilledRonda() =
+        PrefilledRonda(fecha_fin, fecha_inicio)
+
+    fun toBlockedPrefilledRonda() =
+        PrefilledRonda(fecha_fin, fecha_inicio, true, true)
+
     companion object {
         fun filter(
             rondas: MutableList<Ronda>,
@@ -32,6 +38,15 @@ data class Ronda(
         }
     }
 }
+
+
+@Parcelize
+data class PrefilledRonda(
+    var fecha_fin: List<Int>?,
+    var fecha_inicio: List<Int>?,
+    var _blockFields: Boolean = false,
+    var _blockSubmitAction: Boolean = false
+): Parcelable
 
 
 @Parcelize

@@ -1,136 +1,79 @@
 package app.lajusta.ui.quinta.modify
 
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.widget.Button
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import app.lajusta.R
-import app.lajusta.databinding.FragmentQuintaModifyBinding
-import app.lajusta.ui.familia.Familia
-import app.lajusta.ui.familia.api.FamiliaApi
+import app.lajusta.data.Preferences.PreferenceHelper.userId
+import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.quinta.api.QuintaApi
-import app.lajusta.ui.generic.BaseFragment
-import app.lajusta.ui.login.afterTextChanged
-import app.lajusta.ui.quinta.model.QuintaCompleta
-import app.lajusta.ui.visita.Visita
-import app.lajusta.ui.visita.api.VisitaApi
+import app.lajusta.ui.quinta.edition.QuintaBaseEditionFragment
+import app.lajusta.ui.usuarios.UserRole
 
-class QuintaModifyFragment: BaseFragment() {
+class QuintaModifyFragment: QuintaBaseEditionFragment() {
+    override fun withApiData() {
+        initAddVisita()
+        initGoToMap()
+    }
 
-    private var _binding: FragmentQuintaModifyBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var quinta: QuintaCompleta
-
-    private var familias = listOf<Familia>()
-    private lateinit var familiasAdapter: ArrayAdapter<Familia>
-    private var visitas = listOf<Visita>()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let { bundle ->
-            quinta = bundle.getParcelable("quinta")!!
+    private fun initAddVisita() {
+        val bAddVisita = Button(activity).also {
+            it.text = "Agregar visita"
+            it.id = View.generateViewId()
+        }
+        binding.clContainer.addView(bAddVisita)
+        val set = ConstraintSet()
+        set.clone(binding.clContainer)
+        bAddVisita.id.also {
+            set.connect(it, ConstraintSet.START, binding.clContainer.id, ConstraintSet.START)
+            set.connect(it, ConstraintSet.TOP, binding.sFamilia.id, ConstraintSet.BOTTOM)
+        }
+        set.applyTo(binding.clContainer)
+        bAddVisita.setOnClickListener {
+            if (visitas.isNotEmpty()) {
+                val visita = visitas
+                    .filter { it.id_quinta == quinta.id_quinta }
+                    .maxBy { ArrayedDate.toDate(it.fecha_visita) }
+                UserRole.getByRoleId(prefs.userType).goToVisitaCreation(
+                    prefs.userId, findNavController(), visita
+                )
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentQuintaModifyBinding.inflate(
-            inflater, container, false
-        )
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        fillItem()
-
-        binding.etDireccion.afterTextChanged { direccion -> quinta.direccion = direccion.trim() }
-        binding.etImagen.afterTextChanged { url -> quinta.geoImg = url.trim() }
-        binding.etNombre.afterTextChanged { nombre -> quinta.nombre = nombre.trim() }
-    }
-
-    private fun fillItem() {
-        binding.etNombre.setText(quinta.nombre)
-        binding.etDireccion.setText(quinta.direccion)
-        binding.etImagen.setText(quinta.geoImg)
-
-        apiCall(
-            {
-                familias = FamiliaApi().getFamilias().body()!!
-                visitas = VisitaApi().getVisitas().body()!!
-            }, {
-                familiasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, familias)
-                binding.sFamilia.adapter = familiasAdapter
-                binding.sFamilia.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            p0: AdapterView<*>?, p1: View?, position: Int, p3: Long
-                        ) {
-                            val familiaSeleccionada = binding.sFamilia.selectedItem as Familia
-                            quinta.familia = familiaSeleccionada
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {}
-                    }
-
-                binding.sFamilia.setSelection(
-                    familiasAdapter.getPosition(quinta.familia)
-                )
-
-                setClickListeners()
-            },
-            "Hubo un error al obtener las familias."
-        )
-    }
-
-    private fun setClickListeners() {
-        binding.btnGoToMap.setOnClickListener {
+    private fun initGoToMap() {
+        val bGoToMap = Button(activity).also {
+            it.text = "Ver en mapa"
+            it.id = View.generateViewId()
+        }
+        binding.clContainer.addView(bGoToMap)
+        val set = ConstraintSet()
+        set.clone(binding.clContainer)
+        bGoToMap.id.also {
+            set.connect(it, ConstraintSet.END, binding.clContainer.id, ConstraintSet.END)
+            set.connect(it, ConstraintSet.TOP, binding.sFamilia.id, ConstraintSet.BOTTOM)
+        }
+        set.applyTo(binding.clContainer)
+        bGoToMap.setOnClickListener {
             val bundle = bundleOf("quinta" to quinta)
             this.findNavController().navigate(R.id.quintaMapaFragment, bundle)
         }
-
-        binding.btnAddVisita.setOnClickListener {
-            if (!visitas.isEmpty()) {
-                val prefilledVisita = visitas
-                    .filter { it.id_quinta == quinta.id_quinta }
-                    .maxBy { ArrayedDate.toDate(it.fecha_visita) }
-                    .toPrefilledVisita()
-                println(prefilledVisita)
-                val bundle = bundleOf("prefilledVisita" to prefilledVisita)
-                this.findNavController().navigate(R.id.visitasCreateFragment, bundle)
-            }
-        }
-
-        binding.bBorrar.setOnClickListener {
-            returnSimpleApiCall(
-                { QuintaApi().deleteQuinta(quinta.id_quinta) },
-                "Hubo un error. La quinta no pudo ser eliminada."
-            )
-        }
-
-        binding.bGuardar.setOnClickListener {
-            if(quinta.nombre.isEmpty()) {
-                shortToast("El nombre no puede ser vacío.")
-                return@setOnClickListener
-            }
-
-            returnSimpleApiCall(
-                { QuintaApi().putQuinta(quinta.id_quinta, quinta.toQuinta()) },
-                "Hubo un error. La quinta no pudo ser modificada."
-            )
-        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    override fun denyAction() {
+        returnSimpleApiCall(
+            { QuintaApi().deleteQuinta(quinta.id_quinta) },
+            "Hubo un error. La quinta no pudo ser eliminada."
+        )
+    }
+
+    override fun commitChange() {
+        returnSimpleApiCall(
+            { QuintaApi().putQuinta(quinta.id_quinta, quinta) },
+            "Hubo un error. La quinta no pudo ser modificada."
+        )
     }
 }

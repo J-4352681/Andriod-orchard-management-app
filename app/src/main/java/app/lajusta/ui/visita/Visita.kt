@@ -20,6 +20,12 @@ data class Visita(
 
     fun toPrefilledVisita() =
         PrefilledVisita(fecha_visita, descripcion, id_tecnico, id_quinta, parcelas)
+
+    fun toBlockedPrefilledVisita() =
+        PrefilledVisita(
+            fecha_visita, descripcion, id_tecnico, id_quinta,
+            parcelas, true, true
+        )
 }
 
 @Parcelize
@@ -29,5 +35,6 @@ data class PrefilledVisita(
     var id_tecnico: Int? = null,
     var id_quinta: Int? = null,
     val parcelas: MutableList<ParcelaVisita>? = null,
-    var _blocked: Boolean = false
+    var _blockFields: Boolean = false,
+    var _blockSubmitAction: Boolean = false
 ): Parcelable

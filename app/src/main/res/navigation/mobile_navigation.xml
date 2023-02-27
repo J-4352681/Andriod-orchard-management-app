@@ -202,16 +202,21 @@
         android:name="app.lajusta.ui.quinta.create.QuintaCreateFragment"
         android:label="Crear quinta" >
         <argument
-            android:name="quinta"
-            app:argType="app.lajusta.ui.quinta.model.QuintaCompleta"
+            android:name="prefilledQuinta"
+            app:argType="app.lajusta.ui.quinta.PrefilledQuinta"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+
     <fragment
         android:id="@+id/quintaMapaFragment"
         android:name="app.lajusta.ui.quinta.map.QuintaMapaFragment"
         android:label="fragment_quinta_mapa"
-        tools:layout="@layout/fragment_quinta_mapa" />
+        tools:layout="@layout/fragment_quinta_mapa" >
+        <argument
+            android:name="quinta"
+            app:argType="app.lajusta.ui.quinta.Quinta" />
+    </fragment>
 
 
     <!-- VERDURA -->
@@ -236,7 +241,7 @@
         android:id="@+id/verduraModifyFragment"
         android:name="app.lajusta.ui.verdura.modify.VerduraModifyFragment"
         android:label="Modificar verdura"
-        tools:layout="@layout/fragment_verdura_modify" >
+        tools:layout="@layout/fragment_verdura_base_edition" >
         <argument
             android:name="verdura"
             app:argType="app.lajusta.ui.verdura.Verdura" />
@@ -245,7 +250,8 @@
     <fragment
         android:id="@+id/verduraCreateFragment"
         android:name="app.lajusta.ui.verdura.create.VerduraCreateFragment"
-        android:label="Crear verdura" />
+        android:label="Crear verdura"
+        tools:layout="@layout/fragment_verdura_base_edition" />
 
 
     <!-- USUARIOS -->

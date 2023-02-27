@@ -6,6 +6,7 @@ import android.content.Context
 import android.view.View
 import android.widget.TextView
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 
 class ArrayedDate() {
@@ -28,6 +29,8 @@ class ArrayedDate() {
         fun toDate(date: List<Int>): Date {
             return sdf.parse(toString(date))!!
         }
+
+        fun toLocalDate(date: List<Int>): LocalDate = LocalDate.of(date[0], date[1], date[2])
 
         fun todayStringed(): String = toString(todayArrayed())
 

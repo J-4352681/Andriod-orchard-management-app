@@ -14,8 +14,8 @@ import app.lajusta.ui.familia.api.FamiliaApi
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.login.afterTextChanged
+import app.lajusta.ui.quinta.PrefilledQuinta
 import app.lajusta.ui.quinta.model.QuintaCompleta
-import app.lajusta.ui.quinta.model.QuintaCompletaPrefill
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.ronda.api.RondaApi
 
@@ -144,8 +144,8 @@ class FamiliaModifyFragment: BaseFragment(){
         }
 
         binding.bNuevaQuinta.setOnClickListener {
-            val bundle = bundleOf("quinta" to QuintaCompletaPrefill(
-                null, null, null, familia.toFamilia()
+            val bundle = bundleOf("prefilledQuinta" to PrefilledQuinta(
+                fpId = familia.id_fp, _block = true
             ))
             this.findNavController().navigate(
                 R.id.quintaCreateFragment, bundle

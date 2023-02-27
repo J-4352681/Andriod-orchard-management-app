@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/familia_create"
+    android:id="@+id/quinta_create"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context=".ui.familia.create.FamiliaCreateFragment">
+    tools:context=".ui.quinta.create.QuintaCreateFragment">
 
     <ScrollView
-        android:id="@+id/svFamilia"
+        android:id="@+id/svQuintas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="64dp"
@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -30,118 +31,97 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                tools:ignore="MissingConstraints" />
 
             <EditText
                 android:id="@+id/etNombre"
                 android:layout_width="488dp"
                 android:layout_height="48dp"
+                android:autofillHints="name"
                 android:hint="@string/et_name"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
-                android:autofillHints="name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvNombre"
                 tools:ignore="MissingConstraints" />
 
 
             <TextView
-                android:id="@+id/tvDescripcion"
+                android:id="@+id/tvDireccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/tv_directión"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="@string/tv_descripcion"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etNombre" />
+                app:layout_constraintTop_toBottomOf="@+id/etNombre"
+                tools:ignore="MissingConstraints" />
 
             <EditText
-                android:id="@+id/etDescripcion"
+                android:id="@+id/etDireccion"
                 android:layout_width="488dp"
                 android:layout_height="48dp"
-                android:hint="@string/et_descripcion"
-                android:inputType="textMultiLine"
-                android:maxLines="4"
-                android:minLines="1"
-                android:selectAllOnFocus="true"
                 android:autofillHints=""
+                android:hint="@string/et_direction"
+                android:inputType="textMultiLine"
+                android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDescripcion"
+                app:layout_constraintTop_toBottomOf="@+id/tvDireccion"
                 tools:ignore="MissingConstraints" />
 
 
             <TextView
-                android:id="@+id/tvFechaCosecha"
+                android:id="@+id/tvImagen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/tv_geoimage"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etDescripcion"
-                android:text="@string/tv_fecha_cosecha" />
+                app:layout_constraintTop_toBottomOf="@+id/etDireccion"
+                tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/tvFechaCosechaSeleccionada"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_marginVertical="10dp"
+            <EditText
+                android:id="@+id/etImagen"
+                android:layout_width="488dp"
+                android:layout_height="48dp"
+                android:autofillHints="name"
+                android:hint="@string/et_geoimage"
+                android:inputType="textLongMessage"
+                android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvFechaCosecha"
-                android:text="@string/fecha_ej" />
-
-            <Button
-                android:id="@+id/bFechaCosecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:maxWidth="488dp"
-                android:minWidth="320dp"
-                android:text="@string/btn_fecha_cosecha"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvFechaCosechaSeleccionada" />
+                app:layout_constraintTop_toBottomOf="@+id/tvImagen"
+                tools:ignore="MissingConstraints" />
 
 
             <TextView
-                android:id="@+id/tvFechaSiembra"
+                android:id="@+id/tvFamilia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/tv_familia"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bFechaCosecha"
-                android:text="@string/tv_fecha_siembra" />
+                app:layout_constraintTop_toBottomOf="@+id/etImagen"
+                tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:id="@+id/tvFechaSiembraSeleccionada"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_marginVertical="10dp"
+            <Spinner
+                android:id="@+id/sFamilia"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:contentDescription="@string/cd_s_familia"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvFechaSiembra"
-                android:text="@string/fecha_ej" />
-
-            <Button
-                android:id="@+id/bFechaSiembra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:maxWidth="488dp"
-                android:minWidth="320dp"
-                android:text="@string/btn_fecha_siembra"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvFechaSiembraSeleccionada" />
+                app:layout_constraintTop_toBottomOf="@+id/tvFamilia" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <Button
-        android:id="@+id/bGuardar"
+        android:id="@+id/bSubmitAction"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="@string/save"
@@ -149,12 +129,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/bEliminar"
+        android:id="@+id/bDenyAction"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="@string/erase"
+        android:text="@string/cancel"
         android:backgroundTint="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

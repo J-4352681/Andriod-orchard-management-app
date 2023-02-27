@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     val CUSTOM_PREF_NAME = "User_data"
     lateinit var prefs: SharedPreferences
 
-
     companion object {
         //const val baseUrl: String = "http://163.10.141.61:80/api/" // LABO
         //const val baseUrl: String = "http://192.168.0.15:80/api/" // TOMI

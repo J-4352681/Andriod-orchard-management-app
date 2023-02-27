@@ -11,5 +11,7 @@ class VerduraCreateFragment: VerduraBaseEditionFragment() {
         )
     }
 
-    override fun denyAction() = activity!!.onBackPressed()
+    override fun denyAction() {
+        activity!!.onBackPressed()
+    }
 }

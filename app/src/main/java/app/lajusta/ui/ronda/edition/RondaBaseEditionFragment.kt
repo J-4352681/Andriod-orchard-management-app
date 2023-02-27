@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import app.lajusta.databinding.FragmentRondaBaseEditionBinding
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
+import app.lajusta.ui.ronda.PrefilledRonda
 import app.lajusta.ui.ronda.Ronda
 
 abstract class RondaBaseEditionFragment: BaseFragment() {
@@ -16,11 +17,15 @@ abstract class RondaBaseEditionFragment: BaseFragment() {
         ArrayedDate.todayArrayed().toMutableList().also { it[1]+=1 },
         ArrayedDate.todayArrayed().toMutableList().also { it[1]+=1 }
     )
+    private var prefilledRonda: PrefilledRonda? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
-            ronda = bundle.getParcelable("ronda")!!
+            if (bundle.containsKey("ronda"))
+                ronda = bundle.getParcelable("ronda")!!
+            if (bundle.containsKey("prefilledRonda"))
+                prefilledRonda = bundle.getParcelable("prefilledRonda")!!
         }
     }
 
@@ -37,6 +42,7 @@ abstract class RondaBaseEditionFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         fillItem()
         setClickListeners()
+        prefillFields()
     }
 
     private fun fillItem() {
@@ -66,6 +72,22 @@ abstract class RondaBaseEditionFragment: BaseFragment() {
         binding.bSubmitAction.setOnClickListener { commitChange() }
 
         binding.bDenyAction.setOnClickListener { denyAction() }
+    }
+
+    private fun prefillFields() {
+        if(prefilledRonda != null) {
+            if(!prefilledRonda?.fecha_fin.isNullOrEmpty()) {
+                binding.tvFechaFinSeleccionada.text =
+                    ArrayedDate.toString(prefilledRonda?.fecha_fin!!)
+                if (prefilledRonda!!._blockFields) binding.bFechaFin.isEnabled = false
+            }
+            if(!prefilledRonda?.fecha_inicio.isNullOrEmpty()) {
+                binding.tvFechaInicioSeleccionada.text =
+                    ArrayedDate.toString(prefilledRonda?.fecha_inicio!!)
+                if (prefilledRonda!!._blockFields) binding.bFechaInicio.isEnabled = false
+            }
+            if(prefilledRonda!!._blockSubmitAction) binding.bSubmitAction.isEnabled = false
+        }
     }
 
     override fun onDestroyView() {

@@ -61,7 +61,7 @@ class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private fun initRecyclerView() {
         quintaAdapter = QuintaAdapter(quintasCompletas) { quinta: QuintaCompleta ->
-            val bundle = bundleOf("quinta" to quinta)
+            val bundle = bundleOf("quinta" to quinta.toQuinta())
             this.findNavController().navigate(R.id.quintaModifyFragment, bundle)
         }
         binding.rvQuintas.layoutManager = LinearLayoutManager(activity)

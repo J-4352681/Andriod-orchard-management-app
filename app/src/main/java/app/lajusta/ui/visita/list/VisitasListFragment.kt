@@ -1,25 +1,30 @@
 package app.lajusta.ui.visita.list
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
+import app.lajusta.data.Preferences.PreferenceHelper.userId
+import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.databinding.FragmentVisitasListBinding
-import app.lajusta.ui.bolson.BolsonCompleto
+import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.quinta.Quinta
+import app.lajusta.ui.usuarios.UserRole
 import app.lajusta.ui.usuarios.Usuario
 import app.lajusta.ui.usuarios.api.UsuariosApi
 import app.lajusta.ui.visita.Visita
 import app.lajusta.ui.visita.api.VisitaApi
 import app.lajusta.ui.visita.model.VisitaCompleta
+import java.time.LocalDate
 
 class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
@@ -33,11 +38,15 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private var visitasCompletasArg: MutableList<VisitaCompleta>? = null
     private lateinit var visitaAdapter: VisitaAdapter
 
+    private val spName = "User_data"
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
         arguments?.let { bundle ->
             val data = bundle.getParcelableArrayList<VisitaCompleta>("visitas")
-            if(data != null) visitasCompletasArg = data.toMutableList()!!
+            if(data != null) visitasCompletasArg = data.toMutableList()
         }
     }
 
@@ -53,8 +62,10 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.fabAddVisita.setOnClickListener{
-            view.findNavController().navigate(R.id.visitasCreateFragment)
+        binding.fabAddVisita.setOnClickListener {
+            UserRole.getByRoleId(prefs.userType).goToVisitaCreation(
+                prefs.userId, findNavController()
+            )
         }
 
         binding.svVisitas.setOnQueryTextListener(this)
@@ -64,8 +75,15 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private fun initRecyclerView() {
         visitaAdapter= VisitaAdapter(visitasCompletas) { visita: VisitaCompleta ->
-            val bundle = bundleOf("visita" to visita.toVisita())
-            this.findNavController().navigate(R.id.visitaModifyFragment, bundle)
+            if (ArrayedDate.toLocalDate(visita.fecha_visita)
+                    .isBefore(LocalDate.now().minusMonths(1))
+            ) {
+                val bundle = bundleOf("visita" to visita.toVisita().toBlockedPrefilledVisita())
+                findNavController().navigate(R.id.visitaModifyFragment, bundle)
+            }
+            else {UserRole.getByRoleId(prefs.userType).goToModificationVisita(
+                prefs.userId, visita.toVisita(), findNavController()
+            )}
         }
         binding.rvVisitas.layoutManager = LinearLayoutManager(activity)
         binding.rvVisitas.adapter = visitaAdapter
