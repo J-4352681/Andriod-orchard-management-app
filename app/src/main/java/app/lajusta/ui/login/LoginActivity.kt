@@ -16,6 +16,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import android.window.SplashScreen
 import app.lajusta.MainActivity
 import app.lajusta.databinding.ActivityLoginBinding
 
