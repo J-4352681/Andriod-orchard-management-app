@@ -102,8 +102,8 @@ class LoginActivity : AppCompatActivity() {
         password.apply {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
+                    username.text.toString().trim(),
+                    password.text.toString().trim()
                 )
             }
 

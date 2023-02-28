@@ -67,6 +67,15 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
+    //Direccioes
+    implementation 'com.beust:klaxon:5.5'
+
+    // Utilities for Maps SDK for Android (requires Google Play Services)
+    implementation 'com.google.maps.android:android-maps-utils:3.4.0'
+
+    implementation "com.google.android.gms:play-services-location:15.0.1"
+
+
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

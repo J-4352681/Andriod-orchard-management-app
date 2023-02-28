@@ -1,6 +1,9 @@
 package app.lajusta.ui.quinta.map
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 
@@ -14,6 +17,12 @@ import androidx.core.content.ContextCompat
 import app.lajusta.R
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.quinta.Quinta
+import app.lajusta.ui.usuarios.api.UsuariosApi
+import com.beust.klaxon.JsonArray
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.Parser
+import com.beust.klaxon.Parser.Companion.default
+import com.google.android.gms.location.FusedLocationProviderClient
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -21,7 +30,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.maps.android.PolyUtil
+import kotlinx.coroutines.runBlocking
 import java.io.IOException
+import java.net.URL
 
 class QuintaMapaFragment : BaseFragment() {
 
@@ -39,6 +53,7 @@ class QuintaMapaFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
 
         map = googleMap
@@ -68,6 +83,58 @@ class QuintaMapaFragment : BaseFragment() {
                     map.addMarker(
                         MarkerOptions().position(quintaMarker).title("Marcador en una quinta")
                     )
+
+                    if (isLocationPermissionGranted()) {
+                        FusedLocationProviderClient(activity!!).lastLocation.addOnSuccessListener {
+                            //Log.e("LO LOGRO", "ES " + it.latitude + " " + it.longitude)
+
+                            val uPos = LatLng(it.latitude, it.longitude)
+
+                            val options = PolylineOptions()
+                            options.color(Color.RED)
+                            options.width(5f)
+
+                            val url = getURL(uPos, quintaMarker)
+                            var result: String = ""
+
+                            apiCall(suspend {
+                                result = URL(url).readText()
+                            }, {
+                                // this will execute in the main thread, after the async call is done
+                                try {
+                                    val parser: Parser = default()
+                                    val stringBuilder: StringBuilder = StringBuilder(result)
+                                    val json: JsonObject = parser.parse(stringBuilder) as JsonObject
+
+                                    val routes = json.array<JsonObject>("routes")
+                                    val array = routes!!["legs"]["steps"]
+                                    if (array.getOrNull(0) != null) {
+                                        val points =
+                                            routes!!["legs"]["steps"][0] as JsonArray<JsonObject>
+                                        val polypts = points.flatMap {
+                                            PolyUtil.decode(
+                                                it.obj("polyline")?.string("points")!!
+                                            )
+                                        }
+                                        if (polypts.isEmpty()) longToast("Hubo un error visualizando la ruta.")
+
+                                        //polyline
+                                        options.add(uPos)
+                                        for (point in polypts) options.add(point)
+                                        options.add(quintaMarker)
+                                        map!!.addPolyline(options)
+                                    }
+
+                                } catch (e: java.lang.Error) {
+                                    Log.e("Error UI", e.message!!)
+                                }
+
+                            }, "Hubo un error al buscar la ruta mas rapida a la quinta.")
+                        }
+                    } else Log.e("Permisos", "No estan aceptados ambos permisos de localizacion")
+
+
+                    //Animate camara
                     map.animateCamera(
                         CameraUpdateFactory.newLatLngZoom(quintaMarker, 12f),
                         4000,
@@ -90,6 +157,15 @@ class QuintaMapaFragment : BaseFragment() {
             )
         }
 
+    }
+
+    private fun getURL(from: LatLng, to: LatLng): String {
+        val origin = "origin=" + from.latitude + "," + from.longitude
+        val dest = "destination=" + to.latitude + "," + to.longitude
+        val sensor = "sensor=false"
+        val key = "key=" + getString(R.string.directions_api_key)
+        val params = "$origin&$dest&$sensor&$key"
+        return "https://maps.googleapis.com/maps/api/directions/json?$params"
     }
 
     override fun onCreateView(
@@ -147,8 +223,8 @@ class QuintaMapaFragment : BaseFragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when(requestCode){
-            REQUEST_CODE_LOCATION -> if(grantResults.isNotEmpty() && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+        when (requestCode) {
+            REQUEST_CODE_LOCATION -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 try {
                     map.isMyLocationEnabled = true
                 } catch (e: SecurityException) {
