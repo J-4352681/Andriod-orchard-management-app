@@ -74,7 +74,7 @@
                 android:id="@+id/tvImagen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:text="@string/tv_geoimage"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -124,6 +124,16 @@
                 android:text="@string/mostrar_mapa"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sFamilia" />
+
+            <Button
+                android:id="@+id/btnGoToGoogleMaps"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/btn_google_maps"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnGoToMap" />
 
             <Button
                 android:id="@+id/btnAddVisita"

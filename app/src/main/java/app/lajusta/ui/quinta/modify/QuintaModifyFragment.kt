@@ -1,5 +1,7 @@
 package app.lajusta.ui.quinta.modify
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintSet
@@ -17,11 +19,12 @@ class QuintaModifyFragment: QuintaBaseEditionFragment() {
     override fun withApiData() {
         initAddVisita()
         initGoToMap()
+        initGoToGoogleMaps()
     }
 
     private fun initAddVisita() {
         val bAddVisita = Button(activity).also {
-            it.text = "Agregar visita"
+            it.text = getString(R.string.btn_add_visita)
             it.id = View.generateViewId()
         }
         binding.clContainer.addView(bAddVisita)
@@ -46,7 +49,7 @@ class QuintaModifyFragment: QuintaBaseEditionFragment() {
 
     private fun initGoToMap() {
         val bGoToMap = Button(activity).also {
-            it.text = "Ver en mapa"
+            it.text = getString(R.string.btn_open_map)
             it.id = View.generateViewId()
         }
         binding.clContainer.addView(bGoToMap)
@@ -60,6 +63,27 @@ class QuintaModifyFragment: QuintaBaseEditionFragment() {
         bGoToMap.setOnClickListener {
             val bundle = bundleOf("quinta" to quinta)
             this.findNavController().navigate(R.id.quintaMapaFragment, bundle)
+        }
+    }
+
+    private fun initGoToGoogleMaps() {
+        val bGoToMap = Button(activity).also {
+            it.text = getString(R.string.btn_go_to_google_maps)
+            it.id = View.generateViewId()
+        }
+        binding.clContainer.addView(bGoToMap)
+        val set = ConstraintSet()
+        set.clone(binding.clContainer)
+        bGoToMap.id.also {
+            set.connect(it, ConstraintSet.END, binding.clContainer.id, ConstraintSet.END)
+            set.connect(it, ConstraintSet.BOTTOM, binding.tvImagen.id, ConstraintSet.BOTTOM)
+        }
+        set.applyTo(binding.clContainer)
+        bGoToMap.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse(quinta.geoImg))
+            var chooser = Intent.createChooser(intent,"Launch maps")
+            startActivity(chooser)
         }
     }
 

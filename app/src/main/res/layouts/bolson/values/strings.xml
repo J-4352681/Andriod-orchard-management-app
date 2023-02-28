@@ -4,7 +4,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">"Bienvenido/a "</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -103,6 +103,8 @@
     <string name="et_direction">Ingrese dirección</string>
     <string name="example_quintas">nombre quinta</string>
     <string name="btn_add_visita">Agregar visita</string>
+    <string name="btn_go_to_google_maps">Ir a Google Maps</string>
+    <string name="btn_open_map">Ver en mapa</string>
     <string name="tv_image">Imagen</string>
     <string name="tv_geoimage">Geoimagen</string>
     <string name="et_geoimage">Ingrese geoimagen</string>
@@ -143,4 +145,5 @@
     <string name="btn_login">Ingresar</string>
     <string name="et_contraseña">Ingrese su contraseña</string>
     <string name="tv_login_title">Iniciar sesión</string>
+    <string name="btn_google_maps">Ir a Google Maps</string>
 </resources>
