@@ -15,7 +15,7 @@ data class Ronda(
 ): Parcelable, Comparable<Ronda> {
 
     override fun compareTo(other: Ronda): Int {
-        return -ArrayedDate.toDate(fecha_inicio).compareTo(ArrayedDate.toDate(other.fecha_inicio))
+        return ArrayedDate.toDate(fecha_inicio).compareTo(ArrayedDate.toDate(other.fecha_inicio))
     }
 
     override fun toString(): String {

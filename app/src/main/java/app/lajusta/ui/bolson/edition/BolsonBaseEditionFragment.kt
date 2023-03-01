@@ -104,7 +104,8 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
 
     private fun initRondasSpinner() {
         val idRondaSeleccionada = bolson.idRonda
-        rondasAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, rondas)
+        rondasAdapter =
+            ArrayAdapter(activity!!, R.layout.spinner_item, rondas.filter { it.isActive() })
         binding.sRonda.adapter = rondasAdapter
         binding.sRonda.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
