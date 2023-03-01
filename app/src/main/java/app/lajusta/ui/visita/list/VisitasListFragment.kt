@@ -114,12 +114,15 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             visitasCompletasOriginal.clear()
             visitasCompletasOriginal.addAll(visitasCompletas)
 
+            visitasCompletas.sortDescending()
+
             visitaAdapter.notifyDataSetChanged()
         }, "Hubo un error al actualizar la lista de visitas.")
     }
 
     private fun filter(query: String?) {
         VisitaCompleta.filter(visitasCompletas, visitasCompletasOriginal, query)
+        visitasCompletas.sortDescending()
         visitaAdapter.notifyDataSetChanged()
     }
 

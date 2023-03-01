@@ -5,6 +5,7 @@ import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.verdura.Verdura
+import app.lajusta.ui.visita.model.VisitaCompleta
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -14,7 +15,11 @@ data class BolsonCompleto(
     var familia: Familia,
     var ronda: Ronda,
     val verduras: MutableList<Verdura>
-): Parcelable {
+): Parcelable, Comparable<BolsonCompleto> {
+
+    override fun compareTo(other: BolsonCompleto): Int {
+        return ronda.compareTo(other.ronda)
+    }
     fun toBolson(): Bolson {
         return Bolson(id_bolson,cantidad,familia.id_fp,ronda.id_ronda,verduras)
     }
