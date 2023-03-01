@@ -31,9 +31,9 @@
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>
-        <item name="colorPrimary">@color/green3</item>
-        <item name="colorPrimaryDark">@color/green3</item>
-        <item name="colorAccent">@color/green3</item>
-        <item name="android:statusBarColor">@color/green3</item>
+        <item name="colorPrimary">@color/green0orig</item>
+        <item name="colorPrimaryDark">@color/green0orig</item>
+        <item name="colorAccent">@color/green0orig</item>
+        <item name="android:statusBarColor">@color/green0orig</item>
     </style>
 </resources>
