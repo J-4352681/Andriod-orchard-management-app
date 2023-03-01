@@ -4,6 +4,7 @@ import android.os.Parcelable
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.visita.Visita
 import kotlinx.parcelize.Parcelize
+import java.time.LocalDate
 
 @Parcelize
 data class Ronda(
@@ -14,17 +15,27 @@ data class Ronda(
 ): Parcelable, Comparable<Ronda> {
 
     override fun compareTo(other: Ronda): Int {
-        return ArrayedDate.toDate(fecha_inicio).compareTo(ArrayedDate.toDate(other.fecha_inicio))
+        return -ArrayedDate.toDate(fecha_inicio).compareTo(ArrayedDate.toDate(other.fecha_inicio))
     }
 
-    override fun toString(): String =
-        ArrayedDate.toString(fecha_inicio) + " - " + ArrayedDate.toString(fecha_fin!!)
+    override fun toString(): String {
+        val base = "del ${ArrayedDate.toString(fecha_inicio)}"
+        if(fecha_fin != null) return "$base al ${ArrayedDate.toString(fecha_fin!!)}"
+        return "$base sin fecha de fin"
+    }
 
     fun toPrefilledRonda() =
         PrefilledRonda(fecha_fin, fecha_inicio)
 
     fun toBlockedPrefilledRonda() =
         PrefilledRonda(fecha_fin, fecha_inicio, true, true)
+
+    fun isActive(): Boolean =
+        fecha_fin.isNullOrEmpty()
+        || (
+            LocalDate.now() < ArrayedDate.toLocalDate(fecha_fin!!)
+            && LocalDate.now() > ArrayedDate.toLocalDate(fecha_inicio)
+        )
 
     companion object {
         fun filter(

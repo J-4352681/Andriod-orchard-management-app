@@ -6,6 +6,7 @@
     android:gravity="center_vertical"
     android:layout_marginTop="15dp"
     android:layout_marginHorizontal="5dp"
+    android:id="@+id/cvBolsonList"
     xmlns:tools="http://schemas.android.com/tools" >
 
     <LinearLayout

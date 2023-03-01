@@ -69,10 +69,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun initRecyclerView() {
         bolsonAdapter = BolsonAdapter(bolsonesCompletos) { bolson: Bolson ->
             val ronda = rondas.find { it.id_ronda == bolson.idRonda }
-            if ((ronda?.fecha_fin == null) || !ArrayedDate.laterThanToday(
-                    ArrayedDate.toString(ronda.fecha_fin!!)
-                )
-            ) UserRole.getByRoleId(prefs.userType).goToModificationBolson(
+            if (ronda?.isActive()!!) UserRole.getByRoleId(prefs.userType).goToModificationBolson(
                 findNavController(), bolson
             ) else {
                 val bundle = bundleOf("prefilledBolson" to bolson.toBlockedPrefilledBolson())

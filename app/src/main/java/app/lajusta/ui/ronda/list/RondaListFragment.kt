@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.lajusta.R
 import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.databinding.FragmentRondaListBinding
 import app.lajusta.ui.generic.BaseFragment
@@ -61,7 +63,12 @@ class RondaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private fun initRecyclerView() {
         rondaAdapter = RondaAdapter(rondas) { ronda: Ronda ->
-            UserRole.getByRoleId(prefs.userType).goToModificationRonda(findNavController(), ronda)
+            if(ronda.isActive())
+                UserRole.getByRoleId(prefs.userType)
+                    .goToModificationRonda(findNavController(), ronda)
+            else findNavController().navigate(R.id.rondaModifyFragment, bundleOf(
+                "prefilledRonda" to ronda.toBlockedPrefilledRonda()
+            ))
         }
         binding.rvRondas.layoutManager = LinearLayoutManager(activity)
         binding.rvRondas.adapter = rondaAdapter

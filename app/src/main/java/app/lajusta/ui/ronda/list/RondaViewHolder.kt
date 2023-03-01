@@ -13,9 +13,9 @@ class RondaViewHolder(
     private val binding = ItemRondaBinding.bind(itemView)
 
     fun bind(rondaItem: Ronda, clickListener: (Ronda) -> Unit) {
-        binding.tvTitle.text = "Ronda del  " +
-                (ArrayedDate.toString(rondaItem.fecha_inicio) + "  al  "
-                        + ArrayedDate.toString(rondaItem.fecha_fin!!))
+        binding.tvTitle.text = "Ronda $rondaItem"
+
+        if(!rondaItem.isActive()) binding.tvTitle.isEnabled = false
 
         itemView.setOnClickListener { clickListener(rondaItem) }
     }
