@@ -22,25 +22,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            tools:text="titulo bolson" />
+            tools:text="Bolsón de familia Gonzales para ronda 1/3/2020 - 3/5/2020" />
 
         <TextView
-            android:id="@+id/tvCantidad"
+            android:id="@+id/tvDescripcion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="cantidad" />
-
-        <TextView
-            android:id="@+id/tvFamilia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="familia." />
-
-        <TextView
-            android:id="@+id/tvRonda"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="ronda" />
+            tools:text="Descripcion" />
 
     </LinearLayout>
 

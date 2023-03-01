@@ -42,8 +42,8 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
         super.onCreate(savedInstanceState)
         prefs = activity?.getSharedPreferences(spName, Context.MODE_PRIVATE)!!
         arguments?.let { bundle ->
-            val data = bundle.getParcelableArrayList<BolsonCompleto>("bolsones")
-            if(data != null) bolsonesCompletosArg = data.toMutableList()
+            if(bundle.containsKey("bolsones"))
+                bolsonesCompletosArg = bundle.getParcelableArrayList("bolsones")
         }
     }
 

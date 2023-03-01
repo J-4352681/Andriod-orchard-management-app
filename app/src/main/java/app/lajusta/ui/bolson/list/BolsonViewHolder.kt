@@ -14,11 +14,13 @@ class BolsonViewHolder(
     private val binding = ItemBolsonBinding.bind(itemView)
 
     fun bind(bolsonItem: BolsonCompleto, clickListener: (Bolson) -> Unit) {
+        binding.tvTitle.text =
+            "Bolsón de familia: ${bolsonItem.familia} para ronda ${bolsonItem.ronda}"
+        binding.tvDescripcion.text = "Cantidad: ${bolsonItem.cantidad}"
 
-        binding.tvTitle.text = "Bolsón: " + bolsonItem.id_bolson.toString()
-        binding.tvFamilia.text = "Familia: " + bolsonItem.familia.nombre
-        binding.tvRonda.text = "Ronda del: " + ArrayedDate.toString(bolsonItem.ronda.fecha_inicio)
-        binding.tvCantidad.text = "Cantidad: " + bolsonItem.cantidad.toString()
+        /* if(bolsonItem.ronda) {
+
+        } */
 
         itemView.setOnClickListener { clickListener(bolsonItem.toBolson()) }
     }
