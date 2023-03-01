@@ -16,7 +16,11 @@ data class VisitaCompleta(
     var tecnico: Usuario,
     var quinta: Quinta,
     val parcelas: MutableList<ParcelaVisita>
-): Parcelable {
+): Parcelable, Comparable<VisitaCompleta> {
+
+    override fun compareTo(other: VisitaCompleta): Int {
+        return ArrayedDate.toDate(fecha_visita).compareTo(ArrayedDate.toDate(other.fecha_visita))
+    }
 
     fun toVisita(): Visita = Visita(
         id_visita, fecha_visita, descripcion,

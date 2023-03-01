@@ -14,6 +14,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import app.lajusta.data.Preferences.PreferenceHelper.clearValues
+import app.lajusta.data.Preferences.PreferenceHelper.loggedIn
 import app.lajusta.data.Preferences.PreferenceHelper.userType
 import app.lajusta.databinding.ActivityMainBinding
 import app.lajusta.ui.login.LoginActivity
@@ -70,11 +71,12 @@ class MainActivity : AppCompatActivity() {
             R.id.action_profile -> {
                 val i = Intent(applicationContext, ProfileActivity::class.java)
                 startActivity(i)
-                true
+                return true
             }
             R.id.action_logout -> {
                 val prefs = applicationContext.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
                 prefs.clearValues()
+                prefs.loggedIn = false
                 goToLogin()
                 finish()
                 return true

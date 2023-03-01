@@ -124,6 +124,19 @@ class LoginActivity : AppCompatActivity() {
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
+
+        if (prefs.loggedIn == true) {
+
+            Toast.makeText(
+                applicationContext,
+                "Recuperando sesión: " + prefs.username,
+                Toast.LENGTH_SHORT
+            ).show()
+
+            goToMainActivity()
+
+        }
+
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
@@ -137,6 +150,10 @@ class LoginActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
 
+        goToMainActivity()
+    }
+
+    private fun goToMainActivity() {
         val i = Intent(applicationContext, MainActivity::class.java)
         startActivity(i)
         finish()

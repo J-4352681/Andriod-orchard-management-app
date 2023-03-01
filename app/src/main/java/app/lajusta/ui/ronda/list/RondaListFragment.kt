@@ -84,12 +84,15 @@ class RondaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             rondasOriginal.clear()
             rondasOriginal.addAll(rondas)
 
+            rondas.sortDescending()
+
             rondaAdapter.notifyDataSetChanged()
         }, "Hubo un error al actualizar la lista de rondas.")
     }
 
     private fun filter(query: String?) {
         Ronda.filter(rondas, rondasOriginal, query)
+        rondas.sortDescending()
         rondaAdapter.notifyDataSetChanged()
     }
 

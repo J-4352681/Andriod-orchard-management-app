@@ -2,6 +2,7 @@ package app.lajusta.ui.ronda
 
 import android.os.Parcelable
 import app.lajusta.ui.generic.ArrayedDate
+import app.lajusta.ui.visita.Visita
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -10,7 +11,12 @@ data class Ronda(
     var fecha_fin: List<Int>?,
     var fecha_inicio: List<Int>,
     //var verdura: Verdura  //Tiene una verdura pero esta en null en las api...
-): Parcelable {
+): Parcelable, Comparable<Ronda> {
+
+    override fun compareTo(other: Ronda): Int {
+        return ArrayedDate.toDate(fecha_inicio).compareTo(ArrayedDate.toDate(other.fecha_inicio))
+    }
+
     override fun toString(): String =
         ArrayedDate.toString(fecha_inicio) + " - " + ArrayedDate.toString(fecha_fin!!)
 

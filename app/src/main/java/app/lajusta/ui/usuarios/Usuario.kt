@@ -75,7 +75,6 @@ data class Usuario(
         }
 
         fun getAppBarConfiguration(num: Int, drawerLayout: DrawerLayout): AppBarConfiguration {
-            //TODO: NO BASTA CON SACAR EL R.id.nav_usuarios PARA EVITAR QUE APAREZCA EL COSO DE USUARIOS
             when (num) {
                 adminNumber -> {
                     return AppBarConfiguration(

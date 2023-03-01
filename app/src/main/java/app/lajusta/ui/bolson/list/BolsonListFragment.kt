@@ -102,6 +102,8 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             bolsonesCompletosOriginal.clear()
             bolsonesCompletosOriginal.addAll(bolsonesCompletos)
 
+            bolsonesCompletos.sortDescending()
+
             bolsonAdapter.notifyDataSetChanged()
 
             setClickListeners()
@@ -116,6 +118,9 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     private fun filter(query: String?) {
         BolsonCompleto.filter(bolsonesCompletos, bolsonesCompletosOriginal, query)
+
+        bolsonesCompletos.sortDescending()
+
         bolsonAdapter.notifyDataSetChanged()
     }
 
