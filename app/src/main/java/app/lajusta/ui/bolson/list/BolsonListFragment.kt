@@ -99,9 +99,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             bolsonesCompletosOriginal.clear()
             bolsonesCompletosOriginal.addAll(bolsonesCompletos)
 
-            bolsonesCompletos.sortDescending()
-
-            bolsonAdapter.notifyDataSetChanged()
+            actualizarListaUI("No se encontraron bolsones en el sistema.")
 
             setClickListeners()
         }, "Hubo un error al actualizar la lista de bolsones.")
@@ -116,9 +114,13 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun filter(query: String?) {
         BolsonCompleto.filter(bolsonesCompletos, bolsonesCompletosOriginal, query)
 
-        bolsonesCompletos.sortDescending()
+        actualizarListaUI("No se encontraron bolsones que coincidan en el sistema.")
+    }
 
+    private fun actualizarListaUI ( emptyMessage:String ) {
+        bolsonesCompletos.sortDescending()
         bolsonAdapter.notifyDataSetChanged()
+        if (bolsonesCompletos.isEmpty()) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

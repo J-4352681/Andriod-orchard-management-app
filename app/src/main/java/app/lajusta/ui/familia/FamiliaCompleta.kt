@@ -2,6 +2,7 @@ package app.lajusta.ui.familia
 
 import android.os.Parcelable
 import app.lajusta.ui.bolson.Bolson
+import app.lajusta.ui.bolson.BolsonCompleto
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.quinta.Quinta
 import app.lajusta.ui.ronda.Ronda
@@ -15,7 +16,11 @@ data class FamiliaCompleta(
     val quintas: MutableList<Quinta>,
     val bolsones: MutableList<Bolson>,
     val rondas: MutableList<Ronda>
-): Parcelable {
+): Parcelable, Comparable<FamiliaCompleta> {
+
+    override fun compareTo(other: FamiliaCompleta): Int {
+        return nombre.compareTo(other.nombre)
+    }
     fun toFamilia(): Familia {
         return Familia(id_fp, nombre, fecha_afiliacion)
     }

@@ -91,16 +91,19 @@ class RondaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             rondasOriginal.clear()
             rondasOriginal.addAll(rondas)
 
-            rondas.sortDescending()
-
-            rondaAdapter.notifyDataSetChanged()
+            actualizarListaUI("No se encontraron rondas en el sistema.")
         }, "Hubo un error al actualizar la lista de rondas.")
     }
 
     private fun filter(query: String?) {
         Ronda.filter(rondas, rondasOriginal, query)
+        actualizarListaUI("No se encontraron rondas que coincidan en el sistema.")
+    }
+
+    private fun actualizarListaUI ( emptyMessage:String ) {
         rondas.sortDescending()
         rondaAdapter.notifyDataSetChanged()
+        if (rondas.isEmpty()) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

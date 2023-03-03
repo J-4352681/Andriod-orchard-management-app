@@ -81,13 +81,19 @@ class VerduraListFragment: BaseFragment(), SearchView.OnQueryTextListener {
             verdurasOriginal.clear()
             verdurasOriginal.addAll(verduras)
 
-            verduraAdapter.notifyDataSetChanged()
+            actualizarListaUI("No se encontraron verduras en el sistema")
         }, "Hubo un error al actualizar la lista de verduras.")
     }
 
     private fun filter(query: String?) {
         Verdura.filter(verduras, verdurasOriginal, query)
+        actualizarListaUI("No se encontraron verduras que coincidan en el sistema")
+    }
+
+    private fun actualizarListaUI ( emptyMessage:String ) {
+        verduras.sort()
         verduraAdapter.notifyDataSetChanged()
+        if (verduras.isEmpty()) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

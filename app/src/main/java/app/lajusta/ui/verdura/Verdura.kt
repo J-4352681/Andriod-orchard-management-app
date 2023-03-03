@@ -2,6 +2,7 @@ package app.lajusta.ui.verdura
 
 import android.os.Parcelable
 import app.lajusta.ui.generic.ArrayedDate
+import app.lajusta.ui.usuarios.Usuario
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -12,7 +13,11 @@ data class Verdura(
     var archImg: String?,
     var nombre: String,
     var descripcion: String?,
-): Parcelable {
+): Parcelable, Comparable<Verdura> {
+
+    override fun compareTo(other: Verdura): Int {
+        return nombre.compareTo(other.nombre)
+    }
     override fun toString(): String = nombre
 
     companion object {

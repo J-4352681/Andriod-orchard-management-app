@@ -6,6 +6,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.ui.AppBarConfiguration
 import app.lajusta.R
 import app.lajusta.data.model.UserType
+import app.lajusta.ui.quinta.model.QuintaCompleta
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,7 +19,12 @@ data class Usuario(
     var password: String,       //Como hacer que haya un poco de seguridad aca?
     var email: String,
     val roles: Int,
-) : Parcelable {
+) : Parcelable, Comparable<Usuario> {
+
+    override fun compareTo(other: Usuario): Int {
+        return if ( apellido.compareTo(other.apellido) == 0 ) nombre.compareTo(other.nombre)
+        else apellido.compareTo(other.apellido)
+    }
 
     override fun toString(): String = nombre
 

@@ -109,13 +109,19 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             familiasCompletasOriginal.clear()
             familiasCompletasOriginal.addAll(familiasCompletas)
 
-            familiaAdapter.notifyDataSetChanged()
+            actualizarListaUI("No se encontraron familias en el sistema.")
         }, "Hubo un error al listar las familias.")
     }
 
     private fun filter(query: String) {
         FamiliaCompleta.filter(familiasCompletas, familiasCompletasOriginal, query)
+        actualizarListaUI("No se encontraron familias que coincidan en el sistema")
+    }
+
+    private fun actualizarListaUI ( emptyMessage:String ) {
+        familiasCompletas.sort()
         familiaAdapter.notifyDataSetChanged()
+        if (familiasCompletas.isEmpty()) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

@@ -2,6 +2,7 @@ package app.lajusta.ui.quinta.model
 
 import android.os.Parcelable
 import app.lajusta.ui.familia.Familia
+import app.lajusta.ui.familia.FamiliaCompleta
 import app.lajusta.ui.quinta.Quinta
 import kotlinx.parcelize.Parcelize
 
@@ -12,7 +13,11 @@ data class QuintaCompleta(
     var direccion: String?,
     var geoImg: String?,
     var familia: Familia,
-): Parcelable {
+): Parcelable, Comparable<QuintaCompleta> {
+
+    override fun compareTo(other: QuintaCompleta): Int {
+        return nombre.compareTo(other.nombre)
+    }
     fun toQuinta(): Quinta = Quinta(id_quinta, nombre, direccion, geoImg, familia.id_fp)
 
     override fun toString(): String = nombre

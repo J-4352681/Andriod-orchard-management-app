@@ -79,13 +79,19 @@ class UsuariosListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             usuariosOriginal.clear()
             usuariosOriginal.addAll(usuarios)
 
-            usuariosAdapter.notifyDataSetChanged()
+            actualizarListaUI("No se encontraron usuarios en el sistema.")
         }, "Hubo un error al actualizar la lista de usuarios.")
     }
 
     private fun filter(query: String?) {
         Usuario.filter(usuarios, usuariosOriginal, query)
+        actualizarListaUI("No se encontraron usuarios que coincidan en el sistema.")
+    }
+
+    private fun actualizarListaUI ( emptyMessage:String ) {
+        usuarios.sort()
         usuariosAdapter.notifyDataSetChanged()
+        if (usuarios.isEmpty()) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

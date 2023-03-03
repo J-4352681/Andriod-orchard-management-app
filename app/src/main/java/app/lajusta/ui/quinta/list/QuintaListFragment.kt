@@ -99,13 +99,19 @@ class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             quintasCompletasOriginal.clear()
             quintasCompletasOriginal.addAll(quintasCompletas)
 
-            quintaAdapter.notifyDataSetChanged()
+            actualizarListaUI("No se encontraron quintas en el sistema.")
         }, "Hubo un error al actualizar la lista de quintas.")
     }
 
     private fun filter(query: String?) {
         QuintaCompleta.filter(quintasCompletas, quintasCompletasOriginal, query)
+        actualizarListaUI("No se encontraron quintas que coincidan en el sistema.")
+    }
+
+    private fun actualizarListaUI ( emptyMessage:String ) {
+        quintasCompletas.sort()
         quintaAdapter.notifyDataSetChanged()
+        if (quintasCompletas.isEmpty()) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

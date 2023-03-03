@@ -47,14 +47,13 @@ class UsuariosModifyFragment : BaseFragment() {
         val nombresRoles: Array<String> = Usuario.getRolNames()
 
         val spinnnerRoles = binding.sRol
-        val adapterRoles: ArrayAdapter<String>? = (activity?.let {
-            ArrayAdapter<String>(
-                it,
-                R.layout.spinner_item, nombresRoles
-            )
-        })
+        val adapterRoles: ArrayAdapter<String> = (ArrayAdapter<String>(
+            activity!!,
+            R.layout.spinner_item, nombresRoles
+        ))
 
         spinnnerRoles.adapter = adapterRoles
+        spinnnerRoles.setSelection( adapterRoles.getPosition(Usuario.rolNumberToName(usuario.roles)))
     }
 
     private fun setClickListeners() {

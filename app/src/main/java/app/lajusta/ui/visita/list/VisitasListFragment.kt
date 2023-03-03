@@ -114,16 +114,19 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             visitasCompletasOriginal.clear()
             visitasCompletasOriginal.addAll(visitasCompletas)
 
-            visitasCompletas.sortDescending()
-
-            visitaAdapter.notifyDataSetChanged()
+            actualizarListaUI("No se encontraron visitas en el sistema")
         }, "Hubo un error al actualizar la lista de visitas.")
     }
 
     private fun filter(query: String?) {
         VisitaCompleta.filter(visitasCompletas, visitasCompletasOriginal, query)
+        actualizarListaUI("No se encontraron visitas que coincidan en el sistema.")
+    }
+
+    private fun actualizarListaUI ( emptyMessage:String ) {
         visitasCompletas.sortDescending()
         visitaAdapter.notifyDataSetChanged()
+        if (visitasCompletas.isEmpty()) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true
