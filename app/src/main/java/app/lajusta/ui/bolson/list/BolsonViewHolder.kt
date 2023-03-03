@@ -22,6 +22,8 @@ class BolsonViewHolder(
         binding.tvTitle.text =
             "Bolsón de familia: ${bolsonItem.familia}\npara ronda ${bolsonItem.ronda}"
         binding.tvDescripcion.text = "Cantidad: ${bolsonItem.cantidad}"
+        if ( bolsonItem.verduras.size == 7) binding.tvCantVerduras.text = "Bolson completo"
+        else binding.tvCantVerduras.text = "Verduras: ${bolsonItem.verduras.size}/7"
 
         if(!bolsonItem.ronda.isActive()) {
             binding.tvTitle.isEnabled = false

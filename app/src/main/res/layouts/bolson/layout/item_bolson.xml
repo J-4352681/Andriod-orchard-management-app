@@ -29,7 +29,14 @@
             android:id="@+id/tvDescripcion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Descripcion" />
+            tools:text="Cantidad: x" />
+
+        <TextView
+            android:id="@+id/tvCantVerduras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            tools:text="Verduras: x/7" />
 
     </LinearLayout>
 

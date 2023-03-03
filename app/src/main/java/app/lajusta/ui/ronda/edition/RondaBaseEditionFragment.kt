@@ -69,7 +69,15 @@ abstract class RondaBaseEditionFragment: BaseFragment() {
             }
         )
 
-        binding.bSubmitAction.setOnClickListener { commitChange() }
+        binding.bSubmitAction.setOnClickListener {
+
+            if(ArrayedDate.greaterThanArrayedDate(ronda.fecha_inicio,ronda.fecha_fin!!)) {
+                shortToast("La fecha de inicio no puede ser posterior a la de finalizacion")
+                return@setOnClickListener
+            }
+
+            commitChange()
+        }
 
         binding.bDenyAction.setOnClickListener { denyAction() }
     }

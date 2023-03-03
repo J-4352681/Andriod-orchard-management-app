@@ -3,6 +3,7 @@ package app.lajusta.ui.generic
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import java.text.SimpleDateFormat
@@ -32,9 +33,9 @@ class ArrayedDate() {
 
         fun toLocalDate(date: List<Int>): LocalDate = LocalDate.of(date[0], date[1], date[2])
 
-        fun todayStringed(): String = toString(todayArrayed())
+        fun todayStringed(): String = toString(todayArrayed().also { it[1]+=1  })
 
-        fun todayArrayed(): List<Int> = listOf(
+        fun todayArrayed(): MutableList<Int> = mutableListOf(
             c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)
         )
 
@@ -61,7 +62,21 @@ class ArrayedDate() {
         }
 
         fun laterThanToday(date: String): Boolean {
-            return sdf.parse(date)!! > sdf.parse(todayStringed())
+            /*return sdf.parse(date)!! > sdf.parse(todayStringed())*/
+
+            val arrayDate = toArray(date)
+            val arrayToday = todayArrayed().also { it[1]+=1  }
+
+            Log.e("Test", "$arrayDate > $arrayToday")
+
+            return greaterThanArrayedDate(arrayDate, arrayToday)
         }
+
+        fun greaterThanArrayedDate( date1:List<Int>, date2:List<Int>):Boolean {
+            return if ( date1[0] != date2[0]) date1[0] > date2[0]
+            else if ( date1[1] != date2[1] ) date1[1] > date2[1]
+            else date1[2] > date2[2]
+        }
+
     }
 }
