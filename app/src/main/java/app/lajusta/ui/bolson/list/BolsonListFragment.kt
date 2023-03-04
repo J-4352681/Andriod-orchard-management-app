@@ -81,7 +81,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun listInit() {
-        apiCall(suspend {
+        apiCallProgressBar(suspend {
             bolsones = BolsonApi().getBolsones().body()!!
             familias = FamiliaApi().getFamilias().body()!!
             rondas = RondaApi().getRondas().body()!!
@@ -102,7 +102,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             actualizarListaUI("No se encontraron bolsones en el sistema.")
 
             setClickListeners()
-        }, "Hubo un error al actualizar la lista de bolsones.")
+        }, "Hubo un error al actualizar la lista de bolsones.", binding.progressBar)
     }
 
     private fun setClickListeners() {

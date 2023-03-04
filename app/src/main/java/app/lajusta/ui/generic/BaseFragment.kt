@@ -2,6 +2,7 @@ package app.lajusta.ui.generic
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
@@ -58,6 +59,30 @@ open class BaseFragment : Fragment() {
             }
             catch (e: Exception) {
                 activity!!.runOnUiThread { shortToast(failureMessage) }
+            }
+        }
+    }
+
+    protected fun apiCallProgressBar(
+        apiEffectiveCall: suspend () -> Unit,
+        apiCallUIBlock: () -> Unit,
+        failureMessage: String,
+        progressBar: ProgressBar
+    ) {
+        progressBar.visibility = View.VISIBLE
+        jobs += CoroutineScope(Dispatchers.IO).launch {
+            try {
+                apiEffectiveCall()
+                activity?.runOnUiThread {
+                    apiCallUIBlock()
+                    progressBar.visibility = View.GONE
+                }
+            }
+            catch (e: Exception) {
+                activity!!.runOnUiThread {
+                    longToast(failureMessage)
+                    progressBar.visibility = View.GONE
+                }
             }
         }
     }

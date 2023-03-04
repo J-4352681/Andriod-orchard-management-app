@@ -81,7 +81,7 @@ class RondaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun listInit() {
-        apiCall(suspend {
+        apiCallProgressBar(suspend {
             rondasApi = RondaApi().getRondas().body()!!
         }, {
             rondas.clear()
@@ -92,7 +92,7 @@ class RondaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             rondasOriginal.addAll(rondas)
 
             actualizarListaUI("No se encontraron rondas en el sistema.")
-        }, "Hubo un error al actualizar la lista de rondas.")
+        }, "Hubo un error al actualizar la lista de rondas.", binding.progressBar )
     }
 
     private fun filter(query: String?) {

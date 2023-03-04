@@ -71,7 +71,7 @@ class VerduraListFragment: BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun listInit() {
-        apiCall(suspend {
+        apiCallProgressBar(suspend {
             verdurasApi = VerduraApi().getVerduras().body()!!
         }, {
             verduras.clear()
@@ -82,7 +82,7 @@ class VerduraListFragment: BaseFragment(), SearchView.OnQueryTextListener {
             verdurasOriginal.addAll(verduras)
 
             actualizarListaUI("No se encontraron verduras en el sistema")
-        }, "Hubo un error al actualizar la lista de verduras.")
+        }, "Hubo un error al actualizar la lista de verduras.", binding.progressBar)
     }
 
     private fun filter(query: String?) {

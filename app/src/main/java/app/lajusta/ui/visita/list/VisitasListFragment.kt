@@ -96,7 +96,7 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initList() {
-        apiCall(suspend {
+        apiCallProgressBar(suspend {
             visitas = VisitaApi().getVisitas().body()!!
             quintas = QuintaApi().getQuintas().body()!!
             tecnicos = UsuariosApi().getUsuarios().body()!!
@@ -115,7 +115,7 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             visitasCompletasOriginal.addAll(visitasCompletas)
 
             actualizarListaUI("No se encontraron visitas en el sistema")
-        }, "Hubo un error al actualizar la lista de visitas.")
+        }, "Hubo un error al actualizar la lista de visitas.", binding.progressBar )
     }
 
     private fun filter(query: String?) {

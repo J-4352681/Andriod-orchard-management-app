@@ -88,7 +88,7 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun initList() {
-        apiCall(suspend {
+        apiCallProgressBar(suspend {
             familias = FamiliaApi().getFamilias().body()!!
             quintas = QuintaApi().getQuintas().body()!!
             bolsones = BolsonApi().getBolsones().body()!!
@@ -110,7 +110,7 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             familiasCompletasOriginal.addAll(familiasCompletas)
 
             actualizarListaUI("No se encontraron familias en el sistema.")
-        }, "Hubo un error al listar las familias.")
+        }, "Hubo un error al listar las familias.", binding.progressBar)
     }
 
     private fun filter(query: String) {

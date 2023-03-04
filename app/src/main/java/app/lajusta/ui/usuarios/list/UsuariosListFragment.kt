@@ -69,7 +69,7 @@ class UsuariosListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun listInit() {
-        apiCall(suspend {
+        apiCallProgressBar(suspend {
             usuariosApi = UsuariosApi().getUsuarios().body()!!
         }, {
             usuarios.clear()
@@ -80,7 +80,7 @@ class UsuariosListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             usuariosOriginal.addAll(usuarios)
 
             actualizarListaUI("No se encontraron usuarios en el sistema.")
-        }, "Hubo un error al actualizar la lista de usuarios.")
+        }, "Hubo un error al actualizar la lista de usuarios.", binding.progressBar )
     }
 
     private fun filter(query: String?) {

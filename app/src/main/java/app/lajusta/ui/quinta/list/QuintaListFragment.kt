@@ -83,7 +83,7 @@ class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
     private fun listInit() {
-        apiCall(suspend {
+        apiCallProgressBar(suspend {
             quintas = QuintaApi().getQuintas().body()!!
             familias = FamiliaApi().getFamilias().body()!!
             rondas = RondaApi().getRondas().body()!!
@@ -100,7 +100,7 @@ class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
             quintasCompletasOriginal.addAll(quintasCompletas)
 
             actualizarListaUI("No se encontraron quintas en el sistema.")
-        }, "Hubo un error al actualizar la lista de quintas.")
+        }, "Hubo un error al actualizar la lista de quintas.", binding.progressBar )
     }
 
     private fun filter(query: String?) {
