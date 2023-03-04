@@ -9,8 +9,10 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import app.lajusta.data.Preferences.PreferenceHelper.loggedIn
 import app.lajusta.data.Preferences.PreferenceHelper.userId
@@ -42,11 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         prefs = applicationContext.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
 
         //CHECKING LOGIN
-        if (
-            !prefs.loggedIn
-        ) {
-            goToLogin()
-        }
+        if (!prefs.loggedIn) goToLogin()
 
         //actionbar
         val actionbar = supportActionBar
@@ -65,9 +63,7 @@ class ProfileActivity : AppCompatActivity() {
             val newUsername = editText.text.toString()
             if (editText.text.toString().isNotEmpty()) {
                 showAlertUsername(newUsername)
-            } else Toast.makeText(
-                this, "Primero debe escribir un nuevo nombre de usuario.", Toast.LENGTH_SHORT
-            ).show()
+            } else toast("Primero debe escribir un nuevo nombre de usuario.")
         }
 
         val oldPassword = findViewById<EditText>(R.id.et_ch_password_old)
@@ -78,21 +74,13 @@ class ProfileActivity : AppCompatActivity() {
             val oldPassText = oldPassword.text.toString()
             val newPassText = newPassword.text.toString()
             val newPassRepText = newPasswordRepeat.text.toString()
-            if (oldPassText.isEmpty()) Toast.makeText(
-                this, "Ingresar contraseña antigua", Toast.LENGTH_SHORT
-            ).show()
+            if (oldPassText.isEmpty()) toast("Ingresar contraseña antigua")
 
-            if (newPassText.isEmpty()) Toast.makeText(
-                this, "Ingresar contraseña nueva", Toast.LENGTH_SHORT
-            ).show()
+            if (newPassText.isEmpty()) toast("Ingresar contraseña nueva")
 
-            if (newPassRepText.isEmpty()) Toast.makeText(
-                this, "Repetir contraseña nueva", Toast.LENGTH_SHORT
-            ).show()
+            if (newPassRepText.isEmpty()) toast("Repetir contraseña nueva")
 
-            if (newPassText != newPassRepText) Toast.makeText(
-                this, "Repetir contraseña nueva correctamente", Toast.LENGTH_SHORT
-            ).show()
+            if (newPassText != newPassRepText) toast("Repetir contraseña nueva correctamente")
 
             showAlertPasswordChange(oldPassText, newPassText)
         }
@@ -110,9 +98,6 @@ class ProfileActivity : AppCompatActivity() {
         builder.setMessage("¿Quiere continuar?")
         //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = positiveButtonClick))
         builder.setPositiveButton("Si") { dialog, which ->
-            //Toast.makeText(applicationContext,
-            //    "Si", Toast.LENGTH_SHORT).show()
-
             changeUsername(newUsername)
         }
         builder.setNegativeButton("Cancelar", null)
@@ -124,10 +109,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun changeUsername(newUsername: String) {
 
         if (prefs.userId == null || newUsername.isEmpty()) {
-            Toast.makeText(
-                applicationContext,
-                "Ningun usuario logeado", Toast.LENGTH_LONG
-            ).show()
+            toastLong("Ningun usuario logeado")
             goToLogin()
             return
         }
@@ -151,29 +133,45 @@ class ProfileActivity : AppCompatActivity() {
                         usuario.roles
                     )
 
-                    returnSimpleApiCall(
+                    returnSimpleApiCallProgressBar(
                         { UsuariosApi().putUsuario(modifiedUsuario) },
-                        "Cambio de nombre de usuario fallo, intente mas tarde."
+                        "Cambio de nombre de usuario fallo, intente mas tarde.",
+                        {
+                            prefs.username = newUsername
+                            toastLong("Nombre de usuario cambiado a ")
+                        },
+                        findViewById(R.id.profileProgressBar)
                     )
                 } else {
-                    Toast.makeText(
-                        applicationContext,
-                        "Usuario no existe.", Toast.LENGTH_LONG
-                    ).show()
+                    toastLong("Usuario no existe.")
                 }
 
             } catch (e: Exception) {
                 Log.e("RETROFIT ERROR", e.message!!)
-                Toast.makeText(
-                    applicationContext,
-                    "Hubo un error.", Toast.LENGTH_LONG
-                ).show()
+                toastLong("Hubo un error.")
             }
         }
 
     }
 
     private fun showAlertPasswordChange(oldPassword: String, newPassword: String) {
+
+        if (!prefs.loggedIn) {
+            toastLong("Ningun usuario logeado")
+            goToLogin()
+            return
+        }
+
+        if ( newPassword.isEmpty() || oldPassword.isEmpty()) {
+            toastLong("Complete los campos de contraseña con la actual y la nueva.")
+            return
+        }
+
+        if ( Usuario.checkPassword(newPassword) ) {
+            toastLong("La nueva contraseña debe teenr al menos 5 caracteres.")
+            return
+        }
+
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Esto cambiara su contraseña")
         builder.setMessage("¿Quiere continuar?")
@@ -192,19 +190,8 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun changePassword(oldPassword: String, newPassword: String) {
 
-        if (prefs.userId == null || newPassword.isEmpty() || oldPassword.isEmpty()) {
-            Toast.makeText(
-                applicationContext,
-                "Ningun usuario logeado", Toast.LENGTH_LONG
-            ).show()
-            goToLogin()
-            return
-        }
-
-
-
         runBlocking {
-            var usuario: Usuario
+            val usuario: Usuario
             try {
                 val result = UsuariosApi().getUsuario(prefs.userId)
                 if (result.isSuccessful) {
@@ -227,9 +214,11 @@ class ProfileActivity : AppCompatActivity() {
                             usuario.roles
                         )
 
-                        returnSimpleApiCall(
+                        returnSimpleApiCallProgressBar(
                             { UsuariosApi().putUsuario(modifiedUsuario) },
-                            "Cambio de contraseña fallo, intente mas tarde."
+                            "Cambio de contraseña fallo, intente mas tarde.",
+                            { toastLong("CAmbio de contraseña exitoso.")},
+                            findViewById(R.id.profileProgressBar)
                         )
                     }
                 } else {
@@ -248,7 +237,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun returnSimpleApiCall(
+    private fun returnSimpleApiCall(
         apiEffectiveCall: suspend () -> Response<out Any>,
         failureMessage: String
     ) {
@@ -266,6 +255,32 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun returnSimpleApiCallProgressBar(
+        apiEffectiveCall: suspend () -> Response<out Any>,
+        failureMessage: String,
+        apiCallUIBlock: () -> Unit,
+        progressBar: ProgressBar
+    ) {
+        progressBar.visibility = View.VISIBLE
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = apiEffectiveCall()
+                if (!response.isSuccessful) throw Exception(response.code().toString())
+                else apiCallUIBlock()
+            } catch (e: Exception) {
+                toast(failureMessage)
+
+            } finally {
+                progressBar.visibility = View.GONE
+                onBackPressed()
+            }
+        }
+    }
+
+    fun toast(message: String) = Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
+    fun toastLong(message: String) =
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT)
 
     private fun goToLogin() {
         val i = Intent(applicationContext, LoginActivity::class.java)

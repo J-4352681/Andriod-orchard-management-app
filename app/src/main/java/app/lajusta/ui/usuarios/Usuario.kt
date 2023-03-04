@@ -108,5 +108,13 @@ data class Usuario(
                 }
             }
         }
+
+        fun validateRolNumber(num:Int):Boolean {
+            return (num == adminNumber || num == tecNumber)
+        }
+
+        fun checkPassword( password: String ):Boolean { //Devuelve true si no es valida
+            return ( password.length < 5 )
+        }
     }
 }

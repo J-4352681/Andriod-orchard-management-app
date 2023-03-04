@@ -45,6 +45,9 @@ class MainActivity : AppCompatActivity() {
 
         prefs = applicationContext.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
 
+        //CHECKING LOGIN
+        if ( !prefs.loggedIn ) goToLogin()
+
         setSupportActionBar(binding.appBarMain.toolbar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout

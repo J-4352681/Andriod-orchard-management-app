@@ -37,11 +37,37 @@ open class BaseFragment : Fragment() {
         jobs += CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = apiEffectiveCall()
-                if(!response.isSuccessful) throw Exception(response.code().toString())
+                if (!response.isSuccessful) throw Exception(response.code().toString())
+            } catch (e: Exception) {
+                activity!!.runOnUiThread {
+                    shortToast(failureMessage)
+                }
+            } finally {
+                activity!!.runOnUiThread { activity!!.onBackPressed() }
             }
-            catch(e: Exception) { activity!!.runOnUiThread {
-                shortToast(failureMessage)
-            } } finally { activity!!.runOnUiThread { activity!!.onBackPressed() } }
+        }
+    }
+
+    protected fun returnSimpleApiCallProgressBar(
+        apiEffectiveCall: suspend () -> Response<out Any>,
+        failureMessage: String,
+        progressBar: ProgressBar
+    ) {
+        progressBar.visibility = View.VISIBLE
+        jobs += CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = apiEffectiveCall()
+                if (!response.isSuccessful) throw Exception(response.code().toString())
+            } catch (e: Exception) {
+                activity!!.runOnUiThread {
+                    shortToast(failureMessage)
+                }
+            } finally {
+                activity!!.runOnUiThread {
+                    progressBar.visibility = View.GONE
+                    activity!!.onBackPressed()
+                }
+            }
         }
     }
 
@@ -56,8 +82,7 @@ open class BaseFragment : Fragment() {
                 activity?.runOnUiThread {
                     apiCallUIBlock()
                 }
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 activity!!.runOnUiThread { shortToast(failureMessage) }
             }
         }
@@ -77,8 +102,7 @@ open class BaseFragment : Fragment() {
                     apiCallUIBlock()
                     progressBar.visibility = View.GONE
                 }
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 activity!!.runOnUiThread {
                     longToast(failureMessage)
                     progressBar.visibility = View.GONE

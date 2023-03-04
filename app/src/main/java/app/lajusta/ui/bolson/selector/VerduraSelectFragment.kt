@@ -74,7 +74,7 @@ class VerduraSelectFragment : BaseFragment() {
 
 
     private fun fillItem() {
-        apiCall(
+        apiCallProgressBar(
             {
                 verduras = VerduraApi().getVerduras().body()!!
                 quintas = QuintaApi().getQuintas().body()!!
@@ -112,7 +112,7 @@ class VerduraSelectFragment : BaseFragment() {
                         bolson.verduras.map { it.id_verdura }.contains(it.id_verdura)
                     }
                 )
-            }, "Hubo un problema obteniendo las verduras"
+            }, "Hubo un problema obteniendo las verduras", binding.progressBar
         )
 
         initRecyclerViewQuinta()

@@ -61,7 +61,7 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
 
     private fun startFragment() {
         initCantidad()
-        apiCall(
+        apiCallProgressBar(
             {
                 familias = FamiliaApi().getFamilias().body()!!
                 rondas = RondaApi().getRondas().body()!!
@@ -71,7 +71,7 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
                 setClickListeners()
                 initRecyclerView()
                 prefillBolson()
-            }, "No se pudieron obtener las familias o rondas."
+            }, "No se pudieron obtener las familias o rondas.", binding.progressBar
         )
     }
 

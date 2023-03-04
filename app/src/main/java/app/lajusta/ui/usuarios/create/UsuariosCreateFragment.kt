@@ -80,6 +80,10 @@ class UsuariosCreateFragment : BaseFragment() {
                 shortToast("Debe seleccionar una contraseña")
                 return@setOnClickListener
             }
+            if(Usuario.checkPassword(usuario.password)) {
+                shortToast("La contraseña debe tener al menos 5 caracteres")
+                return@setOnClickListener
+            }
             if(usuario.password != binding.etPasswordRepeat.text.toString().trim()) {
                 shortToast("La contraseña repetida debe ser igual a la original")
                 return@setOnClickListener
@@ -88,7 +92,7 @@ class UsuariosCreateFragment : BaseFragment() {
                 shortToast("Debe seleccionar un email ")
                 return@setOnClickListener
             }
-            if(usuario.roles != 1 && usuario.roles != 2) {
+            if( Usuario.validateRolNumber(usuario.roles).not() ) {
                 shortToast("Debe seleccionar un rol ")
                 return@setOnClickListener
             }

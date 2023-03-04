@@ -74,14 +74,14 @@ class FamiliaModifyFragment: BaseFragment(){
 
         binding.etNombre.setText(familia.nombre)
 
-        apiCall(suspend {
+        apiCallProgressBar(suspend {
             rondas = RondaApi().getRondas().body()!!.toMutableList()
         }, {
             fillQuintas()
             fillRondas()
             setClickListeners()
             prefillFamilia()
-        }, "No se pudieron obtener las quintas y/o bolsones de la familia.")
+        }, "No se pudieron obtener las quintas y/o bolsones de la familia.", binding.progressBar)
     }
 
     private fun fillQuintas() {
