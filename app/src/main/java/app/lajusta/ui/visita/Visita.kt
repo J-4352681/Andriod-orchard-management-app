@@ -15,7 +15,7 @@ data class Visita(
     val parcelas: MutableList<ParcelaVisita>
 ): Parcelable, Comparable<Visita> {
     override fun compareTo(other: Visita): Int {
-        return ArrayedDate.toDate(fecha_visita).compareTo(ArrayedDate.toDate(other.fecha_visita))
+        return ArrayedDate.toLocalDate(fecha_visita).compareTo(ArrayedDate.toLocalDate(other.fecha_visita))
     }
 
     fun toPrefilledVisita() =

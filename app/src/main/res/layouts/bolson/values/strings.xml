@@ -152,4 +152,7 @@
     <string name="app_grupo_integrante_1">Jeremías Salsamendi</string>
     <string name="app_grupo_integrante_2">Tomás Oliva</string>
     <string name="menu_acerca_de">Acerca de</string>
+    <string name="propio">Propia</string>
+    <string name="no_propio">No propia</string>
+    <string name="et_hint_tecnico">Nombre tecnico</string>
 </resources>

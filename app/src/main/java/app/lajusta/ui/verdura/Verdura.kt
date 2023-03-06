@@ -13,6 +13,7 @@ data class Verdura(
     var archImg: String?,
     var nombre: String,
     var descripcion: String?,
+    var propia: Boolean? = null
 ): Parcelable, Comparable<Verdura> {
 
     override fun compareTo(other: Verdura): Int {

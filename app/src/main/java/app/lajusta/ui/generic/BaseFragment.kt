@@ -1,6 +1,7 @@
 package app.lajusta.ui.generic
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -39,6 +40,8 @@ open class BaseFragment : Fragment() {
                 val response = apiEffectiveCall()
                 if (!response.isSuccessful) throw Exception(response.code().toString())
             } catch (e: Exception) {
+                Log.e("Error", e.message!!)
+                Log.e("Error", e.stackTrace.toString())
                 activity!!.runOnUiThread {
                     shortToast(failureMessage)
                 }
