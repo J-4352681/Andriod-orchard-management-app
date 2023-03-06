@@ -28,7 +28,7 @@ enum class UserRole(
                     R.id.nav_rondas, R.id.nav_visitas,
                     R.id.nav_familias, R.id.nav_bolson,
                     R.id.nav_quintas, R.id.nav_verduras,
-                    R.id.nav_usuarios
+                    R.id.nav_usuarios, R.id.nav_acerca_de
                 ), drawerLayout
             )
 
@@ -70,7 +70,7 @@ enum class UserRole(
             AppBarConfiguration(
                 setOf(R.id.nav_familias, R.id.nav_bolson,
                     R.id.nav_quintas, R.id.nav_verduras,
-                    R.id.nav_visitas
+                    R.id.nav_visitas, R.id.nav_acerca_de
                 ), drawerLayout
             )
 

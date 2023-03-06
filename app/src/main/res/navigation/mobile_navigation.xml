@@ -287,4 +287,12 @@
         android:name="app.lajusta.ui.usuarios.create.UsuariosCreateFragment"
         android:label="Crear usuario" />
 
+
+    <!-- Acerca de -->
+    <fragment
+        android:id="@+id/nav_acerca_de"
+        android:name="app.lajusta.ui.acercaDe.AcercaDeFragment"
+        android:label="fragment_acerca_de"
+        tools:layout="@layout/fragment_acerca_de" />
+
 </navigation>

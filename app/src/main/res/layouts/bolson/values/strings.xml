@@ -146,4 +146,10 @@
     <string name="et_contraseña">Ingrese su contraseña</string>
     <string name="tv_login_title">Iniciar sesión</string>
     <string name="btn_google_maps">Ir a Google Maps</string>
+    <string name="app_version">Ver 1.0.0</string>
+    <string name="tv_creadores">Programadores:</string>
+    <string name="app_grupo">Grupo 7</string>
+    <string name="app_grupo_integrante_1">Jeremías Salsamendi</string>
+    <string name="app_grupo_integrante_2">Tomás Oliva</string>
+    <string name="menu_acerca_de">Acerca de</string>
 </resources>
