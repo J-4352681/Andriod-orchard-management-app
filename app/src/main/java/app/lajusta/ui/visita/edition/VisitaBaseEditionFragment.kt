@@ -1,5 +1,7 @@
 package app.lajusta.ui.visita.edition
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,8 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.lajusta.R
+import app.lajusta.data.Preferences.PreferenceHelper.userId
+import app.lajusta.data.Preferences.PreferenceHelper.username
 import app.lajusta.databinding.FragmentVisitaBaseEditionBinding
 import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
@@ -37,6 +41,9 @@ abstract class VisitaBaseEditionFragment : BaseFragment() {
 
     private lateinit var parcelasAdapter: ParcelaVisitaAdapter
 
+    val CUSTOM_PREF_NAME = "User_data"
+    lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { bundle ->
@@ -45,6 +52,7 @@ abstract class VisitaBaseEditionFragment : BaseFragment() {
             if (bundle.containsKey("prefilledVisita"))
                 prefilledVisita = bundle.getParcelable("prefilledVisita")
         }
+        prefs = activity!!.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(
@@ -70,7 +78,7 @@ abstract class VisitaBaseEditionFragment : BaseFragment() {
             tecnicos = UsuariosApi().getUsuarios().body()!!
         }, {
             initQuintaSpinner()
-            initTecnicoSpinner()
+            //initTecnicoSpinner()
             setClickListeners()
             prefillFields()
         }, "Hubo un error al actualizar la lista de visitas.")
@@ -114,9 +122,9 @@ abstract class VisitaBaseEditionFragment : BaseFragment() {
         )
     }
 
-    private fun initTecnicoSpinner() {
-        val idTecnicoSeleccionado = visita.id_tecnico
-        usuariosAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, tecnicos)
+    /*private fun initTecnicoSpinner() {
+        //val idTecnicoSeleccionado = visita.id_tecnico
+        /*usuariosAdapter = ArrayAdapter(activity!!, R.layout.spinner_item, tecnicos)
         binding.spinnerTecnico.adapter = usuariosAdapter
         binding.spinnerTecnico.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -131,8 +139,9 @@ abstract class VisitaBaseEditionFragment : BaseFragment() {
             }
         binding.spinnerTecnico.setSelection(
             usuariosAdapter.getPosition(tecnicos.find { it.id_user == idTecnicoSeleccionado })
-        )
-    }
+        )*/
+
+    }*/
 
     private fun setClickListeners() {
         findNavController().currentBackStackEntry?.savedStateHandle!!
@@ -188,12 +197,13 @@ abstract class VisitaBaseEditionFragment : BaseFragment() {
             }
             if (prefilledVisita!!.id_tecnico != null) {
                 visita.id_tecnico = prefilledVisita?.id_tecnico!!
-                binding.spinnerTecnico.setSelection(
+                /*binding.spinnerTecnico.setSelection(
                     usuariosAdapter.getPosition(tecnicos.find {
                         it.id_user == prefilledVisita?.id_tecnico
                     })
                 )
-                if (prefilledVisita!!._blockFields) binding.spinnerTecnico.isEnabled = false
+                if (prefilledVisita!!._blockFields) binding.spinnerTecnico.isEnabled = false*/
+                binding.tvTecnName.text = tecnicos.find { it.id_user == visita.id_tecnico }!!.nombre
             }
             if (!prefilledVisita!!.parcelas.isNullOrEmpty()) {
                 visita.parcelas.clear()
@@ -204,6 +214,9 @@ abstract class VisitaBaseEditionFragment : BaseFragment() {
                 binding.bSubmitAction.isEnabled = false
                 binding.bDenyAction.isEnabled = false
             }
+        } else {
+            visita.id_tecnico = prefs.userId
+            binding.tvTecnName.text = prefs.username
         }
     }
 

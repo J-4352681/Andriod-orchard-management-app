@@ -78,5 +78,13 @@ class ArrayedDate() {
             else date1[2] > date2[2]
         }
 
+        /*fun inTheLastSixMoths( date1:List<Int>, date2:List<Int>):Boolean {
+            val cal = Calendar.getInstance() //Get current date/month i.e 27 Feb, 2012
+            cal.add(Calendar.MONTH, -6) //Go to date, 6 months ago 27 July, 2011
+            cal[Calendar.DAY_OF_MONTH] = 1 //set date, to make it 1 July, 2011
+
+
+        }*/
+
     }
 }

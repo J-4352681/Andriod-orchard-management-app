@@ -16,10 +16,17 @@ import app.lajusta.ui.bolson.Bolson
 import app.lajusta.ui.bolson.PrefilledBolson
 import app.lajusta.ui.familia.Familia
 import app.lajusta.ui.familia.api.FamiliaApi
+import app.lajusta.ui.generic.ArrayedDate
 import app.lajusta.ui.generic.BaseFragment
 import app.lajusta.ui.login.afterTextChanged
+import app.lajusta.ui.quinta.Quinta
+import app.lajusta.ui.quinta.api.QuintaApi
 import app.lajusta.ui.ronda.Ronda
 import app.lajusta.ui.ronda.api.RondaApi
+import app.lajusta.ui.verdura.Verdura
+import app.lajusta.ui.verdura.api.VerduraApi
+import app.lajusta.ui.visita.Visita
+import app.lajusta.ui.visita.api.VisitaApi
 
 abstract class BolsonBaseEditionFragment: BaseFragment() {
     private var _binding: FragmentBolsonBaseEditionBinding? = null
@@ -33,6 +40,12 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
     private lateinit var rondasAdapter: ArrayAdapter<Ronda>
 
     private lateinit var verduraBolsonAdapter: VerduraBolsonAdapter
+
+    //PARA EL CHECKEO
+    private var quintas = listOf<Quinta>()
+    private var visitas = listOf<Visita>()
+    private var verduras = listOf<Verdura>()
+    private val verdurasQuinta = mutableListOf<Verdura>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,12 +78,20 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
             {
                 familias = FamiliaApi().getFamilias().body()!!
                 rondas = RondaApi().getRondas().body()!!
+
+                //PARA EL CHECKEO
+                verduras = VerduraApi().getVerduras().body()!!
+                quintas = QuintaApi().getQuintas().body()!!
+                visitas = VisitaApi().getVisitas().body()!!
             }, {
                 initFamiliasSpinner()
                 initRondasSpinner()
                 setClickListeners()
                 initRecyclerView()
                 prefillBolson()
+
+                //PARA EL CHECKEO
+                checkPropiedad()
             }, "No se pudieron obtener las familias o rondas.", binding.progressBar
         )
     }
@@ -204,6 +225,29 @@ abstract class BolsonBaseEditionFragment: BaseFragment() {
                 binding.bSubmitAction.isEnabled = false
                 binding.bDenyAction.isEnabled = false
             }
+        }
+    }
+
+    private fun checkPropiedad() {
+        quintas = quintas.filter { it.fpId == bolson.idFp }
+
+        visitas = visitas
+            .filter { quintas.map { it.id_quinta }.contains(it.id_quinta) }
+            //.filter { ArrayedDate.inTheLastSixMoths(it.fecha_visita) }
+            .groupBy { it.id_quinta }.map {
+                it.value.maxBy { ArrayedDate.toDate(it.fecha_visita) }
+            }
+
+        // TODO filtrar visitas anteriores a hace 6 meses
+
+        verdurasQuinta.addAll(verduras.filter {
+            visitas.map {
+                it.parcelas.filter { it.cosecha }.map { it.verdura.id_verdura }
+            }.flatten().contains(it.id_verdura)
+        })
+
+        bolson.verduras.forEach {verd ->
+            verd.propia = verdurasQuinta.map { it.id_verdura }.contains(verd.id_verdura)
         }
     }
 

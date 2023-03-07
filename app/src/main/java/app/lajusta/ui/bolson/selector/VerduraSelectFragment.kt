@@ -83,19 +83,27 @@ class VerduraSelectFragment : BaseFragment() {
                 visitas = VisitaApi().getVisitas().body()!!
             }, {
                 quintas = quintas.filter { it.fpId == bolson.idFp }
-                visitas = visitas
+               /* visitas = visitas
                     .filter { quintas.map { it.id_quinta }.contains(it.id_quinta) }
                     .map { visita ->
                         visitas
                             .filter { it.id_visita == visita.id_visita }
                             .maxBy { ArrayedDate.toDate(it.fecha_visita) }
-                    }.toSet().toList()
+                    }.toSet().toList()*/
+
+                visitas = visitas
+                    .filter { quintas.map { it.id_quinta }.contains(it.id_quinta) }
+                    //.filter { ArrayedDate.inTheLastSixMoths(it.fecha_visita) }
+                    .groupBy { it.id_quinta }.map {
+                        it.value.maxBy { ArrayedDate.toDate(it.fecha_visita) }
+                    }
+
 
                 // TODO filtrar visitas anteriores a hace 6 meses
 
                 verdurasQuinta.addAll(verduras.filter {
                     visitas.map {
-                        it.parcelas.map { it.verdura.id_verdura }
+                        it.parcelas.filter { it.cosecha }.map { it.verdura.id_verdura }
                     }.flatten().contains(it.id_verdura)
                 })
                 verdurasNoQuinta.addAll(verduras - verdurasQuinta.toSet())
