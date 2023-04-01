@@ -50,7 +50,7 @@
                 android:layout_height="48dp"
                 android:autofillHints="name"
                 android:hint="@string/et_name"
-                android:inputType="number"
+                android:inputType="text"
                 android:selectAllOnFocus="true"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvNombre"
