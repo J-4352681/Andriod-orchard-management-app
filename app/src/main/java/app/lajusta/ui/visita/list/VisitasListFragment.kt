@@ -126,7 +126,7 @@ class VisitasListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun actualizarListaUI ( emptyMessage:String ) {
         visitasCompletas.sortDescending()
         visitaAdapter.notifyDataSetChanged()
-        if (visitasCompletas.isEmpty()) shortToast(emptyMessage)
+        if (visitaAdapter.itemCount == 0) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

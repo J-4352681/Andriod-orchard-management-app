@@ -93,7 +93,7 @@ class VerduraListFragment: BaseFragment(), SearchView.OnQueryTextListener {
     private fun actualizarListaUI ( emptyMessage:String ) {
         verduras.sort()
         verduraAdapter.notifyDataSetChanged()
-        if (verduras.isEmpty()) shortToast(emptyMessage)
+        if (verduraAdapter.itemCount == 0) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

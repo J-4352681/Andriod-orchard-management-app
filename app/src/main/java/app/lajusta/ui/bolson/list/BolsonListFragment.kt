@@ -120,7 +120,7 @@ class BolsonListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun actualizarListaUI ( emptyMessage:String ) {
         bolsonesCompletos.sortDescending()
         bolsonAdapter.notifyDataSetChanged()
-        if (bolsonesCompletos.isEmpty()) shortToast(emptyMessage)
+        if (bolsonAdapter.itemCount == 0) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

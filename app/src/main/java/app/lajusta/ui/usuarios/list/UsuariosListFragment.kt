@@ -91,7 +91,7 @@ class UsuariosListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun actualizarListaUI ( emptyMessage:String ) {
         usuarios.sort()
         usuariosAdapter.notifyDataSetChanged()
-        if (usuarios.isEmpty()) shortToast(emptyMessage)
+        if (usuariosAdapter.itemCount == 0) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

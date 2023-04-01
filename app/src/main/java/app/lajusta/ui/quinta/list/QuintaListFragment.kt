@@ -111,7 +111,7 @@ class QuintaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun actualizarListaUI ( emptyMessage:String ) {
         quintasCompletas.sort()
         quintaAdapter.notifyDataSetChanged()
-        if (quintasCompletas.isEmpty()) shortToast(emptyMessage)
+        if (quintaAdapter.itemCount == 0) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

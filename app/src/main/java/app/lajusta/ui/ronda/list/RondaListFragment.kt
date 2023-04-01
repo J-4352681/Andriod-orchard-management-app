@@ -103,7 +103,7 @@ class RondaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun actualizarListaUI ( emptyMessage:String ) {
         rondas.sortDescending()
         rondaAdapter.notifyDataSetChanged()
-        if (rondas.isEmpty()) shortToast(emptyMessage)
+        if (rondaAdapter.itemCount == 0) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true

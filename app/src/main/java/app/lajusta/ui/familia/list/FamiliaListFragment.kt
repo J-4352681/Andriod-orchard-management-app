@@ -121,7 +121,7 @@ class FamiliaListFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun actualizarListaUI ( emptyMessage:String ) {
         familiasCompletas.sort()
         familiaAdapter.notifyDataSetChanged()
-        if (familiasCompletas.isEmpty()) shortToast(emptyMessage)
+        if (familiaAdapter.itemCount == 0) shortToast(emptyMessage)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean = true
