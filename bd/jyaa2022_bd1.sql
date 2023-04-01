@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: laboratorio2020_database:3306
--- Tiempo de generación: 01-03-2023 a las 18:18:29
+-- Tiempo de generación: 01-04-2023 a las 18:34:54
 -- Versión del servidor: 8.0.31
 -- Versión de PHP: 8.1.16
 
@@ -81,6 +81,7 @@ CREATE TABLE `FamiliaProductora` (
 INSERT INTO `FamiliaProductora` (`cod_fp`, `fecha_afi`, `nombre`) VALUES
 (1, '2023-01-01', 'Gomez'),
 (2, '2023-01-01', 'Gonzalez'),
+(3, '2023-04-01', 'Iruvia'),
 (52, '2023-01-01', 'Peperoni');
 
 -- --------------------------------------------------------
@@ -98,7 +99,7 @@ CREATE TABLE `FamiliaProductora_SEQ` (
 --
 
 INSERT INTO `FamiliaProductora_SEQ` (`next_val`) VALUES
-(151);
+(201);
 
 -- --------------------------------------------------------
 
@@ -171,6 +172,9 @@ CREATE TABLE `Quinta` (
 INSERT INTO `Quinta` (`cod_quinta`, `direccion`, `geoImg`, `nombre`, `cod_fp`) VALUES
 (1, 'Calle 167 2307, Los Hornos, B1910 DND, Provincia de Buenos Aires', 'https://www.google.com/maps/place/Chacra+El+Descanso/@-34.9567776,-57.9663988,13z/data=!4m5!3m4!1s0x95a2e9cf7346c109:0x94795c8c803d82fb!8m2!3d-34.9948577!4d-57.9830513?hl=es', 'El Descanso', 1),
 (2, 'C. 224 2999-3199, B1900 Abasto, Provincia de Buenos Aires', 'https://www.google.com/maps/place/Finca+El+Rosedal/@-34.9714081,-58.1018397,13z/data=!4m5!3m4!1s0x0:0x6848c315ba3fa7f0!8m2!3d-34.9827001!4d-58.1194139?hl=es', 'El Rosedal', 2),
+(6, 'https://www.google.com.ar/maps/place/34%C2%B058\'03.9%22S+57%C2%B055\'37.7%22W/@-34.9677356,-57.9293387,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.96774!4d-57.92715', 'https://www.google.com.ar/maps/place/34%C2%B058\'03.9%22S+57%C2%B055\'37.7%22W/@-34.9677356,-57.9293387,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.96774!4d-57.92715', 'Las auroras', 2),
+(7, 'https://www.google.com.ar/maps/place/34%C2%B058\'09.9%22S+57%C2%B057\'50.5%22W/@-34.9694136,-57.9662147,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.969418!4d-57.964026', 'https://www.google.com.ar/maps/place/34%C2%B058\'09.9%22S+57%C2%B057\'50.5%22W/@-34.9694136,-57.9662147,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.969418!4d-57.964026', 'La meseta', 1),
+(8, 'https://www.google.com.ar/maps/place/34%C2%B055\'53.4%22S+58%C2%B004\'04.5%22W/@-34.9314896,-58.0701027,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.931494!4d-58.067914', 'https://www.google.com.ar/maps/place/34%C2%B055\'53.4%22S+58%C2%B004\'04.5%22W/@-34.9314896,-58.0701027,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.931494!4d-58.067914', 'Cabañitas', 52),
 (52, 'C. 215, Abasto, Provincia de Buenos Aires', 'https://www.google.com/maps/place/LAS+ALICIAS/@-34.9754155,-58.0941763,12.33z/data=!4m5!3m4!1s0x0:0x49f8f926ca037272!8m2!3d-34.9607558!4d-58.131601?hl=es', 'Las Alicias', 52);
 
 -- --------------------------------------------------------
@@ -188,7 +192,7 @@ CREATE TABLE `Quinta_SEQ` (
 --
 
 INSERT INTO `Quinta_SEQ` (`next_val`) VALUES
-(151);
+(201);
 
 -- --------------------------------------------------------
 
@@ -207,9 +211,13 @@ CREATE TABLE `Ronda` (
 --
 
 INSERT INTO `Ronda` (`cod_ronda`, `fehca_fin`, `fehca_ini`) VALUES
-(1, '2023-12-12', '2023-02-28'),
+(1, '2023-12-12', '2023-03-30'),
 (2, '2023-02-10', '2023-02-01'),
-(3, '2023-02-22', '2023-02-15');
+(3, '2023-02-22', '2023-02-15'),
+(4, '2023-03-10', '2023-03-01'),
+(5, '2023-03-22', '2023-03-10'),
+(6, '2023-01-10', '2023-01-01'),
+(8, '2023-01-27', '2023-01-17');
 
 -- --------------------------------------------------------
 
@@ -292,6 +300,12 @@ CREATE TABLE `Verdura` (
 INSERT INTO `Verdura` (`cod_verdura`, `archImg`, `descripcion`, `mes_siembra`, `nombre`, `mes_cosecha`) VALUES
 (1, 'string', 'La lechuga es un tipo de hortaliza herbácea conformada por flores amarillentas, fruto seco, con una sola semilla y con hojas grandes, radicales, blandas, de distintas formas, que la gente come en ensaladas o en guisadas.', '2023-04-01', 'Lechuga', '2023-03-01'),
 (2, 'string', 'La papa o patata (Solanum tuberosum), con origen en el altiplano sur del Perú, es el tubérculo más consumido en el mundo y se encuentra entre los diez principales cultivos de la humanidad.', '2023-02-01', 'Papa', '2023-01-01'),
+(3, '-', 'El tomate​ es el fruto de la planta Solanum lycopersicum, el cual tiene importancia culinaria y es utilizado como fruta.', '2023-04-12', 'Tomate', '2023-04-28'),
+(4, '-', 'El Kale es un alimento con alta concentración en vitaminas y minerales. Contiene más calcio que la leche.', '2023-04-29', 'Kale', '2023-05-11'),
+(5, '-', 'La zanahoria es la forma domesticada de la zanahoria silvestre, especie de la familia de las umbelíferas, también denominadas apiáceas, y considerada la más importante y de mayor consumo dentro de esta familia.', '2023-06-02', 'Zanahoria', '2023-07-13'),
+(6, '-', 'La cebolla es la especie más cultivada del género Allium, el cual contiene varias especies que se denominan «cebollas» y que se cultivan como alimento.', '2023-04-15', 'Cebolla', '2023-07-14'),
+(7, '-', 'El repollo es una planta comestible de la familia de las Brasicáceas, y una herbácea bienal, cultivada como anual, cuyas hojas lisas forman un característico cogollo compacto.', '2023-03-14', 'Repollo', '2023-06-02'),
+(8, '-', 'El coliflor es una planta anual que se reproduce por semillas y que encuentra en su mejor momento entre los meses de septiembre y enero en el hemisferio norte, aunque se puede disponer de ella durante todo el año.', '2023-06-09', 'Coliflor', '2023-04-24'),
 (102, 'string', 'La batata, boniato, patata dulce o camote es un tubérculo, es decir un engrosamiento de las raíces. Originario de Suramérica, concretamente de la zona de Perú, ahora se cultiva por todo el mundo.', '2023-12-01', 'Batata', '2023-10-01');
 
 -- --------------------------------------------------------
