@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: laboratorio2020_database:3306
--- Tiempo de generación: 01-04-2023 a las 18:34:54
+-- Tiempo de generación: 01-04-2023 a las 19:17:27
 -- Versión del servidor: 8.0.31
 -- Versión de PHP: 8.1.16
 
@@ -172,9 +172,9 @@ CREATE TABLE `Quinta` (
 INSERT INTO `Quinta` (`cod_quinta`, `direccion`, `geoImg`, `nombre`, `cod_fp`) VALUES
 (1, 'Calle 167 2307, Los Hornos, B1910 DND, Provincia de Buenos Aires', 'https://www.google.com/maps/place/Chacra+El+Descanso/@-34.9567776,-57.9663988,13z/data=!4m5!3m4!1s0x95a2e9cf7346c109:0x94795c8c803d82fb!8m2!3d-34.9948577!4d-57.9830513?hl=es', 'El Descanso', 1),
 (2, 'C. 224 2999-3199, B1900 Abasto, Provincia de Buenos Aires', 'https://www.google.com/maps/place/Finca+El+Rosedal/@-34.9714081,-58.1018397,13z/data=!4m5!3m4!1s0x0:0x6848c315ba3fa7f0!8m2!3d-34.9827001!4d-58.1194139?hl=es', 'El Rosedal', 2),
-(6, 'https://www.google.com.ar/maps/place/34%C2%B058\'03.9%22S+57%C2%B055\'37.7%22W/@-34.9677356,-57.9293387,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.96774!4d-57.92715', 'https://www.google.com.ar/maps/place/34%C2%B058\'03.9%22S+57%C2%B055\'37.7%22W/@-34.9677356,-57.9293387,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.96774!4d-57.92715', 'Las auroras', 2),
-(7, 'https://www.google.com.ar/maps/place/34%C2%B058\'09.9%22S+57%C2%B057\'50.5%22W/@-34.9694136,-57.9662147,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.969418!4d-57.964026', 'https://www.google.com.ar/maps/place/34%C2%B058\'09.9%22S+57%C2%B057\'50.5%22W/@-34.9694136,-57.9662147,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.969418!4d-57.964026', 'La meseta', 1),
-(8, 'https://www.google.com.ar/maps/place/34%C2%B055\'53.4%22S+58%C2%B004\'04.5%22W/@-34.9314896,-58.0701027,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.931494!4d-58.067914', 'https://www.google.com.ar/maps/place/34%C2%B055\'53.4%22S+58%C2%B004\'04.5%22W/@-34.9314896,-58.0701027,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.931494!4d-58.067914', 'Cabañitas', 52),
+(6, '23JF+W45 Altos de San Lorenzo, Provincia de Buenos Aires', 'https://www.google.com.ar/maps/place/34%C2%B058\'03.9%22S+57%C2%B055\'37.7%22W/@-34.9677356,-57.9293387,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.96774!4d-57.92715', 'Las auroras', 2),
+(7, '22JP+69Q Los Hornos, Provincia de Buenos Aires', 'https://www.google.com.ar/maps/place/34%C2%B058\'09.9%22S+57%C2%B057\'50.5%22W/@-34.9684793,-57.961789,15.08z/data=!4m4!3m3!8m2!3d-34.9694167!4d-57.9640278', 'La meseta', 1),
+(8, '3W9J+CR4 Melchor Romero, Provincia de Buenos Aires', 'https://www.google.com.ar/maps/place/34%C2%B055\'53.4%22S+58%C2%B004\'04.5%22W/@-34.9314896,-58.0701027,17z/data=!3m1!4b1!4m4!3m3!8m2!3d-34.931494!4d-58.067914', 'Cabañitas', 52),
 (52, 'C. 215, Abasto, Provincia de Buenos Aires', 'https://www.google.com/maps/place/LAS+ALICIAS/@-34.9754155,-58.0941763,12.33z/data=!4m5!3m4!1s0x0:0x49f8f926ca037272!8m2!3d-34.9607558!4d-58.131601?hl=es', 'Las Alicias', 52);
 
 -- --------------------------------------------------------
