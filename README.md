@@ -6,7 +6,7 @@
 
 ## Images
 
-- _TO BE COMPLETED_
+- ![Screenshots](https://github.com/J-4352681/Andriod-orchard-management-app/blob/main/img/screenshots-EN.png?raw=true "Screenshots")
 
 ## Usage
 

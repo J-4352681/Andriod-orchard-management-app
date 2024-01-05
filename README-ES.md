@@ -6,7 +6,7 @@
 
 ## Imágenes
 
-- _A COMPLETAR_
+- ![Capturas de pantall](https://github.com/J-4352681/Andriod-orchard-management-app/blob/main/img/screenshots-ES.png?raw=true "Capturas de pantalla")
 
 ## Uso
 
